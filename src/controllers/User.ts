@@ -9,8 +9,9 @@ export default class UserController {
 
     const { name, username, profile, email, password } = req.body;
     const emailExists = await repository.findOne({ where: { email } });
+    const usernameExists = await repository.findOne({ where: { username } });
 
-    if (emailExists) {
+    if (emailExists || usernameExists) {
       return res.sendStatus(409);
     }
 
