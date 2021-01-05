@@ -8,8 +8,11 @@ export default class User {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
+
+  @Column()
+  profile: string;
 
   @Column({ unique: true })
   email: string;
