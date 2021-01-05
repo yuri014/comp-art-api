@@ -4,6 +4,10 @@ import { getRepository } from 'typeorm';
 import User from '../entities/User';
 
 export default class UserController {
+  index(req: Request, res: Response) {
+    return res.send({ userId: req.params.userId });
+  }
+
   async store(req: Request, res: Response) {
     const repository = getRepository(User);
 
