@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=* & ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
-    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
+    "start": "DEBUG=* & ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts"
   },
   "keywords": [],
   "author": "yuri014",
@@ -29,13 +28,15 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
+    "apollo-server-express": "^2.19.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "debug": "^4.3.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "graphql": "^15.4.0",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
-    "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.29"
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.11.10"
   }
 }
