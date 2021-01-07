@@ -18,18 +18,29 @@ const generateToken = (result: IUser) =>
 
 const usersResolvers: IResolvers = {
   Mutation: {
-    async register(_, { registerInput: { username, email, password, confirmPassword } }) {
-      const user = { username, email, password, confirmPassword };
-      const { errors, valid } = validateRegisterInput(user as IRegisterFields);
+    async register(
+      _,
+      {
+        registerInput: { username, email, password, confirmPassword },
+      }: { registerInput: IRegisterFields },
+    ) {
+      const user = {
+        username: username.trim(),
+        email: email.trim(),
+        password: password.trim(),
+        confirmPassword: confirmPassword.trim(),
+      };
 
-      if (!valid) {
+      const errors = await validateRegisterInput(user as IRegisterFields);
+
+      if (errors.error) {
         throw new UserInputError('Erros', {
-          errors,
+          errors: errors.error.message,
         });
       }
 
-      const usernameExists = await User.findOne({ username });
-      const emailExists = await User.findOne({ email });
+      const usernameExists = await User.findOne({ username: user.username });
+      const emailExists = await User.findOne({ email: user.email });
 
       if (usernameExists || emailExists) {
         throw new UserInputError('Username ou email já existe', {
@@ -39,10 +50,10 @@ const usersResolvers: IResolvers = {
         });
       }
 
-      const encryptedPassword = await bcrypt.hash(password, 12);
+      const encryptedPassword = await bcrypt.hash(user.password, 12);
       const newUser = new User({
-        username,
-        email,
+        username: user.username,
+        email: user.email,
         password: encryptedPassword,
         createdAt: new Date().toISOString(),
       });
