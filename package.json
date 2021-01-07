@@ -36,6 +36,7 @@
     "express": "^4.17.1",
     "graphql": "^15.4.0",
     "graphql-tools": "^7.0.2",
+    "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.10"
