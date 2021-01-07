@@ -63,7 +63,7 @@ const usersResolvers: IResolvers = {
 
       const token = generateToken(result);
 
-      await sendEmailVerification(email, 'test', username);
+      await sendEmailVerification(email, `${process.env.HOST}/confirmation/${token}`, username);
 
       return {
         ...result._doc,

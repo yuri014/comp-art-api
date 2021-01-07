@@ -1,16 +1,22 @@
 import express from 'express';
+import cors from 'cors';
 import debug from 'debug';
 import { ApolloServer } from 'apollo-server-express';
 import mongoose from 'mongoose';
 
 import typeDefs from './graphql/typeDefs';
 import resolvers from './graphql/resolvers';
+import confirmEmail from './routes/confirmEmail';
 
 require('dotenv').config();
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
 const app = express();
+app.use(cors());
+
+app.get('/confirmation/:token', confirmEmail);
+
 server.applyMiddleware({ app });
 app.use(express.urlencoded({ extended: true }));
 const PORT = 3333;
