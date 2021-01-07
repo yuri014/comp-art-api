@@ -16,5 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 const PORT = 3333;
 
 mongoose
-  .connect(process.env.CLUSTER_URL as string, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.CLUSTER_URL as string, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
   .then(() => app.listen(PORT, () => debug.log(`Server running at: ${PORT}`)));
