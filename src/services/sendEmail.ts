@@ -50,7 +50,7 @@ const sendEmailVerification = async (recipient: string, url: string, username: s
           </thead>
           <tbody>
             <tr>
-              <td bgcolor="#cbcaeb" style="padding: 0 30px;">
+              <td bgcolor="#cbcaeb" style="padding: 10px 30px;">
                 <h2 style="color: #08162f;">Olá, ${username}</h2>
                 <p style="color: #08162f;">Agradecemos por você se juntar a nossa plataforma!</p>
               </td>
