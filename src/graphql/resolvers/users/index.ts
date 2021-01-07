@@ -1,21 +1,13 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { IResolvers } from 'graphql-tools';
 import { UserInputError } from 'apollo-server-express';
 
-import User from '../../entities/User';
-import { validateLoginInput, validateRegisterInput } from '../../utils/validateRegisterInput';
-import { IRegisterFields, IUser } from '../../interfaces/User';
-import sendEmailVerification from '../../services/sendEmail';
-
-const generateToken = (result: IUser) =>
-  jwt.sign(
-    { id: result.id, email: result.email, username: result.username },
-    process.env.SECRET as string,
-    {
-      expiresIn: '1d',
-    },
-  );
+import User from '../../../entities/User';
+import { validateLoginInput, validateRegisterInput } from '../../../utils/validateRegisterInput';
+import { IRegisterFields } from '../../../interfaces/User';
+import sendEmailVerification from '../../../services/sendEmail';
+import generateToken from './utils/generateToken';
+import emailConfirmationMessage from './utils/emailConfirmationMessage';
 
 const usersResolvers: IResolvers = {
   Mutation: {
@@ -63,7 +55,13 @@ const usersResolvers: IResolvers = {
 
       const token = generateToken(result);
 
-      await sendEmailVerification(email, `${process.env.HOST}/confirmation/${token}`, username);
+      const message = emailConfirmationMessage(
+        username,
+        email,
+        `${process.env.HOST}/confirmation/${token}`,
+      );
+
+      await sendEmailVerification(message);
 
       return {
         ...result._doc,
