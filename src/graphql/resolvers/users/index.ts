@@ -1,12 +1,13 @@
 import bcrypt from 'bcryptjs';
 import { IResolvers } from 'graphql-tools';
 import { UserInputError } from 'apollo-server-express';
+import jwt from 'jsonwebtoken';
 
 import User from '../../../entities/User';
 import { validateLoginInput, validateRegisterInput } from '../../../utils/validateRegisterInput';
 import { IRegisterFields } from '../../../interfaces/User';
 import sendEmailVerification from '../../../services/sendEmail';
-import generateToken from './utils/generateToken';
+import generateToken, { generateRecoverPasswordToken } from './utils/generateToken';
 import emailConfirmationMessage from './utils/emailConfirmationMessage';
 
 const usersResolvers: IResolvers = {
@@ -58,7 +59,7 @@ const usersResolvers: IResolvers = {
       const message = emailConfirmationMessage(
         username,
         email,
-        `${process.env.HOST}/confirmation/${token}`,
+        `${process.env.FRONT_END_HOST}/confirmation-email/${token}`,
       );
 
       await sendEmailVerification(message);
@@ -105,6 +106,20 @@ const usersResolvers: IResolvers = {
         id: user._id,
         token,
       };
+    },
+
+    async confirmationEmail(_, { token }: { token: string }) {
+      try {
+        const user: any = jwt.verify(token, process.env.SECRET as string);
+        const userId = await User.findById(user.id);
+        if (userId) {
+          await User.updateOne({ confirmed: true });
+          return true;
+        }
+        return false;
+      } catch (error) {
+        return false;
+      }
     },
   },
 };
