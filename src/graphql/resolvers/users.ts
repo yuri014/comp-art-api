@@ -6,6 +6,7 @@ import { UserInputError } from 'apollo-server-express';
 import User from '../../entities/User';
 import { validateLoginInput, validateRegisterInput } from '../../utils/validateRegisterInput';
 import { IRegisterFields, IUser } from '../../interfaces/User';
+import sendEmailVerification from '../../services/sendEmail';
 
 const generateToken = (result: IUser) =>
   jwt.sign(
@@ -62,6 +63,8 @@ const usersResolvers: IResolvers = {
 
       const token = generateToken(result);
 
+      await sendEmailVerification(email, 'test', username);
+
       return {
         ...result._doc,
         id: result._id,
@@ -83,6 +86,11 @@ const usersResolvers: IResolvers = {
       if (!user) {
         errors.general = 'Usuário não encontrado';
         throw new UserInputError('Usuário não encontrado', { errors });
+      }
+
+      if (!user.confirmed) {
+        errors.general = 'Email não confirmado';
+        throw new UserInputError('Email não confirmado', { errors });
       }
 
       const match = await bcrypt.compare(password, user.password);
