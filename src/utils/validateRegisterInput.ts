@@ -3,10 +3,10 @@ import userValidateSchema from '../validators/userSchema';
 
 const isNotEmpty = (field: string) => field.trim() === '';
 
-export const validateLoginInput = (username: string, password: string) => {
+export const validateLoginInput = (email: string, password: string) => {
   const errors: { [key: string]: string } = {};
 
-  if (isNotEmpty(username)) {
+  if (isNotEmpty(email)) {
     errors.email = 'Email não pode ser vazio';
   }
 
