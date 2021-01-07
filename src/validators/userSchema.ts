@@ -17,7 +17,7 @@ const userValidateSchema = Joi.object({
     }),
 
   password: Joi.string()
-    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$'))
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
     .required()
     .messages({
       'string.base': 'Senha deve ser um texto',
@@ -28,7 +28,7 @@ const userValidateSchema = Joi.object({
 
   confirmPassword: Joi.any()
     .equal(Joi.ref('password'))
-    .messages({ 'any.only': 'Senha não confere' }),
+    .messages({ 'any.only': 'Senhas não conferem' }),
 }).with('password', 'confirmPassword');
 
 export default userValidateSchema;
