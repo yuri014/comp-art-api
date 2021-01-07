@@ -69,8 +69,8 @@ const usersResolvers: IResolvers = {
       };
     },
 
-    async login(_, { username, password }) {
-      const { errors, valid } = validateLoginInput(username, password);
+    async login(_, { email, password }) {
+      const { errors, valid } = validateLoginInput(email, password);
 
       if (!valid) {
         throw new UserInputError('Erros', {
@@ -78,7 +78,7 @@ const usersResolvers: IResolvers = {
         });
       }
 
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ email });
 
       if (!user) {
         errors.general = 'Usuário não encontrado';
