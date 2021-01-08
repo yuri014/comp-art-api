@@ -33,7 +33,7 @@ const typeDefs = gql`
     login(email: String!, password: String!): User!
     confirmationEmail(token: String!): Boolean
     sendForgotPasswordEmail(email: String!): Boolean
-    recoverPassword(token: String!, newPassword: String!): User!
+    recoverPassword(token: String!, newPassword: String!): String!
   }
 `;
 export default typeDefs;

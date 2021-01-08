@@ -7,8 +7,8 @@ import User from '../../../entities/User';
 import { validateLoginInput, validateRegisterInput } from '../../../utils/validateRegisterInput';
 import { IRegisterFields } from '../../../interfaces/User';
 import sendEmailVerification from '../../../services/sendEmail';
-import generateToken, { generateRecoverPasswordToken } from './utils/generateToken';
-import emailConfirmationMessage from './utils/emailConfirmationMessage';
+import generateToken from './utils/generateToken';
+import { emailConfirmationMessage, passwordRecoverMessage } from './utils/userEmailMessages';
 
 const usersResolvers: IResolvers = {
   Mutation: {
@@ -54,7 +54,7 @@ const usersResolvers: IResolvers = {
 
       const result = await newUser.save();
 
-      const token = generateToken(result);
+      const token = generateToken(result, '1d');
 
       const message = emailConfirmationMessage(
         username,
@@ -99,7 +99,7 @@ const usersResolvers: IResolvers = {
         throw new UserInputError('Credenciais erradas', { errors });
       }
 
-      const token = generateToken(user);
+      const token = generateToken(user, '1d');
 
       return {
         ...user._doc,
@@ -110,7 +110,7 @@ const usersResolvers: IResolvers = {
 
     async confirmationEmail(_, { token }: { token: string }) {
       try {
-        const user: any = jwt.verify(token, process.env.SECRET as string);
+        const user = jwt.verify(token, process.env.SECRET as string) as { id: string };
         const userId = await User.findById(user.id);
         if (userId) {
           await User.updateOne({ confirmed: true });
@@ -118,7 +118,40 @@ const usersResolvers: IResolvers = {
         }
         return false;
       } catch (error) {
-        return false;
+        throw new Error(error);
+      }
+    },
+
+    async sendForgotPasswordEmail(_, { email }: { email: string }) {
+      const user = await User.findOne({ email });
+
+      if (user) {
+        const token = generateToken(user, '10m');
+        const message = passwordRecoverMessage(
+          user.username,
+          email,
+          `${process.env.HOST}/recover-password/${token}`,
+        );
+
+        await sendEmailVerification(message);
+
+        return true;
+      }
+
+      return false;
+    },
+
+    async recoverPassword(_, { token, newPassword }: { token: string; newPassword: string }) {
+      try {
+        const { id } = jwt.verify(token, process.env.SECRET as string) as { id: string };
+        const user = User.findById(id);
+        const encryptedPassword = await bcrypt.hash(newPassword, 12);
+        if (user) {
+          await User.updateOne({ password: encryptedPassword });
+        }
+        return token;
+      } catch (error) {
+        throw new Error(error);
       }
     },
   },
