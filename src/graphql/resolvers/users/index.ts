@@ -130,7 +130,7 @@ const usersResolvers: IResolvers = {
         const message = passwordRecoverMessage(
           user.username,
           email,
-          `${process.env.HOST}/recover-password/${token}`,
+          `${process.env.FRONT_END_HOST}/recover-password/${token}`,
         );
 
         await sendEmailVerification(message);
