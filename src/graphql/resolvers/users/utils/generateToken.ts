@@ -2,15 +2,12 @@ import jwt from 'jsonwebtoken';
 
 import { IUser } from '../../../../interfaces/User';
 
-export const generateRecoverPasswordToken = (email: string) =>
-  jwt.sign({ email }, process.env.SECRET as string, { expiresIn: '10m' });
-
-const generateToken = (result: IUser) =>
+const generateToken = (user: IUser, expiresIn: string) =>
   jwt.sign(
-    { id: result.id, email: result.email, username: result.username },
+    { id: user.id, email: user.email, username: user.username },
     process.env.SECRET as string,
     {
-      expiresIn: '1d',
+      expiresIn,
     },
   );
 
