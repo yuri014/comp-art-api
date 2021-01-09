@@ -14,6 +14,10 @@ const ArtistProfileSchema = new Schema({
   postsRemainingToUnblock: { type: Number, default: 0 },
   createdAt: String,
   updatedAt: String,
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'users',
+  },
 });
 
 export default model<IArtistProfile>('ArtistProfile', ArtistProfileSchema);
