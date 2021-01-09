@@ -41,12 +41,6 @@ const profileResolvers: IResolvers = {
         });
       }
 
-      if (!user.isArtist) {
-        throw new UserInputError('Usuário não é um artista', {
-          errors: 'Usuário não é um artista',
-        });
-      }
-
       await newProfile.save();
 
       return {
