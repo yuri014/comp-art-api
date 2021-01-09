@@ -45,6 +45,7 @@ const typeDefs = gql`
     avatar: String
     coverImage: String
     bio: String
+    token: String!
   }
 
   type Query {
