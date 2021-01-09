@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface IUserProfile extends Document {
+  _doc: IUserProfile;
   name: string;
   avatar: string;
   coverImage: string;
@@ -10,6 +11,7 @@ export interface IUserProfile extends Document {
   following: number;
   createdAt: string;
   updatedAt: string;
+  owner: string;
 }
 
 export interface IArtistProfile extends Document {
@@ -25,6 +27,7 @@ export interface IArtistProfile extends Document {
   postsRemainingToUnblock: number;
   createdAt: string;
   updatedAt: string;
+  owner: string;
 }
 
 export interface ICreateProfile {
@@ -32,4 +35,5 @@ export interface ICreateProfile {
   avatar?: string;
   coverImage?: string;
   bio?: string;
+  token: string;
 }
