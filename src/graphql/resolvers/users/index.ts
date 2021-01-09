@@ -89,7 +89,8 @@ const usersResolvers: IResolvers = {
       }
 
       if (!user.confirmed) {
-        errors.general = 'Email não confirmado';
+        const message = 'Um email de confirmação foi enviado a você, por favor confirme seu email!';
+        errors.general = message;
         throw new UserInputError('Email não confirmado', { errors });
       }
 
