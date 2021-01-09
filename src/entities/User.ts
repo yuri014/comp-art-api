@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 import { IUser } from '../interfaces/User';
 
@@ -11,4 +11,4 @@ const UserSchema = new Schema({
   updatedAt: String,
 });
 
-export default mongoose.model<IUser>('User', UserSchema);
+export default model<IUser>('User', UserSchema);
