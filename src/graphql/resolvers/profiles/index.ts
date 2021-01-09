@@ -16,7 +16,7 @@ const profileResolvers: IResolvers = {
     ) {
       const { id } = jwt.verify(token, process.env.SECRET as string) as { id: string };
 
-      const profileExists = ArtistProfile.findOne({ owner: id });
+      const profileExists = await ArtistProfile.findOne({ owner: id });
 
       if (profileExists) {
         throw new UserInputError('Usuário já é dono de um perfil', {
