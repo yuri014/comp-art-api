@@ -15,7 +15,7 @@ const usersResolvers: IResolvers = {
     async register(
       _,
       {
-        registerInput: { username, email, password, confirmPassword },
+        registerInput: { username, email, isArtist, password, confirmPassword },
       }: { registerInput: IRegisterFields },
     ) {
       const user = {
@@ -49,6 +49,7 @@ const usersResolvers: IResolvers = {
         username: user.username,
         email: user.email,
         password: encryptedPassword,
+        isArtist,
         createdAt: new Date().toISOString(),
       });
 

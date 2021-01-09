@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   confirmed: { type: Boolean, default: false },
+  isArtist: { type: Boolean, required: true },
   createdAt: String,
   updatedAt: String,
 });
