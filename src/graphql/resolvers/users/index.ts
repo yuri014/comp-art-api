@@ -89,7 +89,15 @@ const usersResolvers: IResolvers = {
       }
 
       if (!user.confirmed) {
+        const token = generateToken(user, '19m');
         const message = 'Um email de confirmação foi enviado a você, por favor confirme seu email!';
+        const emailMessage = emailConfirmationMessage(
+          user.username,
+          user.email,
+          `${process.env.FRONT_END_HOST}/confirmation-email/${token}`,
+        );
+
+        await sendEmailVerification(emailMessage);
         errors.general = message;
         throw new UserInputError('Email não confirmado', { errors });
       }
