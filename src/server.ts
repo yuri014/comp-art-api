@@ -1,5 +1,4 @@
 import express from 'express';
-import cors from 'cors';
 import debug from 'debug';
 import { ApolloServer } from 'apollo-server-express';
 import mongoose from 'mongoose';
@@ -12,9 +11,8 @@ require('dotenv').config();
 const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ req }) });
 
 const app = express();
-app.use(cors());
 
-server.applyMiddleware({ app });
+server.applyMiddleware({ app, cors: { origin: process.env.FRONT_END_HOST } });
 app.use(express.urlencoded({ extended: true }));
 const PORT = 3333;
 
