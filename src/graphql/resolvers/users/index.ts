@@ -89,7 +89,15 @@ const usersResolvers: IResolvers = {
       }
 
       if (!user.confirmed) {
-        const token = generateToken(user, '19m');
+        const now = new Date(new Date().toISOString()).getTime() / 60000;
+        const diff = now - new Date(user?.createdAt).getTime() / 60000;
+
+        if (diff >= 720) {
+          user.delete();
+          throw new UserInputError('Usuário excluído');
+        }
+
+        const token = generateToken(user, '10m');
         const message = 'Um email de confirmação foi enviado a você, por favor confirme seu email!';
         const emailMessage = emailConfirmationMessage(
           user.username,
