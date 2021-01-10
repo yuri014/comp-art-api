@@ -91,7 +91,7 @@ const usersResolvers: IResolvers = {
         const now = new Date(new Date().toISOString()).getTime() / 60000;
         const diff = now - new Date(user?.createdAt).getTime() / 60000;
 
-        if (diff >= 720) {
+        if (diff >= 1440) {
           user.delete();
           throw new UserInputError('Usuário excluído');
         }
