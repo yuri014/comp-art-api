@@ -7,8 +7,8 @@ export interface IUser extends Document {
   password: string;
   confirmed: boolean;
   isArtist: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IRegisterFields {
