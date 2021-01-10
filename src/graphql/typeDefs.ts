@@ -6,7 +6,7 @@ const typeDefs = gql`
     username: String!
     email: String!
     password: String!
-    token: String!
+    token: String
     createdAt: String!
     updatedAt: String
   }
