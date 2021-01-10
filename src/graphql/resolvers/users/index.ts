@@ -68,6 +68,7 @@ const usersResolvers: IResolvers = {
       return {
         ...result._doc,
         id: result._id,
+        token: '',
       };
     },
 
