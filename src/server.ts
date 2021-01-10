@@ -9,7 +9,7 @@ import resolvers from './graphql/resolvers';
 
 require('dotenv').config();
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ req }) });
 
 const app = express();
 app.use(cors());

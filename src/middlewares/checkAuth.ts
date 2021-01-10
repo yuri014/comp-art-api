@@ -1,0 +1,21 @@
+import { AuthenticationError } from 'apollo-server-express';
+import jwt from 'jsonwebtoken';
+
+const checkAuth = (context: { req: { header: { authorization: string } } }) => {
+  const authHeader = context.req.header.authorization;
+  if (authHeader) {
+    const token = authHeader.split('Bearer')[1];
+    if (token) {
+      try {
+        const user = jwt.verify(token, process.env.SECRET as string);
+        return user;
+      } catch {
+        throw new AuthenticationError('Token inválida/expirada');
+      }
+    }
+    throw new Error("Autenticação precisa ser 'Bearer [token]");
+  }
+  throw new Error('Autenticação precisa ser de um header');
+};
+
+export default checkAuth;
