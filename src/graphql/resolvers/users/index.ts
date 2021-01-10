@@ -68,7 +68,6 @@ const usersResolvers: IResolvers = {
       return {
         ...result._doc,
         id: result._id,
-        token,
       };
     },
 
@@ -129,12 +128,12 @@ const usersResolvers: IResolvers = {
     async confirmationEmail(_, { token }: { token: string }) {
       try {
         const user = jwt.verify(token, process.env.SECRET as string) as { id: string };
-        const userId = await User.findById(user.id);
-        if (userId) {
-          await User.updateOne({ confirmed: true });
-          return true;
+        const userById = await User.findById(user.id);
+        if (!userById) {
+          throw new Error();
         }
-        return false;
+        await User.updateOne({ confirmed: true });
+        return userById;
       } catch (error) {
         throw new Error(error);
       }
