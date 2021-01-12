@@ -54,8 +54,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    register(registerInput: RegisterInput): User!
-    login(email: String!, password: String!): User!
+    register(registerInput: RegisterInput): Boolean
+    login(email: String!, password: String!): String!
     confirmationEmail(token: String!): User!
     sendForgotPasswordEmail(email: String!): Boolean
     recoverPassword(token: String!, newPassword: String!): String!

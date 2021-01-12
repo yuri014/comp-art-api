@@ -65,10 +65,7 @@ const usersResolvers: IResolvers = {
 
       await sendEmailVerification(message);
 
-      return {
-        ...result._doc,
-        id: result._id,
-      };
+      return true;
     },
 
     async login(_, { email, password }) {
@@ -118,11 +115,7 @@ const usersResolvers: IResolvers = {
 
       const token = generateToken(user, '1d');
 
-      return {
-        ...user._doc,
-        id: user._id,
-        token,
-      };
+      return token;
     },
 
     async confirmationEmail(_, { token }: { token: string }) {
