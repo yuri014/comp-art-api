@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { IUploadImage } from './Upload';
 
 export interface IUserProfile extends Document {
   _doc: IUserProfile;
@@ -36,8 +37,8 @@ export interface IArtistProfile extends Document {
 
 export interface ICreateProfile {
   name: string;
-  avatar?: string;
-  coverImage?: string;
+  avatar?: IUploadImage;
+  coverImage?: IUploadImage;
   bio?: string;
   token: string;
 }
