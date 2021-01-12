@@ -9,6 +9,8 @@ export interface IUserProfile extends Document {
   sharedPostCount: number;
   followers: number;
   following: number;
+  xp: number;
+  level: number;
   createdAt: string;
   updatedAt: string;
   owner: string;
@@ -23,6 +25,8 @@ export interface IArtistProfile extends Document {
   postCount: number;
   followers: number;
   following: number;
+  xp: number;
+  level: number;
   isBlockedToPost: boolean;
   postsRemainingToUnblock: number;
   createdAt: string;
