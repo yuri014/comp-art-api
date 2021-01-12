@@ -11,11 +11,15 @@ const typeDefs = gql`
     updatedAt: String
   }
 
+  type File {
+    url: String!
+  }
+
   type ArtistProfile {
     id: ID!
     name: String!
-    avatar: String
-    coverImage: String
+    avatar: File
+    coverImage: File
     bio: String
     postCount: Int!
     followers: Int!
@@ -43,8 +47,8 @@ const typeDefs = gql`
 
   input CreateProfileInput {
     name: String!
-    avatar: String
-    coverImage: String
+    avatar: Upload
+    coverImage: Upload
     bio: String
     token: String!
   }
@@ -59,7 +63,7 @@ const typeDefs = gql`
     confirmationEmail(token: String!): User!
     sendForgotPasswordEmail(email: String!): Boolean
     recoverPassword(token: String!, newPassword: String!): String!
-    createArtistProfile(createProfileInput: CreateProfileInput): ArtistProfile!
+    createArtistProfile(createProfileInput: CreateProfileInput!): ArtistProfile!
   }
 `;
 export default typeDefs;
