@@ -5,6 +5,7 @@ import { UserInputError } from 'apollo-server-express';
 import ArtistProfile from '../../../entities/ArtistProfile';
 import { ICreateProfile } from '../../../interfaces/Profile';
 import User from '../../../entities/User';
+import uploadImage from '../../../utils/uploadImage';
 
 const profileResolvers: IResolvers = {
   Mutation: {
@@ -24,11 +25,16 @@ const profileResolvers: IResolvers = {
         });
       }
 
+      const avatarFile = await avatar;
+      const avatarImageUrl = uploadImage(avatarFile?.createReadStream, avatarFile?.filename);
+      const coverFile = await coverImage;
+      const coverImageUrl = uploadImage(coverFile?.createReadStream, coverFile?.filename);
+
       const newProfile = new ArtistProfile({
         name,
-        avatar,
+        avatar: avatarImageUrl,
         bio,
-        coverImage,
+        coverImage: coverImageUrl,
         createdAt: new Date().toISOString(),
         owner: id,
       });
