@@ -90,7 +90,8 @@ const usersResolvers: IResolvers = {
 
         if (diff >= 1440) {
           user.delete();
-          throw new UserInputError('Usuário excluído');
+          errors.general = 'Usuário não encontrado';
+          throw new UserInputError('Usuário excluído', { errors });
         }
 
         const token = generateToken(user, '10m');
@@ -115,7 +116,11 @@ const usersResolvers: IResolvers = {
 
       const token = generateToken(user, '1d');
 
-      return token;
+      return {
+        ...user._doc,
+        id: user._id,
+        token,
+      };
     },
 
     async confirmationEmail(_, { token }: { token: string }) {
