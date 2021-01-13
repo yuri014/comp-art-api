@@ -7,26 +7,18 @@ export const passwordRecoverMessage = (username: string, recipient: string, url:
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-      <meta charset="UTF-8" />
-      <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <meta name="x-apple-disable-message-reformatting" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta content="telephone=no" name="format-detection" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400&display=swap"
-        rel="stylesheet"
-      />
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Demystifying Email Design</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
       <table
-        style="font-family: 'Jura', sans-serif;"
         align="center"
         border="0"
         cellpadding="0"
         cellspacing="0"
-        width="600"
-        style="border-collapse: collapse;"
+        width="100%"
+        style="font-family: sans-serif; border-collapse: collapse;"
       >
         <thead>
           <tr>
@@ -48,19 +40,16 @@ export const passwordRecoverMessage = (username: string, recipient: string, url:
             </td>
           </tr>
           <tr>
-            <td
-              align="center"
-              style="padding: 10px 0 10px 0;"
-              width="100"
-              bgcolor="#1cc5b7"
-            >
+            <td align="center">
               <a
                 href=${url}
-                style="color: #ffffff; text-decoration: none;"
+                style="color: #ffffff; text-decoration: none; padding: 10px 40px; background-color: #1cc5b7"
+                width="100"
                 target="_blank"
                 rel="noopener noreferrer"
-                >Confirmar email</a
-              >
+                >
+                Confirmar email
+              </a>
             </td>
           </tr>
         </tbody>
