@@ -1,5 +1,6 @@
 import { AuthenticationError } from 'apollo-server-express';
 import jwt from 'jsonwebtoken';
+import { IToken } from '../interfaces/Token';
 
 const checkAuth = (context: { req: { header: { authorization: string } } }) => {
   const authHeader = context.req.header.authorization;
@@ -8,7 +9,7 @@ const checkAuth = (context: { req: { header: { authorization: string } } }) => {
     if (token) {
       try {
         const user = jwt.verify(token, process.env.SECRET as string);
-        return user;
+        return user as IToken;
       } catch {
         throw new AuthenticationError('Token inválida/expirada');
       }
