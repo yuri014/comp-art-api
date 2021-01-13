@@ -50,7 +50,6 @@ const typeDefs = gql`
     avatar: Upload
     coverImage: Upload
     bio: String
-    token: String!
   }
 
   type Query {
@@ -63,7 +62,7 @@ const typeDefs = gql`
     confirmationEmail(token: String!): User!
     sendForgotPasswordEmail(email: String!): Boolean
     recoverPassword(token: String!, newPassword: String!): String!
-    createArtistProfile(createProfileInput: CreateProfileInput!): ArtistProfile!
+    createArtistProfile(createProfileInput: CreateProfileInput!): Boolean
   }
 `;
 export default typeDefs;
