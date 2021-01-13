@@ -1,23 +1,23 @@
-import jwt from 'jsonwebtoken';
 import { IResolvers } from 'graphql-tools';
 import { UserInputError } from 'apollo-server-express';
 
 import ArtistProfile from '../../../entities/ArtistProfile';
 import { ICreateProfile } from '../../../interfaces/Profile';
-import User from '../../../entities/User';
 import uploadImage from '../../../utils/uploadImage';
+import checkAuth from '../../../middlewares/checkAuth';
 
 const profileResolvers: IResolvers = {
   Mutation: {
     async createArtistProfile(
       _,
       {
-        createProfileInput: { name, avatar, bio, coverImage, token },
+        createProfileInput: { name, avatar, bio, coverImage },
       }: { createProfileInput: ICreateProfile },
+      context,
     ) {
-      const { id } = jwt.verify(token, process.env.SECRET as string) as { id: string };
+      const user = checkAuth(context);
 
-      const profileExists = await ArtistProfile.findOne({ owner: id });
+      const profileExists = await ArtistProfile.findOne({ owner: user.id });
 
       if (profileExists) {
         throw new UserInputError('Usuário já é dono de um perfil', {
@@ -36,10 +36,8 @@ const profileResolvers: IResolvers = {
         bio,
         coverImage: coverImageUrl,
         createdAt: new Date().toISOString(),
-        owner: id,
+        owner: user.id,
       });
-
-      const user = await User.findById(id);
 
       if (!user) {
         throw new UserInputError('Usuário não encontrado', {
@@ -49,9 +47,7 @@ const profileResolvers: IResolvers = {
 
       await newProfile.save();
 
-      return {
-        ...newProfile._doc,
-      };
+      return true;
     },
   },
 };
