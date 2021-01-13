@@ -84,7 +84,9 @@ const usersResolvers: IResolvers = {
         throw new UserInputError('Usuário não encontrado', { errors });
       }
 
-      if (!user.confirmed) {
+      const match = await bcrypt.compare(password, user.password);
+
+      if (!user.confirmed && match) {
         const now = new Date(new Date().toISOString()).getTime() / 60000;
         const diff = now - new Date(user?.createdAt).getTime() / 60000;
 
@@ -106,8 +108,6 @@ const usersResolvers: IResolvers = {
         errors.general = message;
         throw new UserInputError('Email não confirmado', { errors });
       }
-
-      const match = await bcrypt.compare(password, user.password);
 
       if (!match) {
         errors.general = 'Credenciais erradas';
