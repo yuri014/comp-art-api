@@ -64,7 +64,7 @@ const typeDefs = gql`
     confirmationEmail(token: String!): User!
     sendForgotPasswordEmail(email: String!): Boolean
     recoverPassword(token: String!, newPassword: String!): String!
-    createArtistProfile(createProfileInput: CreateProfileInput!): Boolean
+    createProfile(createProfileInput: CreateProfileInput!): Boolean
   }
 `;
 export default typeDefs;
