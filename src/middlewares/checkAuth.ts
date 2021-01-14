@@ -1,11 +1,11 @@
-import { AuthenticationError } from 'apollo-server-express';
 import jwt from 'jsonwebtoken';
+import { AuthenticationError } from 'apollo-server-express';
 import { IToken } from '../interfaces/Token';
 
-const checkAuth = (context: { req: { header: { authorization: string } } }) => {
-  const authHeader = context.req.header.authorization;
+const checkAuth = (context: { req: { headers: { authorization: string } } }) => {
+  const authHeader = context.req.headers.authorization;
   if (authHeader) {
-    const token = authHeader.split('Bearer')[1];
+    const token = authHeader.split('Bearer ')[1];
     if (token) {
       try {
         const user = jwt.verify(token, process.env.SECRET as string);
