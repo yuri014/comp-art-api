@@ -4,11 +4,11 @@ import fs, { ReadStream } from 'fs-extra';
 const uploadImage = async (createReadStream?: () => ReadStream, filename?: string) => {
   if (createReadStream && filename) {
     const stream = createReadStream();
-    const pathName = path.join(__dirname, `/public/uploads/images/${filename}`);
+    const originalName = `${Date.now()}-${filename}`;
+    const pathName = path.join(__dirname, '..', '..', `/public/uploads/images/${originalName}`);
+
     await stream.pipe(fs.createWriteStream(pathName));
-    return {
-      url: `${process.env.HOST}/uploads/images/${filename}`,
-    };
+    return `${process.env.HOST}/uploads/images/${originalName}`;
   }
   return '';
 };

@@ -25,10 +25,16 @@ const profileResolvers: IResolvers = {
         });
       }
 
-      const avatarFile = await avatar;
-      const avatarImageUrl = uploadImage(avatarFile?.createReadStream, avatarFile?.filename);
-      const coverFile = await coverImage;
-      const coverImageUrl = uploadImage(coverFile?.createReadStream, coverFile?.filename);
+      const { file: avatarFile } = await avatar;
+      const avatarImageUrl = await uploadImage(avatarFile?.createReadStream, avatarFile?.filename);
+      const { file: coverFile } = await coverImage;
+      const coverImageUrl = await uploadImage(coverFile?.createReadStream, coverFile?.filename);
+
+      if (!user) {
+        throw new UserInputError('Usuário não encontrado', {
+          errors: 'Usuário não encontrado',
+        });
+      }
 
       const newProfile = new ArtistProfile({
         name,
@@ -38,12 +44,6 @@ const profileResolvers: IResolvers = {
         createdAt: new Date().toISOString(),
         owner: user.id,
       });
-
-      if (!user) {
-        throw new UserInputError('Usuário não encontrado', {
-          errors: 'Usuário não encontrado',
-        });
-      }
 
       await newProfile.save();
 
