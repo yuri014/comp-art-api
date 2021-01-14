@@ -7,8 +7,8 @@ import User from '../../../entities/User';
 import { validateLoginInput, validateRegisterInput } from '../../../utils/validateRegisterInput';
 import { IRegisterFields } from '../../../interfaces/User';
 import sendEmailVerification from '../../../services/sendEmail';
-import generateToken from './utils/generateToken';
-import { emailConfirmationMessage, passwordRecoverMessage } from './utils/userEmailMessages';
+import generateToken from './services/generateToken';
+import { emailConfirmationMessage, passwordRecoverMessage } from './services/userEmailMessages';
 
 const usersResolvers: IResolvers = {
   Mutation: {
