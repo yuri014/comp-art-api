@@ -3,32 +3,18 @@ import { UserInputError } from 'apollo-server-express';
 
 import ArtistProfile from '../../../entities/ArtistProfile';
 import { ICreateProfile } from '../../../interfaces/Profile';
-import uploadImage from '../../../utils/uploadImage';
 import checkAuth from '../../../middlewares/checkAuth';
+import createProfile from './create';
+import UserProfile from '../../../entities/UserProfile';
 
 const profileResolvers: IResolvers = {
   Mutation: {
-    async createArtistProfile(
+    async createProfile(
       _,
-      {
-        createProfileInput: { name, avatar, bio, coverImage },
-      }: { createProfileInput: ICreateProfile },
+      { createProfileInput }: { createProfileInput: ICreateProfile },
       context,
     ) {
       const user = checkAuth(context);
-
-      const profileExists = await ArtistProfile.findOne({ owner: user.id });
-
-      if (profileExists) {
-        throw new UserInputError('Usuário já é dono de um perfil', {
-          errors: 'Usuário já é dono de um perfil',
-        });
-      }
-
-      const { file: avatarFile } = await avatar;
-      const avatarImageUrl = await uploadImage(avatarFile?.createReadStream, avatarFile?.filename);
-      const { file: coverFile } = await coverImage;
-      const coverImageUrl = await uploadImage(coverFile?.createReadStream, coverFile?.filename);
 
       if (!user) {
         throw new UserInputError('Usuário não encontrado', {
@@ -36,16 +22,13 @@ const profileResolvers: IResolvers = {
         });
       }
 
-      const newProfile = new ArtistProfile({
-        name,
-        avatar: avatarImageUrl,
-        bio,
-        coverImage: coverImageUrl,
-        createdAt: new Date().toISOString(),
-        owner: user.id,
-      });
+      if (user.isArtist) {
+        await createProfile(user, ArtistProfile, createProfileInput);
 
-      await newProfile.save();
+        return true;
+      }
+
+      await createProfile(user, UserProfile, createProfileInput);
 
       return true;
     },
