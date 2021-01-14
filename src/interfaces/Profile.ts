@@ -2,7 +2,7 @@ import { Document } from 'mongoose';
 import { IUploadImage } from './Upload';
 
 export interface IUserProfile extends Document {
-  _doc: IUserProfile;
+  _doc?: IUserProfile;
   name: string;
   avatar: string;
   coverImage: string;
