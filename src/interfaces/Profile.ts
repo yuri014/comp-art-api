@@ -37,8 +37,8 @@ export interface IArtistProfile extends Document {
 
 export interface ICreateProfile {
   name: string;
-  avatar?: IUploadImage;
-  coverImage?: IUploadImage;
-  bio?: string;
+  avatar: Promise<IUploadImage>;
+  coverImage: Promise<IUploadImage>;
+  bio: string;
   token: string;
 }
