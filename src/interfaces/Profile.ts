@@ -18,7 +18,7 @@ export interface IUserProfile extends Document {
 }
 
 export interface IArtistProfile extends Document {
-  _doc: IArtistProfile;
+  _doc?: IArtistProfile;
   name: string;
   avatar: string;
   coverImage: string;
@@ -40,5 +40,4 @@ export interface ICreateProfile {
   avatar: Promise<IUploadImage>;
   coverImage: Promise<IUploadImage>;
   bio: string;
-  token: string;
 }
