@@ -1,9 +1,9 @@
 import { UserInputError } from 'apollo-server-express';
 import { Model } from 'mongoose';
 
-import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../interfaces/Profile';
-import { IToken } from '../../../interfaces/Token';
-import uploadImage from '../../../utils/uploadImage';
+import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../interfaces/Profile';
+import { IToken } from '../../../../interfaces/Token';
+import uploadImage from '../../../../utils/uploadImage';
 
 const createProfile = async (
   user: IToken,
@@ -26,9 +26,9 @@ const createProfile = async (
   const coverImageUrl = await uploadImage(coverFile?.createReadStream, coverFile?.filename);
 
   const newProfile = new Profile({
-    name,
+    name: name.trim(),
     avatar: avatarImageUrl,
-    bio,
+    bio: bio.trim(),
     coverImage: coverImageUrl,
     createdAt: new Date().toISOString(),
     owner: user.id,
