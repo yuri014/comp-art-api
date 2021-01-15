@@ -4,7 +4,7 @@ import { UserInputError } from 'apollo-server-express';
 import ArtistProfile from '../../../entities/ArtistProfile';
 import { ICreateProfile } from '../../../interfaces/Profile';
 import checkAuth from '../../../middlewares/checkAuth';
-import createProfile from './create';
+import createProfile from './services/create';
 import UserProfile from '../../../entities/UserProfile';
 
 const profileResolvers: IResolvers = {
