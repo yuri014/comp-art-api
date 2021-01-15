@@ -3,7 +3,7 @@ import Joi from 'joi';
 const isValidText = Joi.string().alphanum();
 
 const profileValidationSchema = Joi.object({
-  name: isValidText.min(6).max(24).required().messages({
+  name: isValidText.min(4).max(24).required().messages({
     'string.base': 'Nome deve ser um texto',
     'string.alphanum': 'Nome precisa ser alfanumérico',
     'string.min': 'Nome deve contér mais de seis caractéres',
