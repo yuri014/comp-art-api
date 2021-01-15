@@ -6,6 +6,7 @@ import { ICreateProfile } from '../../../interfaces/Profile';
 import checkAuth from '../../../middlewares/checkAuth';
 import createProfile from './services/create';
 import UserProfile from '../../../entities/UserProfile';
+import profileValidationSchema from '../../../validators/profileSchema';
 
 const profileResolvers: IResolvers = {
   Mutation: {
@@ -19,6 +20,17 @@ const profileResolvers: IResolvers = {
       if (!user) {
         throw new UserInputError('Usuário não encontrado', {
           errors: 'Usuário não encontrado',
+        });
+      }
+
+      const errors = profileValidationSchema.validate({
+        name: createProfileInput.name,
+        bio: createProfileInput.bio,
+      });
+
+      if (errors.error) {
+        throw new UserInputError('Erros', {
+          errors: errors.error.message,
         });
       }
 
