@@ -23,13 +23,37 @@ const typeDefs = gql`
     avatar: File
     coverImage: File
     bio: String
+    xp: Int!
+    level: Int!
     postCount: Int!
     followers: Int!
     following: Int!
     isBlockedToPost: Boolean!
     postsRemainingToUnblock: Int!
-    createdAt: String!
-    updatedAt: String
+  }
+
+  type UserProfile {
+    id: ID!
+    name: String!
+    avatar: File
+    coverImage: File
+    bio: String
+    xp: Int!
+    level: Int!
+    sharedPostCount: Int!
+    followers: Int!
+    following: Int!
+  }
+
+  type Profile {
+    name: String!
+    avatar: File
+    coverImage: File
+    bio: String
+    xp: Int!
+    level: Int!
+    followers: Int!
+    following: Int!
   }
 
   type Post {
@@ -55,6 +79,7 @@ const typeDefs = gql`
   }
 
   type Query {
+    getProfile: Profile
     getPosts: [Post]
   }
 

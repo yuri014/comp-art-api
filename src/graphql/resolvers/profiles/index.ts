@@ -9,6 +9,18 @@ import UserProfile from '../../../entities/UserProfile';
 import profileValidationSchema from '../../../validators/profileSchema';
 
 const profileResolvers: IResolvers = {
+  Query: {
+    async getLoggedProfile(_, context) {
+      const user = checkAuth(context);
+
+      const profile = () => {
+        if (user.isArtist) return ArtistProfile.findOne({ owner: user.id });
+        return UserProfile.findOne({ owner: user.id });
+      };
+
+      return profile;
+    },
+  },
   Mutation: {
     async createProfile(
       _,
