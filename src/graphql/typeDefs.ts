@@ -14,7 +14,7 @@ const typeDefs = gql`
   }
 
   type File {
-    url: String!
+    url: String
   }
 
   type ArtistProfile {

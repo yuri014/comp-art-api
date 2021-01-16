@@ -10,13 +10,16 @@ import profileValidationSchema from '../../../validators/profileSchema';
 
 const profileResolvers: IResolvers = {
   Query: {
-    async getLoggedProfile(_, context) {
+    async getProfile(parent, args, context) {
       const user = checkAuth(context);
 
-      const profile = () => {
-        if (user.isArtist) return ArtistProfile.findOne({ owner: user.id });
-        return UserProfile.findOne({ owner: user.id });
-      };
+      const profile = user.isArtist
+        ? await ArtistProfile.findOne({ owner: user.id })
+        : await UserProfile.findOne({ owner: user.id });
+
+      if (!profile) {
+        throw new UserInputError('Bah');
+      }
 
       return profile;
     },
