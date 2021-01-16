@@ -18,7 +18,7 @@ const profileResolvers: IResolvers = {
         : await UserProfile.findOne({ owner: user.id });
 
       if (!profile) {
-        throw new UserInputError('Bah');
+        throw new UserInputError('Perfil não encontrado');
       }
 
       return profile;

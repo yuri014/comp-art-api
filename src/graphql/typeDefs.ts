@@ -47,8 +47,8 @@ const typeDefs = gql`
 
   type Profile {
     name: String!
-    avatar: File
-    coverImage: File
+    avatar: String
+    coverImage: String
     bio: String
     xp: Int!
     level: Int!
