@@ -14,8 +14,8 @@ const profileResolvers: IResolvers = {
       const user = checkAuth(context);
 
       const profile = user.isArtist
-        ? await ArtistProfile.findOne({ owner: user.id })
-        : await UserProfile.findOne({ owner: user.id });
+        ? await ArtistProfile.findOne({ owner: user.username })
+        : await UserProfile.findOne({ owner: user.username });
 
       if (!profile) {
         throw new UserInputError('Perfil não encontrado');
