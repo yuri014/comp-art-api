@@ -33,6 +33,17 @@ export interface IArtistProfile extends Document {
   createdAt: string;
   updatedAt: string;
   owner: string;
+  hashtags: Array<string>;
+  links: {
+    soundcloud: string;
+    twitter: string;
+    facebook: string;
+    wattpad: string;
+    pinterest: string;
+    deviantart: string;
+    bandcamp: string;
+    customLink: string;
+  };
 }
 
 export interface ICreateProfile {
@@ -40,4 +51,15 @@ export interface ICreateProfile {
   avatar: Promise<IUploadImage>;
   coverImage: Promise<IUploadImage>;
   bio: string;
+  hashtags: Array<string>;
+  links: {
+    soundcloud: string;
+    twitter: string;
+    facebook: string;
+    wattpad: string;
+    pinterest: string;
+    deviantart: string;
+    bandcamp: string;
+    customLink: string;
+  };
 }
