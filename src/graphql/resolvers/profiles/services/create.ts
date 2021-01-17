@@ -31,7 +31,7 @@ const createProfile = async (
     bio: bio.trim(),
     coverImage: coverImageUrl,
     createdAt: new Date().toISOString(),
-    owner: user.id,
+    owner: user.username,
   });
 
   await newProfile.save();
