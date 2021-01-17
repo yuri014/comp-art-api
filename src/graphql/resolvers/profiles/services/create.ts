@@ -10,13 +10,21 @@ const createProfile = async (
   Profile: Model<IArtistProfile> | Model<IUserProfile>,
   data: ICreateProfile,
 ) => {
-  const profileExists = await Profile.findOne({ owner: user.id });
+  const profileExists = await Profile.findOne({ owner: user.username });
 
   const { avatar, bio, coverImage, name } = data;
 
   if (profileExists) {
     throw new UserInputError('Usuário já é dono de um perfil', {
       errors: 'Usuário já é dono de um perfil',
+    });
+  }
+
+  const hashtagsLength = data.hashtags.length;
+
+  if (hashtagsLength >= 4 || hashtagsLength !== new Set(data.hashtags).size) {
+    throw new UserInputError('Limite de 5 hashtags não repetidas', {
+      errors: 'Limite de 5 hashtags não repetidas',
     });
   }
 
