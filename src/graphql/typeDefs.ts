@@ -17,6 +17,28 @@ const typeDefs = gql`
     url: String
   }
 
+  type Links {
+    soundcloud: String
+    twitter: String
+    facebook: String
+    wattpad: String
+    pinterest: String
+    deviantart: String
+    bandcamp: String
+    customLink: String
+  }
+
+  input InputLinks {
+    soundcloud: String
+    twitter: String
+    facebook: String
+    wattpad: String
+    pinterest: String
+    deviantart: String
+    bandcamp: String
+    customLink: String
+  }
+
   type ArtistProfile {
     id: ID!
     name: String!
@@ -54,6 +76,8 @@ const typeDefs = gql`
     level: Int!
     followers: Int!
     following: Int!
+    hashtags: [String]
+    links: Links
   }
 
   type Post {
@@ -76,6 +100,8 @@ const typeDefs = gql`
     avatar: Upload
     coverImage: Upload
     bio: String
+    hashtags: [String]
+    links: InputLinks
   }
 
   type Query {
