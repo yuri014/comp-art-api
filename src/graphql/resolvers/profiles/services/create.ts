@@ -12,7 +12,7 @@ const createProfile = async (
 ) => {
   const profileExists = await Profile.findOne({ owner: user.username });
 
-  const { avatar, bio, coverImage, name } = data;
+  const { avatar, bio, coverImage, name, hashtags, links } = data;
 
   if (profileExists) {
     throw new UserInputError('Usuário já é dono de um perfil', {
@@ -22,7 +22,7 @@ const createProfile = async (
 
   const hashtagsLength = data.hashtags.length;
 
-  if (hashtagsLength >= 4 || hashtagsLength !== new Set(data.hashtags).size) {
+  if (hashtagsLength > 5 || hashtagsLength !== new Set(data.hashtags).size) {
     throw new UserInputError('Limite de 5 hashtags não repetidas', {
       errors: 'Limite de 5 hashtags não repetidas',
     });
@@ -39,6 +39,8 @@ const createProfile = async (
     bio: bio.trim(),
     coverImage: coverImageUrl,
     createdAt: new Date().toISOString(),
+    links,
+    hashtags,
     owner: user.username,
   });
 
