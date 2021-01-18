@@ -77,6 +77,7 @@ const typeDefs = gql`
     followers: Int!
     following: Int!
     hashtags: [String]
+    owner: String!
     links: Links
   }
 
