@@ -7,19 +7,27 @@ import checkAuth from '../../../middlewares/checkAuth';
 import createProfile from './services/create';
 import UserProfile from '../../../entities/UserProfile';
 import profileValidationSchema from '../../../validators/profileSchema';
+import User from '../../../entities/User';
+import findProfile from './services/find';
 
 const profileResolvers: IResolvers = {
   Query: {
-    async getProfile(parent, args, context) {
+    async getProfile(_, { username }) {
+      const user = await User.findOne({ username });
+
+      if (!user) {
+        throw new UserInputError('Usuário não encontrado');
+      }
+
+      const profile = await findProfile(user);
+
+      return profile;
+    },
+
+    async getLoggedProfile(parent, args, context) {
       const user = checkAuth(context);
 
-      const profile = user.isArtist
-        ? await ArtistProfile.findOne({ owner: user.username })
-        : await UserProfile.findOne({ owner: user.username });
-
-      if (!profile) {
-        throw new UserInputError('Perfil não encontrado');
-      }
+      const profile = await findProfile(user);
 
       return profile;
     },

@@ -79,6 +79,7 @@ const typeDefs = gql`
     hashtags: [String]
     owner: String!
     links: Links
+    isArtist: Boolean!
   }
 
   type Post {
@@ -106,7 +107,8 @@ const typeDefs = gql`
   }
 
   type Query {
-    getProfile: Profile
+    getProfile(username: String!): Profile
+    getLoggedProfile: Profile!
     getPosts: [Post]
   }
 
