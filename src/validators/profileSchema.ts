@@ -8,7 +8,7 @@ const profileValidationSchema = Joi.object({
     'string.min': 'Nome deve contér mais de seis caractéres',
     'string.required': 'Nome é obrigátório',
   }),
-  bio: isValidText.max(255).optional().messages({
+  bio: isValidText.allow('').max(255).messages({
     'string.max': 'Limite de 255 caracteres para bio',
   }),
 });
