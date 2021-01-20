@@ -4,32 +4,25 @@ export interface IPost extends Document {}
 
 const PostSchema = new Schema({
   description: String,
-  img: {
-    data: Buffer,
-    contentType: String,
-  },
+  media: { type: [String], maxlength: 4 },
   createdAt: String,
-  name: String,
-  username: String,
   comments: [
     {
-      owner: { type: Schema.Types.ObjectId, required: true },
-      name: String,
+      username: String,
       comment: String,
       createdAt: String,
-      updatedAt: String,
     },
   ],
   likes: [
     {
-      owner: { type: Schema.Types.ObjectId, required: true },
-      name: String,
+      username: String,
       createdAt: String,
     },
   ],
-  user: {
+  sharedCount: { type: Number, default: 0 },
+  profile: {
     type: Schema.Types.ObjectId,
-    ref: 'users',
+    ref: 'artistprofiles',
   },
 });
 
