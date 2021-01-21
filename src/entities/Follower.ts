@@ -1,19 +1,19 @@
 import { model, Schema } from 'mongoose';
-import { IFollowing } from '../interfaces/Follow';
+import { IFollower } from '../interfaces/Follow';
 
-const FollowingSchema = new Schema({
+const FollowerSchema = new Schema({
   username: {
     type: Schema.Types.String,
     ref: 'users',
     required: true,
   },
-  userFollowing: [
+  userFollowers: [
     {
       avatar: String,
       owner: String,
     },
   ],
-  artistFollowing: [
+  artistFollowers: [
     {
       avatar: String,
       owner: String,
@@ -21,4 +21,4 @@ const FollowingSchema = new Schema({
   ],
 });
 
-export default model<IFollowing>('Following', FollowingSchema);
+export default model<IFollower>('Follower', FollowerSchema);
