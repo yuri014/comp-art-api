@@ -119,6 +119,7 @@ const typeDefs = gql`
     sendForgotPasswordEmail(email: String!): Boolean
     recoverPassword(token: String!, newPassword: String!): String!
     createProfile(createProfileInput: CreateProfileInput!): Boolean
+    follow(username: String!): Boolean
   }
 `;
 export default typeDefs;
