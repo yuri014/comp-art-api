@@ -96,7 +96,7 @@ const usersResolvers: IResolvers = {
           throw new UserInputError('Usuário excluído', { errors });
         }
 
-        const token = generateToken(user, '10m');
+        const token = generateToken(user, '60m');
         const message = 'Um email de confirmação foi enviado a você, por favor confirme seu email!';
         const emailMessage = emailConfirmationMessage(
           user.username,
@@ -126,11 +126,10 @@ const usersResolvers: IResolvers = {
     async confirmationEmail(_, { token }: { token: string }) {
       try {
         const user = jwt.verify(token, process.env.SECRET as string) as { id: string };
-        const userById = await User.findById(user.id);
+        const userById = await User.findByIdAndUpdate(user.id, { confirmed: true });
         if (!userById) {
           throw new Error();
         }
-        await User.updateOne({ confirmed: true });
         return userById;
       } catch (error) {
         throw new Error(error);
