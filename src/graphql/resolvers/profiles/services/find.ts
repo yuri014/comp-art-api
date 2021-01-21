@@ -13,7 +13,7 @@ const findProfile = async (user: IUser | IToken) => {
     throw new UserInputError('Perfil não encontrado');
   }
 
-  return { ...profile._doc, isArtist: user.isArtist };
+  return { ...profile, isArtist: user.isArtist };
 };
 
 export default findProfile;
