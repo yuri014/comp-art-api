@@ -33,6 +33,8 @@ const postResolvers: IResolvers = {
       await profile.update({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
 
       await newProfile.save();
+
+      return true;
     },
   },
 };
