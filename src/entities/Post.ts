@@ -3,24 +3,18 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IPost extends Document {}
 
 const PostSchema = new Schema({
-  description: String,
-  media: { type: [String], maxlength: 4 },
-  createdAt: String,
-  comments: [
-    {
-      username: String,
-      comment: String,
-      createdAt: String,
-    },
-  ],
+  description: { type: String, required: true },
+  media: { type: String, required: true },
   likes: [
     {
       username: String,
+      avatar: String,
       createdAt: String,
     },
   ],
   sharedCount: { type: Number, default: 0 },
-  profile: {
+  createdAt: String,
+  artist: {
     type: Schema.Types.ObjectId,
     ref: 'artistprofiles',
   },
