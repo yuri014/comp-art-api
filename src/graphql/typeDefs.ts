@@ -106,6 +106,11 @@ const typeDefs = gql`
     links: InputLinks
   }
 
+  input CreatePostInput {
+    description: String!
+    body: Upload!
+  }
+
   type Query {
     getProfile(username: String!): Profile
     getLoggedProfile: Profile!
@@ -120,6 +125,7 @@ const typeDefs = gql`
     recoverPassword(token: String!, newPassword: String!): String!
     createProfile(createProfileInput: CreateProfileInput!): Boolean
     follow(username: String!): Boolean
+    createPost(postInput: CreatePostInput!): Boolean
   }
 `;
 export default typeDefs;
