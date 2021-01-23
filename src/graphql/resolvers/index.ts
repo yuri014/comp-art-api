@@ -1,3 +1,4 @@
+import postResolvers from './post';
 import profileResolvers from './profiles';
 import usersResolvers from './users';
 
@@ -8,6 +9,7 @@ const resolvers = {
   Mutation: {
     ...usersResolvers.Mutation,
     ...profileResolvers.Mutation,
+    ...postResolvers.Mutation,
   },
 };
 
