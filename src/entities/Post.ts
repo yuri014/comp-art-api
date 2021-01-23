@@ -1,10 +1,10 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-export interface IPost extends Document {}
+import { IPost } from '../interfaces/Post';
 
 const PostSchema = new Schema({
   description: { type: String, required: true },
-  media: { type: String, required: true },
+  body: { type: String, required: true },
   likes: [
     {
       username: String,
