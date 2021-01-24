@@ -17,6 +17,7 @@ const postResolvers: IResolvers = {
       }
 
       const profile = await checkAbilityToPost(user.username);
+
       const post = { description: postInput.description.trim(), body: postInput.body };
 
       const { file } = await post.body;
@@ -30,7 +31,7 @@ const postResolvers: IResolvers = {
         artist: profile.owner,
       });
 
-      await profile.update({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
+      await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
 
       await newProfile.save();
 

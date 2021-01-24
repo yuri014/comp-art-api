@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 import { IPost } from '../interfaces/Post';
 
 const PostSchema = new Schema({
-  description: { type: String, required: true },
+  description: { type: String },
   body: { type: String, required: true },
   likes: [
     {
@@ -15,7 +15,7 @@ const PostSchema = new Schema({
   sharedCount: { type: Number, default: 0 },
   createdAt: String,
   artist: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.String,
     ref: 'artistprofiles',
   },
 });
