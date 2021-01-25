@@ -18,7 +18,12 @@ const server = new ApolloServer({
 
 const app = express();
 app.use(express.static('public'));
-app.use(graphqlUploadExpress());
+app.use(
+  graphqlUploadExpress({
+    maxFileSize: 1000000,
+    maxFiles: 1,
+  }),
+);
 server.applyMiddleware({ app, cors: { origin: process.env.FRONT_END_HOST } });
 app.use(express.urlencoded({ extended: true }));
 const PORT = 3333;
