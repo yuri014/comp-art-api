@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import User from '../../../entities/User';
 import { validateLoginInput, validateRegisterInput } from '../../../utils/validateRegisterInput';
 import { IRegisterFields } from '../../../interfaces/User';
-import sendEmailVerification from '../../../services/sendEmail';
+import sendEmailVerification from '../../../utils/sendEmail';
 import generateToken from './services/generateToken';
 import { emailConfirmationMessage, passwordRecoverMessage } from './services/userEmailMessages';
 
