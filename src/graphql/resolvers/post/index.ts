@@ -1,7 +1,8 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { IResolvers } from 'graphql-tools';
-import Post from '../../../entities/Post';
 
+import Following from '../../../entities/Following';
+import Post from '../../../entities/Post';
 import { IPostInput } from '../../../interfaces/Post';
 import checkAbilityToPost from '../../../middlewares/checkAbilityToPost';
 import checkAuth from '../../../middlewares/checkAuth';
@@ -9,6 +10,31 @@ import uploadImage from '../../../utils/uploadImage';
 import postValidationSchema from '../../../validators/postSchema';
 
 const postResolvers: IResolvers = {
+  Query: {
+    async getPosts(parent, args, context) {
+      const user = checkAuth(context);
+
+      const following = await Following.find({ username: user.username });
+
+      if (!following) {
+        throw new UserInputError('Não está seguindo nenhum usuário');
+      }
+
+      const [artists] = following.map(profile => profile.artistFollowing);
+
+      if (!artists) {
+        throw new UserInputError('Não está seguindo nenhum artista');
+      }
+
+      const posts = await Post.find({
+        artist: {
+          $in: artists.map(artist => artist.owner),
+        },
+      });
+
+      return posts;
+    },
+  },
   Mutation: {
     async createPost(_, { postInput }: { postInput: IPostInput }, context) {
       const user = checkAuth(context);
