@@ -1,4 +1,4 @@
-import { AuthenticationError } from 'apollo-server-express';
+import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { IResolvers } from 'graphql-tools';
 import Post from '../../../entities/Post';
 
@@ -6,6 +6,7 @@ import { IPostInput } from '../../../interfaces/Post';
 import checkAbilityToPost from '../../../middlewares/checkAbilityToPost';
 import checkAuth from '../../../middlewares/checkAuth';
 import uploadImage from '../../../utils/uploadImage';
+import postValidationSchema from '../../../validators/postSchema';
 
 const postResolvers: IResolvers = {
   Mutation: {
@@ -19,6 +20,14 @@ const postResolvers: IResolvers = {
       const profile = await checkAbilityToPost(user.username);
 
       const post = { description: postInput.description.trim(), body: postInput.body };
+
+      const errors = postValidationSchema.validate(post);
+
+      if (errors.error) {
+        throw new UserInputError('Erros', {
+          errors: errors.error.message,
+        });
+      }
 
       const { file } = await post.body;
 
