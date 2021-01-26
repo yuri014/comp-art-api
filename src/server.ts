@@ -6,6 +6,7 @@ import { graphqlUploadExpress } from 'graphql-upload';
 
 import typeDefs from './graphql/typeDefs';
 import resolvers from './graphql/resolvers';
+import rateLimiterMiddleware from './middlewares/limiter';
 
 require('dotenv').config();
 
@@ -28,6 +29,7 @@ server.applyMiddleware({ app, cors: { origin: process.env.FRONT_END_HOST } });
 app.use(express.urlencoded({ extended: true }));
 const PORT = 3333;
 
+app.use(rateLimiterMiddleware);
 mongoose
   .connect(process.env.CLUSTER_URL as string, {
     useNewUrlParser: true,
