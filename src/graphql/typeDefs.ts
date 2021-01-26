@@ -82,11 +82,19 @@ const typeDefs = gql`
     isArtist: Boolean!
   }
 
+  type Likes {
+    username: String
+    avatar: String
+    createdAt: String
+  }
+
   type Post {
-    id: ID!
-    description: String!
-    username: String!
-    name: String!
+    description: String
+    body: String
+    likes: Likes
+    sharedCount: Int!
+    createdAt: String!
+    artist: String!
   }
 
   input RegisterInput {
