@@ -21,7 +21,9 @@ const postResolvers: IResolvers = {
 
       const post = { description: postInput.description.trim(), body: postInput.body };
 
-      const errors = postValidationSchema.validate(post);
+      const errors = postValidationSchema.validate({
+        description: post.description,
+      });
 
       if (errors.error) {
         throw new UserInputError('Erros', {
