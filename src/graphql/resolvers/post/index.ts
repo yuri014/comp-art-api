@@ -11,7 +11,7 @@ import postValidationSchema from '../../../validators/postSchema';
 
 const postResolvers: IResolvers = {
   Query: {
-    async getPosts(parent, args, context) {
+    async getPosts(parent, { offset }: { offset: number }, context) {
       const user = checkAuth(context);
 
       const following = await Following.find({ username: user.username });
@@ -30,7 +30,14 @@ const postResolvers: IResolvers = {
         artist: {
           $in: artists.map(artist => artist.owner),
         },
-      });
+      })
+        .skip(offset)
+        .limit(3)
+        .sort({ createdAt: -1 });
+
+      if (!posts) {
+        throw new UserInputError('Não há nenhum post');
+      }
 
       return posts;
     },
