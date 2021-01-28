@@ -90,9 +90,11 @@ const typeDefs = gql`
 
   type Post {
     description: String
-    body: String
+    body: String!
     likes: Likes
+    likesCount: Int!
     sharedCount: Int!
+    commentsCount: Int!
     createdAt: String!
     artist: String!
   }

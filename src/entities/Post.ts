@@ -12,7 +12,9 @@ const PostSchema = new Schema({
       createdAt: String,
     },
   ],
+  likesCount: { type: Number, default: 0 },
   sharedCount: { type: Number, default: 0 },
+  commentsCount: { type: Number, default: 0 },
   createdAt: String,
   artist: {
     type: Schema.Types.String,

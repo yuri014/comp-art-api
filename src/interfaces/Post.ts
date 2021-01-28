@@ -16,7 +16,9 @@ export interface IPost extends Document {
       createdAt: string;
     },
   ];
+  likesCount: number;
   sharedCount: number;
+  commentsCount: number;
   createdAt: string;
   artist: string;
 }
