@@ -3,6 +3,7 @@ import { IResolvers } from 'graphql-tools';
 
 import Following from '../../../entities/Following';
 import Post from '../../../entities/Post';
+import { FollowProfile } from '../../../interfaces/Follow';
 import { IPostInput } from '../../../interfaces/Post';
 import checkAbilityToPost from '../../../middlewares/checkAbilityToPost';
 import checkAuth from '../../../middlewares/checkAuth';
@@ -20,7 +21,9 @@ const postResolvers: IResolvers = {
         throw new UserInputError('Não está seguindo nenhum usuário');
       }
 
-      const [artists] = following.map(profile => profile.artistFollowing);
+      const [artists] = following.map(
+        profile => (profile.artistFollowing as unknown) as FollowProfile[],
+      );
 
       if (!artists) {
         throw new UserInputError('Não está seguindo nenhum artista');
@@ -28,7 +31,7 @@ const postResolvers: IResolvers = {
 
       const posts = await Post.find({
         artist: {
-          $in: artists.map(artist => artist.owner),
+          $in: artists.map(artist => ({ name: artist.name, username: artist.owner })),
         },
       })
         .skip(offset)
@@ -72,7 +75,10 @@ const postResolvers: IResolvers = {
         description: post.description,
         body: imageUrl,
         createdAt: new Date().toISOString(),
-        artist: profile.owner,
+        artist: {
+          name: profile.name,
+          username: profile.owner,
+        },
       });
 
       await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });

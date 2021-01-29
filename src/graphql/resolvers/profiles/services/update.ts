@@ -24,6 +24,7 @@ export const follower = async (
           artistFollowers: {
             avatar: profileThatFollows.avatar,
             owner: profileThatFollows.owner,
+            name: profileThatFollows.name,
           },
         },
       },
@@ -40,6 +41,7 @@ export const follower = async (
         userFollowers: {
           avatar: profileThatFollows.avatar,
           owner: profileThatFollows.owner,
+          name: profileThatFollows.name,
         },
       },
     },
@@ -62,6 +64,7 @@ export const following = async (
           artistFollowing: {
             avatar: profileThatIsFollowing.avatar,
             owner: profileThatIsFollowing.owner,
+            name: profileThatIsFollowing.name,
           },
         },
       },
@@ -78,6 +81,7 @@ export const following = async (
         userFollowing: {
           avatar: profileThatIsFollowing.avatar,
           owner: profileThatIsFollowing.owner,
+          name: profileThatIsFollowing.name,
         },
       },
     },
