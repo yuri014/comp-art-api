@@ -17,7 +17,7 @@ const postResolvers: IResolvers = {
 
       const following = await Following.find({ username: user.username });
 
-      if (!following) {
+      if (following.length === 0) {
         throw new UserInputError('Não está seguindo nenhum usuário');
       }
 
@@ -25,7 +25,7 @@ const postResolvers: IResolvers = {
         profile => (profile.artistFollowing as unknown) as FollowProfile[],
       );
 
-      if (!artists) {
+      if (artists.length === 0) {
         throw new UserInputError('Não está seguindo nenhum artista');
       }
 
@@ -37,10 +37,6 @@ const postResolvers: IResolvers = {
         .skip(offset)
         .limit(3)
         .sort({ createdAt: -1 });
-
-      if (!posts) {
-        throw new UserInputError('Não há nenhum post');
-      }
 
       return posts;
     },
