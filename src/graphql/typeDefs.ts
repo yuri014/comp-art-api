@@ -88,6 +88,11 @@ const typeDefs = gql`
     createdAt: String
   }
 
+  type PostArtist {
+    name: String!
+    username: String!
+  }
+
   type Post {
     description: String
     body: String!
@@ -96,7 +101,7 @@ const typeDefs = gql`
     sharedCount: Int!
     commentsCount: Int!
     createdAt: String!
-    artist: String!
+    artist: PostArtist!
   }
 
   input RegisterInput {

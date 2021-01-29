@@ -11,12 +11,14 @@ const FollowingSchema = new Schema({
     {
       avatar: String,
       owner: String,
+      name: String,
     },
   ],
   artistFollowing: [
     {
       avatar: String,
       owner: String,
+      name: String,
     },
   ],
 });

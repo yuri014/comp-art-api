@@ -1,11 +1,10 @@
 import { Document } from 'mongoose';
 
-type FollowProfile = [
-  {
-    avatar: string;
-    owner: string;
-  },
-];
+export type FollowProfile = {
+  avatar: string;
+  owner: string;
+  name: string;
+};
 
 export interface IFollower extends Document {
   _doc: IFollower;

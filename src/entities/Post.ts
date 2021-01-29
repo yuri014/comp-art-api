@@ -17,8 +17,8 @@ const PostSchema = new Schema({
   commentsCount: { type: Number, default: 0 },
   createdAt: String,
   artist: {
-    type: Schema.Types.String,
-    ref: 'artistprofiles',
+    name: { type: String, required: true },
+    username: { type: String, required: true },
   },
 });
 
