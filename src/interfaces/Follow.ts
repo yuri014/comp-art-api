@@ -7,14 +7,14 @@ export type FollowProfile = {
 };
 
 export interface IFollower extends Document {
-  _doc: IFollower;
+  _doc?: IFollower;
   username: string;
   userFollowers?: FollowProfile;
   artistFollowers?: FollowProfile;
 }
 
 export interface IFollowing extends Document {
-  _doc: IFollowing;
+  _doc?: IFollowing;
   username: string;
   userFollowing?: FollowProfile;
   artistFollowing?: FollowProfile;
