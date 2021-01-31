@@ -1,4 +1,3 @@
-import { UserInputError } from 'apollo-server-express';
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Follower from '../../../../entities/Follower';
 import Following from '../../../../entities/Following';
@@ -18,11 +17,6 @@ export const follower = async (
   userWhoIsFollowed: string,
 ) => {
   if (isArtist) {
-    const isAlreadyFollow = await Follower.findOne({ artistFollowers: profileThatFollows });
-
-    if (isAlreadyFollow) {
-      throw new UserInputError('Já é seguido');
-    }
     await ArtistProfile.findOneAndUpdate(
       { owner: profileThatFollows.owner },
       { $inc: { following: 1 } },
@@ -43,12 +37,6 @@ export const follower = async (
       },
       options,
     );
-  }
-
-  const isAlreadyFollow = await Follower.findOne({ userFollowers: profileThatFollows });
-
-  if (isAlreadyFollow) {
-    throw new UserInputError('Já é seguido');
   }
 
   await UserProfile.findOneAndUpdate(
@@ -80,11 +68,6 @@ export const following = async (
   userWhoIsFollowing: string,
 ) => {
   if (isArtist) {
-    const isAlreadyFollow = await Following.findOne({ userFollowing: profileThatIsFollowing });
-
-    if (isAlreadyFollow) {
-      throw new UserInputError('Já é seguido');
-    }
     await ArtistProfile.findOneAndUpdate(
       { owner: profileThatIsFollowing.owner },
       { $inc: { followers: 1 } },
@@ -106,12 +89,6 @@ export const following = async (
       },
       options,
     );
-  }
-
-  const isAlreadyFollow = await Following.findOne({ artistFollowing: profileThatIsFollowing });
-
-  if (isAlreadyFollow) {
-    throw new UserInputError('Já é seguido');
   }
 
   await UserProfile.findOneAndUpdate(
