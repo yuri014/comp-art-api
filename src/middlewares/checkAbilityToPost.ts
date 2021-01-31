@@ -13,6 +13,10 @@ const checkAbilityToPost = async (username: string) => {
     throw new UserInputError('Perfil bloqueado para postar');
   }
 
+  if (profile.postsRemainingToUnblock === 0) {
+    throw new UserInputError('Perfil bloqueado para postar');
+  }
+
   return profile;
 };
 
