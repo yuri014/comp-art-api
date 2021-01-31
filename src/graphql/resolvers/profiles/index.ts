@@ -10,6 +10,7 @@ import profileValidationSchema from '../../../validators/profileSchema';
 import User from '../../../entities/User';
 import findProfile from './services/find';
 import { follower, following } from './services/update';
+import { unfollower, unfollowing } from './services/delete';
 
 const profileResolvers: IResolvers = {
   Query: {
@@ -90,6 +91,32 @@ const profileResolvers: IResolvers = {
       await follower(userWhoFollows.isArtist, authProfile._doc, followedUser.username);
 
       await following(followedUser.isArtist, profileWhoIsFollowed._doc, userWhoFollows.username);
+
+      return true;
+    },
+
+    async unfollow(_, { username }: { username: string }, context) {
+      const userWhoFollows = checkAuth(context);
+
+      const followedUser = await User.findOne({ username });
+
+      if (!followedUser) {
+        throw new UserInputError('Usuário não encontrado', {
+          errors: 'Usuário não encontrado',
+        });
+      }
+
+      const profileWhoIsFollowed = await findProfile(followedUser);
+
+      const authProfile = await findProfile(userWhoFollows);
+
+      if (!authProfile._doc || !profileWhoIsFollowed._doc) {
+        throw new Error();
+      }
+
+      await unfollower(userWhoFollows.isArtist, authProfile._doc, followedUser.username);
+
+      await unfollowing(followedUser.isArtist, profileWhoIsFollowed._doc, userWhoFollows.username);
 
       return true;
     },
