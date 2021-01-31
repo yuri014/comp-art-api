@@ -1,8 +1,10 @@
+import { UserInputError } from 'apollo-server-express';
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Follower from '../../../../entities/Follower';
 import Following from '../../../../entities/Following';
 import UserProfile from '../../../../entities/UserProfile';
-import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
+import { IProfileView } from '../../../../interfaces/Profile';
+import { isAlreadyFollow, isAlreadyFollowing } from '../../../../middlewares/isAlreadyFollow';
 
 const options = {
   upsert: true,
@@ -13,10 +15,19 @@ const options = {
 
 export const follower = async (
   isArtist: boolean,
-  profileThatFollows: IUserProfile | IArtistProfile,
+  profileThatFollows: IProfileView,
   userWhoIsFollowed: string,
 ) => {
+  const { artistFollower, userFollower } = await isAlreadyFollow(
+    profileThatFollows.owner,
+    userWhoIsFollowed,
+  );
+
   if (isArtist) {
+    if (artistFollower) {
+      throw new UserInputError('Já é seguido');
+    }
+
     await ArtistProfile.findOneAndUpdate(
       { owner: profileThatFollows.owner },
       { $inc: { following: 1 } },
@@ -37,6 +48,10 @@ export const follower = async (
       },
       options,
     );
+  }
+
+  if (userFollower) {
+    throw new UserInputError('Já é seguido');
   }
 
   await UserProfile.findOneAndUpdate(
@@ -64,10 +79,18 @@ export const follower = async (
 
 export const following = async (
   isArtist: boolean,
-  profileThatIsFollowing: IUserProfile | IArtistProfile,
+  profileThatIsFollowing: IProfileView,
   userWhoIsFollowing: string,
 ) => {
+  const { artistFollowing, userFollowing } = await isAlreadyFollowing(
+    profileThatIsFollowing.owner,
+    userWhoIsFollowing,
+  );
+
   if (isArtist) {
+    if (artistFollowing) {
+      throw new UserInputError('Já é seguido');
+    }
     await ArtistProfile.findOneAndUpdate(
       { owner: profileThatIsFollowing.owner },
       { $inc: { followers: 1 } },
@@ -89,6 +112,10 @@ export const following = async (
       },
       options,
     );
+  }
+
+  if (userFollowing) {
+    throw new UserInputError('Já é seguido');
   }
 
   await UserProfile.findOneAndUpdate(
