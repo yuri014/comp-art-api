@@ -80,6 +80,8 @@ const typeDefs = gql`
     owner: String!
     links: Links
     isArtist: Boolean!
+    sharedPostCount: Int
+    postCount: Int
   }
 
   type Likes {
@@ -130,6 +132,7 @@ const typeDefs = gql`
     getProfile(username: String!): Profile
     getLoggedProfile: Profile!
     getPosts(offset: Int!): [Post]
+    getProfilePosts(offset: Int!, name: String!, username: String!): [Post]
   }
 
   type Mutation {
