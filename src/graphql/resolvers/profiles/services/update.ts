@@ -17,15 +17,12 @@ export const follower = async (
   profileThatFollows: IUserProfile | IArtistProfile,
   userWhoIsFollowed: string,
 ) => {
-  const isAlreadyFollow = Follower.findOne({
-    $or: [{ artistFollowers: profileThatFollows }, { userFollowers: profileThatFollows }],
-  });
-
-  if (isAlreadyFollow) {
-    throw new UserInputError('Já é seguido');
-  }
-
   if (isArtist) {
+    const isAlreadyFollow = await Follower.findOne({ artistFollowers: profileThatFollows });
+
+    if (isAlreadyFollow) {
+      throw new UserInputError('Já é seguido');
+    }
     await ArtistProfile.findOneAndUpdate(
       { owner: profileThatFollows.owner },
       { $inc: { following: 1 } },
@@ -46,6 +43,12 @@ export const follower = async (
       },
       options,
     );
+  }
+
+  const isAlreadyFollow = await Follower.findOne({ userFollowers: profileThatFollows });
+
+  if (isAlreadyFollow) {
+    throw new UserInputError('Já é seguido');
   }
 
   await UserProfile.findOneAndUpdate(
@@ -76,15 +79,12 @@ export const following = async (
   profileThatIsFollowing: IUserProfile | IArtistProfile,
   userWhoIsFollowing: string,
 ) => {
-  const isAlreadyFollow = Following.findOne({
-    $or: [{ userFollowing: profileThatIsFollowing }, { artistFollowing: profileThatIsFollowing }],
-  });
-
-  if (isAlreadyFollow) {
-    throw new UserInputError('Já é seguido');
-  }
-
   if (isArtist) {
+    const isAlreadyFollow = await Following.findOne({ userFollowing: profileThatIsFollowing });
+
+    if (isAlreadyFollow) {
+      throw new UserInputError('Já é seguido');
+    }
     await ArtistProfile.findOneAndUpdate(
       { owner: profileThatIsFollowing.owner },
       { $inc: { followers: 1 } },
@@ -106,6 +106,12 @@ export const following = async (
       },
       options,
     );
+  }
+
+  const isAlreadyFollow = await Following.findOne({ artistFollowing: profileThatIsFollowing });
+
+  if (isAlreadyFollow) {
+    throw new UserInputError('Já é seguido');
   }
 
   await UserProfile.findOneAndUpdate(
