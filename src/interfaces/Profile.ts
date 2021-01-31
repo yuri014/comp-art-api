@@ -1,6 +1,12 @@
 import { Document } from 'mongoose';
 import { IUploadImage } from './Upload';
 
+export interface IProfileView {
+  name: string;
+  avatar: string;
+  owner: string;
+}
+
 export interface IUserProfile extends Document {
   _doc?: IUserProfile;
   name: string;
