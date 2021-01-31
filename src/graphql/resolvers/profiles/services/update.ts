@@ -1,5 +1,8 @@
+import { UserInputError } from 'apollo-server-express';
+import ArtistProfile from '../../../../entities/ArtistProfile';
 import Follower from '../../../../entities/Follower';
 import Following from '../../../../entities/Following';
+import UserProfile from '../../../../entities/UserProfile';
 import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 
 const options = {
@@ -14,7 +17,20 @@ export const follower = async (
   profileThatFollows: IUserProfile | IArtistProfile,
   userWhoIsFollowed: string,
 ) => {
+  const isAlreadyFollow = Follower.findOne({
+    $or: [{ artistFollowers: profileThatFollows }, { userFollowers: profileThatFollows }],
+  });
+
+  if (isAlreadyFollow) {
+    throw new UserInputError('Já é seguido');
+  }
+
   if (isArtist) {
+    await ArtistProfile.findOneAndUpdate(
+      { owner: profileThatFollows.owner },
+      { $inc: { following: 1 } },
+      { useFindAndModify: false },
+    );
     return Follower.findOneAndUpdate(
       {
         username: userWhoIsFollowed,
@@ -31,6 +47,12 @@ export const follower = async (
       options,
     );
   }
+
+  await UserProfile.findOneAndUpdate(
+    { owner: profileThatFollows.owner },
+    { $inc: { following: 1 } },
+    { useFindAndModify: false },
+  );
 
   return Follower.findOneAndUpdate(
     {
@@ -54,7 +76,21 @@ export const following = async (
   profileThatIsFollowing: IUserProfile | IArtistProfile,
   userWhoIsFollowing: string,
 ) => {
+  const isAlreadyFollow = Following.findOne({
+    $or: [{ userFollowing: profileThatIsFollowing }, { artistFollowing: profileThatIsFollowing }],
+  });
+
+  if (isAlreadyFollow) {
+    throw new UserInputError('Já é seguido');
+  }
+
   if (isArtist) {
+    await ArtistProfile.findOneAndUpdate(
+      { owner: profileThatIsFollowing.owner },
+      { $inc: { followers: 1 } },
+      { useFindAndModify: false },
+    );
+
     return Following.findOneAndUpdate(
       {
         username: userWhoIsFollowing,
@@ -71,6 +107,12 @@ export const following = async (
       options,
     );
   }
+
+  await UserProfile.findOneAndUpdate(
+    { owner: profileThatIsFollowing.owner },
+    { $inc: { followers: 1 } },
+    { useFindAndModify: false },
+  );
 
   return Following.findOneAndUpdate(
     {
