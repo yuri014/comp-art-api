@@ -40,6 +40,22 @@ const postResolvers: IResolvers = {
 
       return posts;
     },
+    async getProfilePosts(
+      _,
+      { offset, name, username }: { offset: number; name: string; username: string },
+    ) {
+      const posts = await Post.find({
+        artist: {
+          name,
+          username,
+        },
+      })
+        .skip(offset)
+        .limit(3)
+        .sort({ createdAt: -1 });
+
+      return posts;
+    },
   },
   Mutation: {
     async createPost(_, { postInput }: { postInput: IPostInput }, context) {
@@ -80,6 +96,8 @@ const postResolvers: IResolvers = {
       await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
 
       await newProfile.save();
+
+      await profile.updateOne({ $inc: { postCount: 1 } });
 
       return true;
     },
