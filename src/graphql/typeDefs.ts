@@ -143,6 +143,7 @@ const typeDefs = gql`
     recoverPassword(token: String!, newPassword: String!): String!
     createProfile(createProfileInput: CreateProfileInput!): Boolean
     follow(username: String!): Boolean
+    unfollow(username: String!): Boolean
     createPost(postInput: CreatePostInput!): Boolean
   }
 `;
