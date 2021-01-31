@@ -3,6 +3,7 @@ import { IResolvers } from 'graphql-tools';
 
 import Following from '../../../entities/Following';
 import Post from '../../../entities/Post';
+import ArtistProfile from '../../../entities/ArtistProfile';
 import { FollowProfile } from '../../../interfaces/Follow';
 import { IPostInput } from '../../../interfaces/Post';
 import checkAbilityToPost from '../../../middlewares/checkAbilityToPost';
@@ -40,21 +41,23 @@ const postResolvers: IResolvers = {
 
       return posts;
     },
-    async getProfilePosts(
-      _,
-      { offset, name, username }: { offset: number; name: string; username: string },
-    ) {
-      const posts = await Post.find({
-        artist: {
-          name,
-          username,
-        },
-      })
-        .skip(offset)
-        .limit(3)
-        .sort({ createdAt: -1 });
+    async getProfilePosts(_, { offset, username }: { offset: number; username: string }) {
+      const profile = await ArtistProfile.findOne({ owner: username });
 
-      return posts;
+      if (profile) {
+        const posts = await Post.find({
+          artist: {
+            name: profile.name,
+            username,
+          },
+        })
+          .skip(offset)
+          .limit(3)
+          .sort({ createdAt: -1 });
+
+        return posts;
+      }
+      return [];
     },
   },
   Mutation: {

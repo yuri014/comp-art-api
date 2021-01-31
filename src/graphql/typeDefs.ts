@@ -132,7 +132,7 @@ const typeDefs = gql`
     getProfile(username: String!): Profile
     getLoggedProfile: Profile!
     getPosts(offset: Int!): [Post]
-    getProfilePosts(offset: Int!, name: String!, username: String!): [Post]
+    getProfilePosts(offset: Int!, username: String!): [Post]
   }
 
   type Mutation {
