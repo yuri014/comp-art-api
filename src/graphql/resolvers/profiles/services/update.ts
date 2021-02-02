@@ -24,7 +24,7 @@ export const follower = async (
   );
 
   if (isArtist) {
-    if (artistFollower) {
+    if (artistFollower && artistFollower.artistFollowers.length > 0) {
       throw new UserInputError('Já é seguido');
     }
 
@@ -40,6 +40,7 @@ export const follower = async (
       {
         $set: {
           artistFollowers: {
+            // @ts-ignore
             avatar: profileThatFollows.avatar,
             owner: profileThatFollows.owner,
             name: profileThatFollows.name,
@@ -50,7 +51,7 @@ export const follower = async (
     );
   }
 
-  if (userFollower) {
+  if (userFollower && userFollower.userFollowers.length > 0) {
     throw new UserInputError('Já é seguido');
   }
 
@@ -67,6 +68,7 @@ export const follower = async (
     {
       $set: {
         userFollowers: {
+          // @ts-ignore
           avatar: profileThatFollows.avatar,
           owner: profileThatFollows.owner,
           name: profileThatFollows.name,
@@ -88,7 +90,7 @@ export const following = async (
   );
 
   if (isArtist) {
-    if (artistFollowing) {
+    if (artistFollowing && artistFollowing.artistFollowing.length > 0) {
       throw new UserInputError('Já é seguido');
     }
     await ArtistProfile.findOneAndUpdate(
@@ -104,6 +106,7 @@ export const following = async (
       {
         $set: {
           artistFollowing: {
+            // @ts-ignore
             avatar: profileThatIsFollowing.avatar,
             owner: profileThatIsFollowing.owner,
             name: profileThatIsFollowing.name,
@@ -113,8 +116,7 @@ export const following = async (
       options,
     );
   }
-
-  if (userFollowing) {
+  if (userFollowing && userFollowing.userFollowing.length > 0) {
     throw new UserInputError('Já é seguido');
   }
 
@@ -131,6 +133,7 @@ export const following = async (
     {
       $set: {
         userFollowing: {
+          // @ts-ignore
           avatar: profileThatIsFollowing.avatar,
           owner: profileThatIsFollowing.owner,
           name: profileThatIsFollowing.name,
