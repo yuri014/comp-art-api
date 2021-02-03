@@ -96,6 +96,7 @@ const typeDefs = gql`
   }
 
   type Post {
+    _id: String!
     description: String
     body: String!
     likes: Likes
