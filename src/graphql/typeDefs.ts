@@ -106,6 +106,7 @@ const typeDefs = gql`
     createdAt: String!
     artist: PostArtist!
     isAudio: Boolean!
+    avatar: String!
   }
 
   input RegisterInput {
