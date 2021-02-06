@@ -8,7 +8,7 @@ import { FollowProfile } from '../../../interfaces/Follow';
 import { IPostInput } from '../../../interfaces/Post';
 import checkAbilityToPost from '../../../middlewares/checkAbilityToPost';
 import checkAuth from '../../../middlewares/checkAuth';
-import uploadImage from '../../../utils/uploadImage';
+import { uploadAudio, uploadImage } from '../../../utils/upload';
 import postValidationSchema from '../../../validators/postSchema';
 
 const postResolvers: IResolvers = {
@@ -70,7 +70,11 @@ const postResolvers: IResolvers = {
 
       const profile = await checkAbilityToPost(user.username);
 
-      const post = { description: postInput.description.trim(), body: postInput.body };
+      const post = {
+        description: postInput.description.trim(),
+        body: postInput.body,
+        isAudio: postInput.isAudio,
+      };
 
       const errors = postValidationSchema.validate({
         description: post.description,
@@ -84,21 +88,30 @@ const postResolvers: IResolvers = {
 
       const { file } = await post.body;
 
-      const imageUrl = await uploadImage(file.createReadStream, file.filename);
+      const media = async () => {
+        if (post.isAudio) {
+          return uploadAudio(file.createReadStream, file.filename);
+        }
 
-      const newProfile = new Post({
+        return uploadImage(file.createReadStream, file.filename);
+      };
+
+      const fileUrl = await media();
+
+      const newPost = new Post({
         description: post.description,
-        body: imageUrl,
+        body: fileUrl,
         createdAt: new Date().toISOString(),
         artist: {
           name: profile.name,
           username: profile.owner,
         },
+        isAudio: post.isAudio,
       });
 
-      await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
+      // await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
 
-      await newProfile.save();
+      await newPost.save();
 
       await profile.updateOne({ $inc: { postCount: 1 } });
 
