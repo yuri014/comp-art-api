@@ -1,14 +1,16 @@
 import { Document } from 'mongoose';
-import { IUploadImage } from './Upload';
+import { IUpload } from './Upload';
 
 export interface IPostInput {
   description: string;
-  body: Promise<IUploadImage>;
+  body: Promise<IUpload>;
+  isAudio: boolean;
 }
 
 export interface IPost extends Document {
   description: string;
   body: string;
+  isAudio: boolean;
   likes: [
     {
       username: string;

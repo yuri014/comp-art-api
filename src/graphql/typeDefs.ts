@@ -127,6 +127,7 @@ const typeDefs = gql`
   input CreatePostInput {
     description: String!
     body: Upload!
+    isAudio: Boolean!
   }
 
   type Query {

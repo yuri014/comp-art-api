@@ -5,6 +5,7 @@ import { IPost } from '../interfaces/Post';
 const PostSchema = new Schema({
   description: { type: String },
   body: { type: String, required: true },
+  isAudio: { type: Boolean, required: true, default: false },
   likes: [
     {
       username: String,
