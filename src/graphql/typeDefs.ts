@@ -105,6 +105,7 @@ const typeDefs = gql`
     commentsCount: Int!
     createdAt: String!
     artist: PostArtist!
+    isAudio: Boolean!
   }
 
   input RegisterInput {
