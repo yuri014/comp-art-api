@@ -16,6 +16,7 @@ const PostSchema = new Schema({
   likesCount: { type: Number, default: 0 },
   sharedCount: { type: Number, default: 0 },
   commentsCount: { type: Number, default: 0 },
+  avatar: { type: String },
   createdAt: String,
   artist: {
     name: { type: String, required: true },

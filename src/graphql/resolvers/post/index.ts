@@ -107,6 +107,7 @@ const postResolvers: IResolvers = {
           username: profile.owner,
         },
         isAudio: post.isAudio,
+        avatar: profile.avatar,
       });
 
       // await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
