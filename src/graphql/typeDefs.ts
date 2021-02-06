@@ -150,6 +150,7 @@ const typeDefs = gql`
     follow(username: String!): Boolean
     unfollow(username: String!): Boolean
     createPost(postInput: CreatePostInput!): Boolean
+    favorite(id: ID!): Boolean
   }
 `;
 export default typeDefs;

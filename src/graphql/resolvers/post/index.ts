@@ -1,5 +1,6 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { IResolvers } from 'graphql-tools';
+import { ObjectId } from 'mongoose';
 
 import Following from '../../../entities/Following';
 import Post from '../../../entities/Post';
@@ -10,6 +11,7 @@ import checkAbilityToPost from '../../../middlewares/checkAbilityToPost';
 import checkAuth from '../../../middlewares/checkAuth';
 import { uploadAudio, uploadImage } from '../../../utils/upload';
 import postValidationSchema from '../../../validators/postSchema';
+import findProfile from '../profiles/services/find';
 
 const postResolvers: IResolvers = {
   Query: {
@@ -115,6 +117,50 @@ const postResolvers: IResolvers = {
       await newPost.save();
 
       await profile.updateOne({ $inc: { postCount: 1 } });
+
+      return true;
+    },
+
+    async favorite(_, { id }: { id: ObjectId }, context) {
+      const user = checkAuth(context);
+
+      const profile = await findProfile(user);
+
+      const profileDoc = profile._doc;
+
+      if (!profileDoc) {
+        throw new UserInputError('Não há perfil');
+      }
+
+      const post = await Post.findById(id);
+
+      if (!post) {
+        throw new UserInputError('Não há post');
+      }
+
+      const hasAlreadyLike = post.likes.find(
+        profileLike => profileLike.username === profileDoc.owner,
+      );
+
+      if (hasAlreadyLike) {
+        throw new UserInputError('Já curtiu esse post');
+      }
+
+      post.updateOne(
+        {
+          $push: {
+            likes: {
+              avatar: profileDoc.avatar,
+              createdAt: new Date().toISOString(),
+              username: profileDoc.owner,
+            },
+          },
+          $inc: {
+            likesCount: 1,
+          },
+        },
+        { useFindAndModify: false },
+      );
 
       return true;
     },
