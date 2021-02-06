@@ -94,6 +94,12 @@ const profileResolvers: IResolvers = {
         });
       }
 
+      if (username === userWhoFollows.username) {
+        throw new UserInputError('Usuário não pode se seguir', {
+          errors: 'Usuário não pode se seguir',
+        });
+      }
+
       const profileWhoIsFollowed = await findProfile(followedUser);
 
       const authProfile = await findProfile(userWhoFollows);
