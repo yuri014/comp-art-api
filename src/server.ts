@@ -21,7 +21,7 @@ const app = express();
 app.use(express.static('public'));
 app.use(
   graphqlUploadExpress({
-    maxFileSize: 1000000,
+    maxFileSize: 3000000,
     maxFiles: 1,
   }),
 );
