@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { IUploadImage } from './Upload';
+import { IUpload } from './Upload';
 
 export interface IProfileView {
   name: string;
@@ -54,8 +54,8 @@ export interface IArtistProfile extends Document {
 
 export interface ICreateProfile {
   name: string;
-  avatar: Promise<IUploadImage>;
-  coverImage: Promise<IUploadImage>;
+  avatar: Promise<IUpload>;
+  coverImage: Promise<IUpload>;
   bio: string;
   hashtags: Array<string>;
   links: {

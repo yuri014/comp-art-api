@@ -1,6 +1,6 @@
 import { ReadStream } from 'fs-extra';
 
-export type IUploadImage = {
+export type IUpload = {
   file: {
     filename?: string;
     mimetype?: string;
