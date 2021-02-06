@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 
 import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
-import uploadImage from '../../../../utils/uploadImage';
+import { uploadImage } from '../../../../utils/upload';
 
 const createProfile = async (
   user: IToken,
