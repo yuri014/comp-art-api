@@ -4,7 +4,7 @@ import Post from '../../../entities/Post';
 import ArtistProfile from '../../../entities/ArtistProfile';
 import { IPostInput } from '../../../interfaces/Post';
 import checkAuth from '../../../middlewares/checkAuth';
-import favoritePost from './services/update';
+import likePost from './services/update';
 import createNewPost from './services/create';
 import { getTimelinePosts } from './services/find';
 
@@ -41,10 +41,10 @@ const postResolvers: IResolvers = {
       return createNewPost(postInput, user);
     },
 
-    async favorite(_, { id }: { id: string }, context) {
+    async like(_, { id }: { id: string }, context) {
       const user = checkAuth(context);
 
-      return favoritePost(id, user);
+      return likePost(id, user);
     },
   },
 };

@@ -3,7 +3,7 @@ import Post from '../../../../entities/Post';
 import { IToken } from '../../../../interfaces/Token';
 import findProfile from '../../profiles/services/find';
 
-const favoritePost = async (id: string, user: IToken) => {
+const likePost = async (id: string, user: IToken) => {
   const profile = await findProfile(user);
 
   const profileDoc = profile._doc;
@@ -47,4 +47,4 @@ const favoritePost = async (id: string, user: IToken) => {
   return false;
 };
 
-export default favoritePost;
+export default likePost;
