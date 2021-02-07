@@ -107,6 +107,7 @@ const typeDefs = gql`
     artist: PostArtist!
     isAudio: Boolean!
     avatar: String!
+    isLiked: Boolean
   }
 
   input RegisterInput {
@@ -132,25 +133,10 @@ const typeDefs = gql`
     isAudio: Boolean!
   }
 
-  type FeedPosts {
-    _id: String!
-    description: String
-    body: String!
-    likes: Likes
-    likesCount: Int!
-    sharedCount: Int!
-    commentsCount: Int!
-    createdAt: String!
-    artist: PostArtist!
-    isAudio: Boolean!
-    avatar: String!
-    isLiked: Boolean
-  }
-
   type Query {
     getProfile(username: String!): Profile
     getLoggedProfile: Profile!
-    getPosts(offset: Int!): [FeedPosts]
+    getPosts(offset: Int!): [Post]
     getProfilePosts(offset: Int!, username: String!): [Post]
     getIsFollowing(username: String!): Boolean
   }
