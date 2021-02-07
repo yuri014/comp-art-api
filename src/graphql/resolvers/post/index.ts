@@ -7,6 +7,7 @@ import checkAuth from '../../../middlewares/checkAuth';
 import likePost from './services/update';
 import createNewPost from './services/create';
 import { getTimelinePosts } from './services/find';
+import dislikePost from './services/delete';
 
 const postResolvers: IResolvers = {
   Query: {
@@ -45,6 +46,12 @@ const postResolvers: IResolvers = {
       const user = checkAuth(context);
 
       return likePost(id, user);
+    },
+
+    async dislike(_, { id }: { id: string }, context) {
+      const user = checkAuth(context);
+
+      return dislikePost(id, user);
     },
   },
 };

@@ -166,6 +166,7 @@ const typeDefs = gql`
     unfollow(username: String!): Boolean
     createPost(postInput: CreatePostInput!): Boolean
     like(id: ID!): Boolean
+    dislike(id: ID!): Boolean
   }
 `;
 export default typeDefs;
