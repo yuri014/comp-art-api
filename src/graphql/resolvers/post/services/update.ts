@@ -1,4 +1,5 @@
 import { UserInputError } from 'apollo-server-express';
+
 import Post from '../../../../entities/Post';
 import { IToken } from '../../../../interfaces/Token';
 import findProfile from '../../profiles/services/find';
@@ -19,13 +20,12 @@ const likePost = async (id: string, user: IToken) => {
   }
 
   const hasAlreadyLike = post.likes.find(profileLike => profileLike.username === profileDoc.owner);
-
   if (hasAlreadyLike) {
     throw new UserInputError('Já curtiu esse post');
   }
 
   try {
-    post.updateOne(
+    await post.updateOne(
       {
         $push: {
           likes: {
@@ -44,7 +44,7 @@ const likePost = async (id: string, user: IToken) => {
     throw new Error(error);
   }
 
-  return false;
+  return true;
 };
 
 export default likePost;
