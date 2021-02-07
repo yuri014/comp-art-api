@@ -30,5 +30,12 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     .limit(3)
     .sort({ createdAt: -1 });
 
+  const likes = posts.map(post => post.likes.find(like => like.username === user.username));
+
+  if (likes.length > 0) {
+    const postsView = posts.map((post, index) => ({ ...post._doc, isLiked: !!likes[index] }));
+    return postsView;
+  }
+
   return posts;
 };

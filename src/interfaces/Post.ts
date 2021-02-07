@@ -8,6 +8,7 @@ export interface IPostInput {
 }
 
 export interface IPost extends Document {
+  _doc?: IPost;
   description: string;
   body: string;
   isAudio: boolean;
