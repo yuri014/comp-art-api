@@ -8,7 +8,7 @@ import checkAuth from '../../../middlewares/checkAuth';
 import likePost from './services/update';
 import createNewPost from './services/create';
 import { getTimelinePosts } from './services/find';
-import dislikePost from './services/delete';
+import { deletePostService, dislikePost } from './services/delete';
 import { IToken } from '../../../interfaces/Token';
 
 const postResolvers: IResolvers = {
@@ -72,6 +72,12 @@ const postResolvers: IResolvers = {
       const user = checkAuth(context);
 
       return dislikePost(id, user);
+    },
+
+    async deletePost(_, { id }: { id: string }, context) {
+      const user = checkAuth(context);
+
+      return deletePostService(id, user);
     },
   },
 };
