@@ -4,7 +4,12 @@ import { IPostInput } from '../../../interfaces/Post';
 import checkAuth from '../../../middlewares/checkAuth';
 import likePost from './services/update';
 import createNewPost from './services/create';
-import { getPostService, getProfilePostsService, getTimelinePosts } from './services/find';
+import {
+  getPostService,
+  getProfilePostsService,
+  getTimelinePosts,
+  getExplorePostsService,
+} from './services/find';
 import { deletePostService, dislikePost } from './services/delete';
 
 interface Context {
@@ -17,6 +22,11 @@ interface Context {
 
 const getToken = (context: Context) => {
   const authHeader = context.req.headers.authorization;
+
+  if (!authHeader) {
+    return '';
+  }
+
   const token = authHeader.split('Bearer ')[1];
   return token;
 };
@@ -37,6 +47,11 @@ const postResolvers: IResolvers = {
       const token = getToken(context);
 
       return getProfilePostsService(token, username, offset);
+    },
+    async getExplorePosts(_, { offset }: { offset: number }, context) {
+      const token = getToken(context);
+
+      return getExplorePostsService(offset, token);
     },
   },
   Mutation: {

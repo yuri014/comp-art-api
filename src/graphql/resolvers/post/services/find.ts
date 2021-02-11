@@ -6,6 +6,7 @@ import Post from '../../../../entities/Post';
 import { FollowProfile } from '../../../../interfaces/Follow';
 import { IToken } from '../../../../interfaces/Token';
 import getUser from '../../../../utils/getUser';
+import findProfile from '../../profiles/services/find';
 
 export const getPostService = async (id: string, token: string) => {
   const user = getUser(token);
@@ -79,4 +80,31 @@ export const getProfilePostsService = async (token: string, username: string, of
     return posts;
   }
   return [];
+};
+
+export const getExplorePostsService = async (offset: number, token: string) => {
+  const user = getUser(token) as IToken;
+
+  if (user.username) {
+    const profile = await findProfile(user);
+
+    const posts = await Post.find({
+      likes: {
+        $not: {
+          $elemMatch: {
+            username: profile.owner,
+          },
+        },
+      },
+    })
+      .skip(offset)
+      .limit(3)
+      .sort({ createdAt: -1 });
+
+    return posts;
+  }
+
+  const posts = await Post.find().skip(offset).limit(3).sort({ createdAt: -1 });
+
+  return posts;
 };
