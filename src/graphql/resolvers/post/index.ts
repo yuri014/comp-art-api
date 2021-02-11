@@ -4,12 +4,15 @@ import { IPostInput } from '../../../interfaces/Post';
 import checkAuth from '../../../middlewares/checkAuth';
 import likePost from './services/update';
 import createNewPost from './services/create';
-import { getProfilePostsService, getTimelinePosts } from './services/find';
+import { getPostService, getProfilePostsService, getTimelinePosts } from './services/find';
 import { deletePostService, dislikePost } from './services/delete';
 
 const postResolvers: IResolvers = {
   Query: {
-    async getPosts(parent, { offset }: { offset: number }, context) {
+    async getPost(_, { id }: { id: string }) {
+      return getPostService(id);
+    },
+    async getPosts(_, { offset }: { offset: number }, context) {
       const user = checkAuth(context);
 
       return getTimelinePosts(offset, user);

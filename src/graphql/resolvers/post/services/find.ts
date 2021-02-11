@@ -7,6 +7,16 @@ import Post from '../../../../entities/Post';
 import { FollowProfile } from '../../../../interfaces/Follow';
 import { IToken } from '../../../../interfaces/Token';
 
+export const getPostService = async (id: string) => {
+  const post = await Post.findById(id);
+
+  if (post) {
+    return post._doc;
+  }
+
+  return {};
+};
+
 export const getTimelinePosts = async (offset: number, user: IToken) => {
   const following = await Following.find({ username: user.username });
 

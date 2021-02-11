@@ -136,7 +136,7 @@ const typeDefs = gql`
   type Query {
     getProfile(username: String!): Profile
     getLoggedProfile: Profile!
-    getPost(id: ID!): Post!
+    getPost(id: ID!): Post
     getPosts(offset: Int!): [Post]
     getProfilePosts(offset: Int!, username: String!): [Post]
     getIsFollowing(username: String!): Boolean
