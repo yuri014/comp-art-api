@@ -1,17 +1,20 @@
 import { UserInputError } from 'apollo-server-express';
-import jwt from 'jsonwebtoken';
 
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Following from '../../../../entities/Following';
 import Post from '../../../../entities/Post';
 import { FollowProfile } from '../../../../interfaces/Follow';
 import { IToken } from '../../../../interfaces/Token';
+import getUser from '../../../../utils/getUser';
 
-export const getPostService = async (id: string) => {
+export const getPostService = async (id: string, token: string) => {
+  const user = getUser(token);
   const post = await Post.findById(id);
 
   if (post) {
-    return post._doc;
+    const isLiked = post.likes.find(like => like.username === user.username);
+
+    return { ...post._doc, isLiked: !!isLiked };
   }
 
   return {};
@@ -52,15 +55,7 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
 };
 
 export const getProfilePostsService = async (token: string, username: string, offset: number) => {
-  const getUser = () => {
-    if (token) {
-      return jwt.verify(token, process.env.SECRET as string) as IToken;
-    }
-    return {
-      username: '',
-    };
-  };
-  const user = getUser();
+  const user = getUser(token);
   const profile = await ArtistProfile.findOne({ owner: username });
 
   if (profile) {
