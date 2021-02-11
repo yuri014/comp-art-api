@@ -7,10 +7,26 @@ import createNewPost from './services/create';
 import { getPostService, getProfilePostsService, getTimelinePosts } from './services/find';
 import { deletePostService, dislikePost } from './services/delete';
 
+interface Context {
+  req: {
+    headers: {
+      authorization: string;
+    };
+  };
+}
+
+const getToken = (context: Context) => {
+  const authHeader = context.req.headers.authorization;
+  const token = authHeader.split('Bearer ')[1];
+  return token;
+};
+
 const postResolvers: IResolvers = {
   Query: {
-    async getPost(_, { id }: { id: string }) {
-      return getPostService(id);
+    async getPost(_, { id }: { id: string }, context) {
+      const token = getToken(context);
+
+      return getPostService(id, token);
     },
     async getPosts(_, { offset }: { offset: number }, context) {
       const user = checkAuth(context);
@@ -18,8 +34,7 @@ const postResolvers: IResolvers = {
       return getTimelinePosts(offset, user);
     },
     async getProfilePosts(_, { offset, username }: { offset: number; username: string }, context) {
-      const authHeader = context.req.headers.authorization;
-      const token = authHeader.split('Bearer ')[1];
+      const token = getToken(context);
 
       return getProfilePostsService(token, username, offset);
     },
