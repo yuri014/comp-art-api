@@ -140,7 +140,7 @@ const typeDefs = gql`
     getPosts(offset: Int!): [Post]
     getProfilePosts(offset: Int!, username: String!): [Post]
     getIsFollowing(username: String!): Boolean
-    getExplorePosts: [Post]
+    getExplorePosts(offset: Int!): [Post]
   }
 
   type Mutation {
