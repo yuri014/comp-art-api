@@ -1,4 +1,5 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
+import ArtistProfile from '../../../../entities/ArtistProfile';
 import Post from '../../../../entities/Post';
 import { IPostInput } from '../../../../interfaces/Post';
 import { IToken } from '../../../../interfaces/Token';
@@ -58,10 +59,15 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
 
   await newPost.save();
 
-  const updatedProfile = await profile.updateOne(
+  const updatedProfile = await ArtistProfile.findOneAndUpdate(
+    { owner: profile.owner },
     { $inc: { postCount: 1, xp: 250 } },
-    { new: true },
+    { useFindAndModify: false, new: true },
   );
+
+  if (!updatedProfile) {
+    throw new Error();
+  }
 
   return levelUp(updatedProfile);
 };

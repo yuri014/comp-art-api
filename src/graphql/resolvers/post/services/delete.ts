@@ -101,6 +101,7 @@ export const deletePostService = async (id: string, user: IToken) => {
     {
       $inc: {
         xp: -250,
+        postCount: -1,
       },
     },
     options,
