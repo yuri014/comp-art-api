@@ -40,7 +40,7 @@ const profileResolvers: IResolvers = {
 
       const targetXp = 1000 * profileView.level * 1.25;
 
-      profileView.xp = Math.round((profileView.xp / targetXp) * 100);
+      profileView.xp = Math.floor((profileView.xp / targetXp) * 100);
 
       return { ...profileView, isArtist: profile.isArtist };
     },
