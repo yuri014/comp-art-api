@@ -96,5 +96,19 @@ export const deletePostService = async (id: string, user: IToken) => {
     throw new Error(error);
   }
 
-  return true;
+  const updatedProfile = await ArtistProfile.findOneAndUpdate(
+    { owner: user.username },
+    {
+      $inc: {
+        xp: -250,
+      },
+    },
+    options,
+  );
+
+  if (!updatedProfile) {
+    throw Error();
+  }
+
+  return levelDown(updatedProfile);
 };

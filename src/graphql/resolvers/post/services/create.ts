@@ -3,6 +3,7 @@ import Post from '../../../../entities/Post';
 import { IPostInput } from '../../../../interfaces/Post';
 import { IToken } from '../../../../interfaces/Token';
 import checkAbilityToPost from '../../../../middlewares/checkAbilityToPost';
+import levelUp from '../../../../utils/levelUp';
 import { uploadAudio, uploadImage } from '../../../../utils/upload';
 import postValidationSchema from '../../../../validators/postSchema';
 
@@ -57,9 +58,12 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
 
   await newPost.save();
 
-  await profile.updateOne({ $inc: { postCount: 1 } });
+  const updatedProfile = await profile.updateOne(
+    { $inc: { postCount: 1, xp: 250 } },
+    { new: true },
+  );
 
-  return true;
+  return levelUp(updatedProfile);
 };
 
 export default createNewPost;
