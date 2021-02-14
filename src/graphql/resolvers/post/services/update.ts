@@ -1,8 +1,16 @@
 import { UserInputError } from 'apollo-server-express';
+import ArtistProfile from '../../../../entities/ArtistProfile';
 
 import Post from '../../../../entities/Post';
+import UserProfile from '../../../../entities/UserProfile';
 import { IToken } from '../../../../interfaces/Token';
+import levelUp from '../../../../utils/levelUp';
 import findProfile from '../../profiles/services/find';
+
+const options = {
+  new: true,
+  useFindAndModify: false,
+};
 
 const likePost = async (id: string, user: IToken) => {
   const profile = await findProfile(user);
@@ -44,7 +52,39 @@ const likePost = async (id: string, user: IToken) => {
     throw new Error(error);
   }
 
-  return true;
+  if (user.isArtist) {
+    const updatedProfile = await ArtistProfile.findOneAndUpdate(
+      { owner: user.username },
+      {
+        $inc: {
+          xp: 75,
+        },
+      },
+      options,
+    );
+
+    if (!updatedProfile) {
+      throw Error();
+    }
+
+    return levelUp(updatedProfile);
+  }
+
+  const updatedProfile = await UserProfile.findOneAndUpdate(
+    { owner: user.username },
+    {
+      $inc: {
+        xp: 75,
+      },
+    },
+    options,
+  );
+
+  if (!updatedProfile) {
+    throw Error();
+  }
+
+  return levelUp(updatedProfile);
 };
 
 export default likePost;
