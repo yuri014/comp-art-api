@@ -4,6 +4,7 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 import Post from '../../../../entities/Post';
 import UserProfile from '../../../../entities/UserProfile';
 import { IToken } from '../../../../interfaces/Token';
+import levelDown from '../../../../utils/levelDown';
 
 const options = {
   new: true,
@@ -44,7 +45,7 @@ export const dislikePost = async (id: string, user: IToken) => {
   }
 
   if (user.isArtist) {
-    await ArtistProfile.findOneAndUpdate(
+    const updatedProfile = await ArtistProfile.findOneAndUpdate(
       { owner: user.username },
       {
         $inc: {
@@ -54,10 +55,14 @@ export const dislikePost = async (id: string, user: IToken) => {
       options,
     );
 
-    return true;
+    if (!updatedProfile) {
+      throw Error();
+    }
+
+    return levelDown(updatedProfile);
   }
 
-  await UserProfile.findOneAndUpdate(
+  const updatedProfile = await UserProfile.findOneAndUpdate(
     { owner: user.username },
     {
       $inc: {
@@ -67,7 +72,11 @@ export const dislikePost = async (id: string, user: IToken) => {
     options,
   );
 
-  return true;
+  if (!updatedProfile) {
+    throw Error();
+  }
+
+  return levelDown(updatedProfile);
 };
 
 export const deletePostService = async (id: string, user: IToken) => {
