@@ -1,7 +1,14 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
+import ArtistProfile from '../../../../entities/ArtistProfile';
 
 import Post from '../../../../entities/Post';
+import UserProfile from '../../../../entities/UserProfile';
 import { IToken } from '../../../../interfaces/Token';
+
+const options = {
+  new: true,
+  useFindAndModify: false,
+};
 
 export const dislikePost = async (id: string, user: IToken) => {
   const post = await Post.findById(id);
@@ -35,6 +42,30 @@ export const dislikePost = async (id: string, user: IToken) => {
   } catch (error) {
     throw new Error(error);
   }
+
+  if (user.isArtist) {
+    await ArtistProfile.findOneAndUpdate(
+      { owner: user.username },
+      {
+        $inc: {
+          xp: -75,
+        },
+      },
+      options,
+    );
+
+    return true;
+  }
+
+  await UserProfile.findOneAndUpdate(
+    { owner: user.username },
+    {
+      $inc: {
+        xp: -75,
+      },
+    },
+    options,
+  );
 
   return true;
 };
