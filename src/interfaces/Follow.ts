@@ -1,21 +1,16 @@
 import { Document } from 'mongoose';
-
-export interface FollowProfile {
-  avatar: string;
-  owner: string;
-  name: string;
-}
+import { IArtistProfile, IUserProfile } from './Profile';
 
 export interface IFollower extends Document {
   _doc?: IFollower;
   username: string;
-  userFollowers: FollowProfile[];
-  artistFollowers: FollowProfile[];
+  userFollowers: IUserProfile[];
+  artistFollowers: IArtistProfile[];
 }
 
 export interface IFollowing extends Document {
   _doc?: IFollowing;
   username: string;
-  userFollowing: FollowProfile[];
-  artistFollowing: FollowProfile[];
+  userFollowing: IUserProfile[];
+  artistFollowing: IArtistProfile[];
 }
