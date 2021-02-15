@@ -47,12 +47,9 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
     description: post.description,
     body: fileUrl,
     createdAt: new Date().toISOString(),
-    artist: {
-      name: profile.name,
-      username: profile.owner,
-    },
     isAudio: post.isAudio,
     avatar: profile.avatar,
+    artist: profile._id,
   });
 
   // await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
