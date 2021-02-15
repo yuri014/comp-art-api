@@ -46,7 +46,7 @@ export const dislikePost = async (id: string, user: IToken) => {
   }
 
   if (user.isArtist) {
-    const updatedProfile = await ArtistProfile.findOne({ owner: user.username }, options);
+    const updatedProfile = await ArtistProfile.findOne({ owner: user.username });
 
     if (!updatedProfile) {
       throw Error();
@@ -55,7 +55,7 @@ export const dislikePost = async (id: string, user: IToken) => {
     return levelDown(updatedProfile, 75);
   }
 
-  const updatedProfile = await UserProfile.findOne({ owner: user.username }, options);
+  const updatedProfile = await UserProfile.findOne({ owner: user.username });
 
   if (!updatedProfile) {
     throw Error();
