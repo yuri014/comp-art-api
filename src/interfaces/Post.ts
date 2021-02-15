@@ -24,8 +24,5 @@ export interface IPost extends Document {
   commentsCount: number;
   createdAt: string;
   avatar: string;
-  artist: {
-    name: string;
-    username: string;
-  };
+  artist: string;
 }
