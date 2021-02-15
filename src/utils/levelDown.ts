@@ -25,6 +25,16 @@ const levelDown = async (profile: IArtistProfile | IUserProfile, xp: number) => 
     return true;
   }
 
+  if (profile.level === 1) {
+    await profile.updateOne({
+      $inc: {
+        xp: -xp,
+      },
+    });
+
+    return true;
+  }
+
   return false;
 };
 
