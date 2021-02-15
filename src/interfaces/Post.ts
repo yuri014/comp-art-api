@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { IArtistProfile } from './Profile';
 import { IUpload } from './Upload';
 
 export interface IPostInput {
@@ -24,5 +25,5 @@ export interface IPost extends Document {
   commentsCount: number;
   createdAt: string;
   avatar: string;
-  artist: string;
+  artist: string | IArtistProfile;
 }

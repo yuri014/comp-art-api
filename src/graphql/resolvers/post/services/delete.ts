@@ -3,6 +3,7 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 
 import Post from '../../../../entities/Post';
 import UserProfile from '../../../../entities/UserProfile';
+import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import levelDown from '../../../../utils/levelDown';
 
@@ -64,13 +65,15 @@ export const dislikePost = async (id: string, user: IToken) => {
 };
 
 export const deletePostService = async (id: string, user: IToken) => {
-  const post = await Post.findById(id);
+  const post = await Post.findById(id).populate('artist', 'owner');
 
   if (!post) {
     throw new UserInputError('Não há post');
   }
 
-  if (post.artist.username !== user.username) {
+  const artist = post.artist as IArtistProfile;
+
+  if (artist.owner !== user.username) {
     throw new AuthenticationError('Você não é o autor deste post');
   }
 
