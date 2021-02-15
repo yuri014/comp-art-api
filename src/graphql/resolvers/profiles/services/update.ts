@@ -3,7 +3,6 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 import Follower from '../../../../entities/Follower';
 import Following from '../../../../entities/Following';
 import UserProfile from '../../../../entities/UserProfile';
-import { IProfileView } from '../../../../interfaces/Profile';
 import { isAlreadyFollow, isAlreadyFollowing } from '../../../../middlewares/isAlreadyFollow';
 
 const options = {
@@ -15,11 +14,11 @@ const options = {
 
 export const follower = async (
   isArtist: boolean,
-  profileThatFollows: IProfileView,
+  profileIdThatFollows: string,
   userWhoIsFollowed: string,
 ) => {
   const { artistFollower, userFollower } = await isAlreadyFollow(
-    profileThatFollows.owner,
+    profileIdThatFollows,
     userWhoIsFollowed,
   );
 
@@ -28,8 +27,8 @@ export const follower = async (
       throw new UserInputError('Já é seguido');
     }
 
-    await ArtistProfile.findOneAndUpdate(
-      { owner: profileThatFollows.owner },
+    await ArtistProfile.findByIdAndUpdate(
+      profileIdThatFollows,
       { $inc: { following: 1 } },
       { useFindAndModify: false },
     );
@@ -39,12 +38,8 @@ export const follower = async (
       },
       {
         $set: {
-          artistFollowers: {
-            // @ts-ignore
-            avatar: profileThatFollows.avatar,
-            owner: profileThatFollows.owner,
-            name: profileThatFollows.name,
-          },
+          // @ts-ignore
+          artistFollowers: profileIdThatFollows,
         },
       },
       options,
@@ -55,8 +50,8 @@ export const follower = async (
     throw new UserInputError('Já é seguido');
   }
 
-  await UserProfile.findOneAndUpdate(
-    { owner: profileThatFollows.owner },
+  await UserProfile.findByIdAndUpdate(
+    profileIdThatFollows,
     { $inc: { following: 1 } },
     { useFindAndModify: false },
   );
@@ -67,12 +62,8 @@ export const follower = async (
     },
     {
       $set: {
-        userFollowers: {
-          // @ts-ignore
-          avatar: profileThatFollows.avatar,
-          owner: profileThatFollows.owner,
-          name: profileThatFollows.name,
-        },
+        // @ts-ignore
+        userFollowers: profileIdThatFollows,
       },
     },
     options,
@@ -81,11 +72,11 @@ export const follower = async (
 
 export const following = async (
   isArtist: boolean,
-  profileThatIsFollowing: IProfileView,
+  profileIdThatIsFollowing: string,
   userWhoIsFollowing: string,
 ) => {
   const { artistFollowing, userFollowing } = await isAlreadyFollowing(
-    profileThatIsFollowing.owner,
+    profileIdThatIsFollowing,
     userWhoIsFollowing,
   );
 
@@ -93,8 +84,8 @@ export const following = async (
     if (artistFollowing && artistFollowing.artistFollowing.length > 0) {
       throw new UserInputError('Já é seguido');
     }
-    await ArtistProfile.findOneAndUpdate(
-      { owner: profileThatIsFollowing.owner },
+    await ArtistProfile.findByIdAndUpdate(
+      profileIdThatIsFollowing,
       { $inc: { followers: 1 } },
       { useFindAndModify: false },
     );
@@ -105,12 +96,8 @@ export const following = async (
       },
       {
         $set: {
-          artistFollowing: {
-            // @ts-ignore
-            avatar: profileThatIsFollowing.avatar,
-            owner: profileThatIsFollowing.owner,
-            name: profileThatIsFollowing.name,
-          },
+          // @ts-ignore
+          artistFollowing: profileIdThatIsFollowing,
         },
       },
       options,
@@ -120,8 +107,8 @@ export const following = async (
     throw new UserInputError('Já é seguido');
   }
 
-  await UserProfile.findOneAndUpdate(
-    { owner: profileThatIsFollowing.owner },
+  await UserProfile.findByIdAndUpdate(
+    profileIdThatIsFollowing,
     { $inc: { followers: 1 } },
     { useFindAndModify: false },
   );
@@ -132,12 +119,8 @@ export const following = async (
     },
     {
       $set: {
-        userFollowing: {
-          // @ts-ignore
-          avatar: profileThatIsFollowing.avatar,
-          owner: profileThatIsFollowing.owner,
-          name: profileThatIsFollowing.name,
-        },
+        // @ts-ignore
+        userFollowing: profileIdThatIsFollowing,
       },
     },
     options,
