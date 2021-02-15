@@ -19,8 +19,8 @@ const PostSchema = new Schema({
   avatar: { type: String },
   createdAt: String,
   artist: {
-    name: { type: String, required: true },
-    username: { type: String, required: true },
+    type: Schema.Types.ObjectId,
+    ref: 'ArtistProfile',
   },
 });
 

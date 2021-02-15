@@ -9,16 +9,14 @@ const FollowerSchema = new Schema({
   },
   userFollowers: [
     {
-      avatar: String,
-      owner: String,
-      name: String,
+      type: Schema.Types.ObjectId,
+      ref: 'UserProfile',
     },
   ],
   artistFollowers: [
     {
-      avatar: String,
-      owner: String,
-      name: String,
+      type: Schema.Types.ObjectId,
+      ref: 'ArtistProfile',
     },
   ],
 });
