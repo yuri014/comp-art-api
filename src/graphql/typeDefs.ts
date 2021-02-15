@@ -92,7 +92,8 @@ const typeDefs = gql`
 
   type PostArtist {
     name: String!
-    username: String!
+    owner: String!
+    avatar: String
   }
 
   type Post {
