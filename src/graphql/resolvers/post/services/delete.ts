@@ -45,38 +45,22 @@ export const dislikePost = async (id: string, user: IToken) => {
   }
 
   if (user.isArtist) {
-    const updatedProfile = await ArtistProfile.findOneAndUpdate(
-      { owner: user.username },
-      {
-        $inc: {
-          xp: -75,
-        },
-      },
-      options,
-    );
+    const updatedProfile = await ArtistProfile.findOne({ owner: user.username }, options);
 
     if (!updatedProfile) {
       throw Error();
     }
 
-    return levelDown(updatedProfile);
+    return levelDown(updatedProfile, 75);
   }
 
-  const updatedProfile = await UserProfile.findOneAndUpdate(
-    { owner: user.username },
-    {
-      $inc: {
-        xp: -75,
-      },
-    },
-    options,
-  );
+  const updatedProfile = await UserProfile.findOne({ owner: user.username }, options);
 
   if (!updatedProfile) {
     throw Error();
   }
 
-  return levelDown(updatedProfile);
+  return levelDown(updatedProfile, 75);
 };
 
 export const deletePostService = async (id: string, user: IToken) => {
@@ -100,7 +84,6 @@ export const deletePostService = async (id: string, user: IToken) => {
     { owner: user.username },
     {
       $inc: {
-        xp: -250,
         postCount: -1,
       },
     },
@@ -111,5 +94,5 @@ export const deletePostService = async (id: string, user: IToken) => {
     throw Error();
   }
 
-  return levelDown(updatedProfile);
+  return levelDown(updatedProfile, 250);
 };
