@@ -118,9 +118,13 @@ const profileResolvers: IResolvers = {
         throw new Error();
       }
 
-      await follower(userWhoFollows.isArtist, authProfile._doc, followedUser.username);
+      await follower(userWhoFollows.isArtist, authProfile._doc._id, followedUser.username);
 
-      await following(followedUser.isArtist, profileWhoIsFollowed._doc, userWhoFollows.username);
+      await following(
+        followedUser.isArtist,
+        profileWhoIsFollowed._doc._id,
+        userWhoFollows.username,
+      );
 
       return true;
     },
