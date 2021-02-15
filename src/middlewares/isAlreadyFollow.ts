@@ -1,49 +1,33 @@
 import Follower from '../entities/Follower';
 import Following from '../entities/Following';
 
-export const isAlreadyFollow = async (owner: string, username: string) => {
+export const isAlreadyFollow = async (id: string, username: string) => {
   const artistFollower = await Follower.findOne({
     username,
   }).select({
-    artistFollowers: {
-      $elemMatch: {
-        owner,
-      },
-    },
+    artistFollowers: id,
   });
 
   const userFollower = await Follower.findOne({
     username,
   }).select({
-    userFollowers: {
-      $elemMatch: {
-        owner,
-      },
-    },
+    userFollowers: id,
   });
 
   return { artistFollower, userFollower };
 };
 
-export const isAlreadyFollowing = async (owner: string, username: string) => {
+export const isAlreadyFollowing = async (id: string, username: string) => {
   const artistFollowing = await Following.findOne({
     username,
   }).select({
-    artistFollowing: {
-      $elemMatch: {
-        owner,
-      },
-    },
+    artistFollowing: id,
   });
 
   const userFollowing = await Following.findOne({
     username,
   }).select({
-    userFollowing: {
-      $elemMatch: {
-        owner,
-      },
-    },
+    userFollowing: id,
   });
 
   return { artistFollowing, userFollowing };
