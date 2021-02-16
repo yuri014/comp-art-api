@@ -4,7 +4,7 @@ import { IArtistProfile, IUserProfile } from './Profile';
 
 export interface Comment extends Document {
   _doc?: Comment;
-  on: string | IPost;
+  post: string | IPost;
   comments: [
     {
       author: string | IArtistProfile | IUserProfile;
