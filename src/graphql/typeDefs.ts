@@ -134,6 +134,11 @@ const typeDefs = gql`
     isAudio: Boolean!
   }
 
+  input CommentInput {
+    author: String!
+    body: String!
+  }
+
   type Query {
     getProfile(username: String!): Profile
     getLoggedProfile: Profile!
@@ -157,6 +162,7 @@ const typeDefs = gql`
     deletePost(id: ID!): Boolean
     like(id: ID!): Boolean
     dislike(id: ID!): Boolean
+    comment(postID: ID!, comment: CommentInput!): Boolean
   }
 `;
 export default typeDefs;
