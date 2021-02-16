@@ -5,20 +5,17 @@ import Post from '../../../entities/Post';
 import Comments from '../../../entities/Comments';
 import checkAuth from '../../../middlewares/checkAuth';
 import commentValidationSchema from '../../../validators/commentSchema';
-
-interface CommentInput {
-  body: string;
-  author: string;
-}
+import levelUp from '../../../utils/levelUp';
+import ArtistProfile from '../../../entities/ArtistProfile';
+import UserProfile from '../../../entities/UserProfile';
 
 const commentsResolvers: IResolvers = {
   Mutation: {
-    async comment(_, { postID, comment }: { postID: string; comment: CommentInput }, context) {
+    async comment(_, { postID, comment }: { postID: string; comment: string }, context) {
       const user = checkAuth(context);
 
       const errors = commentValidationSchema.validate({
-        body: comment.body,
-        author: comment.author,
+        comment,
       });
 
       if (errors.error) {
@@ -27,7 +24,13 @@ const commentsResolvers: IResolvers = {
         });
       }
 
-      const { author, body } = comment;
+      const profile = user.isArtist
+        ? await ArtistProfile.findOne({ owner: user.username })
+        : await UserProfile.findOne({ owner: user.username });
+
+      if (!profile) {
+        throw new UserInputError('Não há perfil');
+      }
 
       const post = await Post.findById(postID);
 
@@ -44,8 +47,8 @@ const commentsResolvers: IResolvers = {
         {
           $push: {
             comments: {
-              author,
-              body: body.trim(),
+              author: profile._id,
+              body: comment.trim(),
               onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',
               createdAt: new Date().toISOString(),
             },
@@ -57,7 +60,16 @@ const commentsResolvers: IResolvers = {
         },
       );
 
-      return true;
+      const updatedProfile = await profile.updateOne(
+        {
+          $inc: {
+            xp: 125,
+          },
+        },
+        { useFindAndModify: false, new: true },
+      );
+
+      return levelUp(updatedProfile);
     },
   },
 };
