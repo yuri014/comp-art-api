@@ -12,11 +12,10 @@ import UserProfile from '../../../entities/UserProfile';
 const commentsResolvers: IResolvers = {
   Query: {
     async getComments(_, { postID, offset }: { postID: string; offset: number }) {
-      const comments = await Comments.find({ post: postID })
-        .skip(offset)
-        .limit(10)
-        .sort({ createdAt: -1 })
-        .populate('author');
+      const comments = await Comments.findOne({ post: postID })
+        .where('comments')
+        .slice([offset, offset + 3])
+        .populate('comments.author');
 
       return comments;
     },
@@ -58,10 +57,15 @@ const commentsResolvers: IResolvers = {
         {
           $push: {
             comments: {
-              author: profile._id,
-              body: comment.trim(),
-              onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',
-              createdAt: new Date().toISOString(),
+              $position: 0,
+              $each: [
+                {
+                  author: profile._id,
+                  body: comment.trim(),
+                  onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',
+                  createdAt: new Date().toISOString(),
+                },
+              ],
             },
           },
         },
