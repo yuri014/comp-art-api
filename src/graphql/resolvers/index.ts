@@ -7,6 +7,7 @@ const resolvers = {
   Query: {
     ...profileResolvers.Query,
     ...postResolvers.Query,
+    ...commentsResolvers.Query,
   },
   Mutation: {
     ...usersResolvers.Mutation,

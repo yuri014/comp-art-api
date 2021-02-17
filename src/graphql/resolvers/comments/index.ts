@@ -10,6 +10,17 @@ import ArtistProfile from '../../../entities/ArtistProfile';
 import UserProfile from '../../../entities/UserProfile';
 
 const commentsResolvers: IResolvers = {
+  Query: {
+    async getComments(_, { postID, offset }: { postID: string; offset: number }) {
+      const comments = await Comments.find({ post: postID })
+        .skip(offset)
+        .limit(10)
+        .sort({ createdAt: -1 })
+        .populate('author');
+
+      return comments;
+    },
+  },
   Mutation: {
     async comment(_, { postID, comment }: { postID: string; comment: string }, context) {
       const user = checkAuth(context);

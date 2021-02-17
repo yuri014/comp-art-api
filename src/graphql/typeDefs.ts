@@ -111,6 +111,17 @@ const typeDefs = gql`
     isLiked: Boolean
   }
 
+  type Comments {
+    author: String!
+    body: String!
+    createdAt: String!
+  }
+
+  type Comment {
+    post: String!
+    comments: [Comments]
+  }
+
   input RegisterInput {
     username: String!
     email: String!
@@ -142,6 +153,7 @@ const typeDefs = gql`
     getProfilePosts(offset: Int!, username: String!): [Post]
     getIsFollowing(username: String!): Boolean
     getExplorePosts(offset: Int!): [Post]
+    getComments(postID: ID!, offset: Int!): [Comment]
   }
 
   type Mutation {
