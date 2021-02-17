@@ -112,7 +112,7 @@ const typeDefs = gql`
   }
 
   type Comments {
-    author: String!
+    author: Profile!
     body: String!
     createdAt: String!
   }
@@ -153,7 +153,7 @@ const typeDefs = gql`
     getProfilePosts(offset: Int!, username: String!): [Post]
     getIsFollowing(username: String!): Boolean
     getExplorePosts(offset: Int!): [Post]
-    getComments(postID: ID!, offset: Int!): [Comment]
+    getComments(postID: ID!, offset: Int!): Comment
   }
 
   type Mutation {
