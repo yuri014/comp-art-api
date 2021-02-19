@@ -17,7 +17,15 @@ const commentsResolvers: IResolvers = {
         .slice([offset, offset + 3])
         .populate('comments.author');
 
-      return comments;
+      if (!comments) {
+        throw new Error();
+      }
+
+      if (comments.comments) {
+        return comments?.comments;
+      }
+
+      return [];
     },
   },
   Mutation: {
