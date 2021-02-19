@@ -11,7 +11,7 @@ const rateLimiter = new RateLimiterMongo({
 
 const rateLimiterMiddleware = (req: Request, res: Response, next: NextFunction) => {
   rateLimiter
-    .consume(req.ip)
+    .consume(req.ip, 1)
     .then(() => {
       next();
     })

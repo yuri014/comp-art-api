@@ -18,6 +18,8 @@ const server = new ApolloServer({
 });
 
 const app = express();
+app.use(rateLimiterMiddleware);
+
 app.use(express.static('public'));
 app.use(
   graphqlUploadExpress({
@@ -29,7 +31,6 @@ server.applyMiddleware({ app, cors: { origin: process.env.FRONT_END_HOST } });
 app.use(express.urlencoded({ extended: true }));
 const PORT = 3333;
 
-app.use(rateLimiterMiddleware);
 mongoose
   .connect(process.env.CLUSTER_URL as string, {
     useNewUrlParser: true,
