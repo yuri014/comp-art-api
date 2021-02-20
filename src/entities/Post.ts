@@ -8,9 +8,8 @@ const PostSchema = new Schema({
   isAudio: { type: Boolean, required: true, default: false },
   likes: [
     {
-      username: String,
-      avatar: String,
-      createdAt: String,
+      profile: { type: Schema.Types.ObjectId, refPath: 'likes.onModel' },
+      onModel: { type: String, enum: ['ArtistProfile', 'UserProfile'] },
     },
   ],
   likesCount: { type: Number, default: 0 },

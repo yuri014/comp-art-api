@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { IArtistProfile } from './Profile';
+import { IArtistProfile, IUserProfile } from './Profile';
 import { IUpload } from './Upload';
 
 export interface IPostInput {
@@ -15,9 +15,8 @@ export interface IPost extends Document {
   isAudio: boolean;
   likes: [
     {
-      username: string;
-      avatar: string;
-      createdAt: string;
+      profile: IArtistProfile | IUserProfile | string;
+      onModel: string;
     },
   ];
   likesCount: number;
