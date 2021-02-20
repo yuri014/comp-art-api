@@ -13,13 +13,14 @@ const options = {
 };
 
 export const dislikePost = async (id: string, user: IToken) => {
-  const post = await Post.findById(id);
+  const post = await Post.findById(id).populate('likes.profile');
 
   if (!post) {
     throw new UserInputError('Não há post');
   }
 
-  const hasAlreadyLike = post.likes.find(profileLike => profileLike.username === user.username);
+  // @ts-ignore
+  const hasAlreadyLike = post.likes.find(({ profile }) => profile.owner === user.username);
 
   if (!hasAlreadyLike) {
     throw new UserInputError('Não curtiu esse post');
@@ -30,9 +31,7 @@ export const dislikePost = async (id: string, user: IToken) => {
       {
         $pull: {
           likes: {
-            avatar: hasAlreadyLike.avatar,
-            createdAt: hasAlreadyLike.createdAt,
-            username: hasAlreadyLike.username,
+            profile: hasAlreadyLike.profile,
           },
         },
         $inc: {

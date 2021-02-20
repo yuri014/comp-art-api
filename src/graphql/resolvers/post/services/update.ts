@@ -13,21 +13,23 @@ const options = {
 };
 
 const likePost = async (id: string, user: IToken) => {
-  const profile = await findProfile(user);
+  const getProfile = await findProfile(user);
 
-  const profileDoc = profile._doc;
+  const profileDoc = getProfile._doc;
 
   if (!profileDoc) {
     throw new UserInputError('Não há perfil');
   }
 
-  const post = await Post.findById(id);
+  const post = await Post.findById(id).populate('likes.profile');
 
   if (!post) {
     throw new UserInputError('Não há post');
   }
 
-  const hasAlreadyLike = post.likes.find(profileLike => profileLike.username === profileDoc.owner);
+  // @ts-ignore
+  const hasAlreadyLike = post.likes.find(({ profile }) => profile.owner === profileDoc.owner);
+
   if (hasAlreadyLike) {
     throw new UserInputError('Já curtiu esse post');
   }
@@ -37,9 +39,13 @@ const likePost = async (id: string, user: IToken) => {
       {
         $push: {
           likes: {
-            avatar: profileDoc.avatar,
-            createdAt: new Date().toISOString(),
-            username: profileDoc.owner,
+            $position: 0,
+            $each: [
+              {
+                profile: profileDoc._id as string,
+                onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',
+              },
+            ],
           },
         },
         $inc: {
