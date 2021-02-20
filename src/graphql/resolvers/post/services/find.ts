@@ -9,7 +9,7 @@ import findProfile from '../../profiles/services/find';
 
 export const getPostService = async (id: string, token: string) => {
   const user = getUser(token);
-  const post = await Post.findById(id).populate('artist');
+  const post = await Post.findById(id).populate('artist').where('likes').slice([0, 3]);
 
   if (post) {
     const isLiked = post.likes.find(like => like.username === user.username);
@@ -41,7 +41,9 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     .skip(offset)
     .limit(3)
     .sort({ createdAt: -1 })
-    .populate('artist');
+    .populate('artist')
+    .where('likes')
+    .slice([0, 3]);
 
   const likes = posts.map(post => post.likes.find(like => like.username === user.username));
 
@@ -64,7 +66,9 @@ export const getProfilePostsService = async (token: string, username: string, of
       .skip(offset)
       .limit(3)
       .sort({ createdAt: -1 })
-      .populate('artist');
+      .populate('artist')
+      .where('likes')
+      .slice([0, 3]);
 
     const likes = posts.map(post => post.likes.find(like => like.username === user.username));
 
@@ -97,13 +101,20 @@ export const getExplorePostsService = async (offset: number, token: string) => {
       .skip(offset)
       .limit(3)
       .sort({ createdAt: -1 })
-      .populate('artist');
+      .populate('artist')
+      .where('likes')
+      .slice([0, 3]);
 
     return posts;
   }
 
-  // eslint-disable-next-line newline-per-chained-call
-  const posts = await Post.find().skip(offset).limit(3).sort({ createdAt: -1 }).populate('artist');
+  const posts = await Post.find()
+    .skip(offset)
+    .limit(3)
+    .sort({ createdAt: -1 })
+    .populate('artist')
+    .where('likes')
+    .slice([0, 3]);
 
   return posts;
 };
