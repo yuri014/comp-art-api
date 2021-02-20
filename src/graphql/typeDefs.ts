@@ -96,11 +96,15 @@ const typeDefs = gql`
     avatar: String
   }
 
+  type PostLikes {
+    profile: Profile
+  }
+
   type Post {
     _id: String!
     description: String
     body: String!
-    likes: [Likes]
+    likes: [PostLikes]
     likesCount: Int!
     sharedCount: Int!
     commentsCount: Int!
