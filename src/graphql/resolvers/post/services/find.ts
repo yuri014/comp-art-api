@@ -129,3 +129,16 @@ export const getExplorePostsService = async (offset: number, token: string) => {
 
   return posts;
 };
+
+export const getPostLikes = async (id: string, offset: number) => {
+  const post = await Post.findById(id)
+    .populate('likes.profile')
+    .where('likes')
+    .slice([offset, offset + 8]);
+
+  if (!post) {
+    throw new UserInputError('Não há post');
+  }
+
+  return post.likes.map(({ profile }) => profile);
+};

@@ -9,6 +9,7 @@ import {
   getProfilePostsService,
   getTimelinePosts,
   getExplorePostsService,
+  getPostLikes,
 } from './services/find';
 import { deletePostService, dislikePost } from './services/delete';
 
@@ -52,6 +53,9 @@ const postResolvers: IResolvers = {
       const token = getToken(context);
 
       return getExplorePostsService(offset, token);
+    },
+    async getLikes(_, { postID, offset }: { postID: string; offset: number }) {
+      return getPostLikes(postID, offset);
     },
   },
   Mutation: {
