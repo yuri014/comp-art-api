@@ -100,7 +100,7 @@ const typeDefs = gql`
     _id: String!
     description: String
     body: String!
-    likes: Likes
+    likes: [Likes]
     likesCount: Int!
     sharedCount: Int!
     commentsCount: Int!
