@@ -48,7 +48,6 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
     body: fileUrl,
     createdAt: new Date().toISOString(),
     isAudio: post.isAudio,
-    avatar: profile.avatar,
     artist: profile._id,
   });
 
