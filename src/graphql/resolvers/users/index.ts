@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { IResolvers } from 'graphql-tools';
-import { UserInputError } from 'apollo-server-express';
+import { IResolvers, UserInputError } from 'apollo-server-express';
 import jwt from 'jsonwebtoken';
 
 import User from '../../../entities/User';

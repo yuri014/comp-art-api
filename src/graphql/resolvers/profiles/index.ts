@@ -1,5 +1,4 @@
-import { IResolvers } from 'graphql-tools';
-import { UserInputError } from 'apollo-server-express';
+import { IResolvers, UserInputError } from 'apollo-server-express';
 
 import ArtistProfile from '../../../entities/ArtistProfile';
 import { ICreateProfile } from '../../../interfaces/Profile';

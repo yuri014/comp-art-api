@@ -1,5 +1,4 @@
-import { UserInputError } from 'apollo-server-express';
-import { IResolvers } from 'graphql-tools';
+import { IResolvers, UserInputError } from 'apollo-server-express';
 
 import Post from '../../../entities/Post';
 import Comments from '../../../entities/Comments';

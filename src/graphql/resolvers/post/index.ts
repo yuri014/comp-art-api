@@ -1,5 +1,4 @@
-import { IResolvers } from 'graphql-tools';
-
+import { IResolvers } from 'apollo-server-express';
 import { IPostInput } from '../../../interfaces/Post';
 import checkAuth from '../../../middlewares/checkAuth';
 import likePost from './services/update';
