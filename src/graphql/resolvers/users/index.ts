@@ -125,7 +125,11 @@ const usersResolvers: IResolvers = {
     async confirmationEmail(_, { token }: { token: string }) {
       try {
         const user = jwt.verify(token, process.env.SECRET as string) as { id: string };
-        const userById = await User.findByIdAndUpdate(user.id, { confirmed: true });
+        const userById = await User.findByIdAndUpdate(
+          user.id,
+          { confirmed: true },
+          { useFindAndModify: false },
+        );
         if (!userById) {
           throw new Error();
         }
