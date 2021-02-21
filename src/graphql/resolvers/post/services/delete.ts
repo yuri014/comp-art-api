@@ -6,6 +6,7 @@ import UserProfile from '../../../../entities/UserProfile';
 import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import levelDown from '../../../../utils/levelDown';
+import removeFile from '../../../../utils/removeFile';
 
 const options = {
   new: true,
@@ -77,6 +78,7 @@ export const deletePostService = async (id: string, user: IToken) => {
   }
 
   try {
+    await removeFile(post.body);
     await post.deleteOne();
   } catch (error) {
     throw new Error(error);
