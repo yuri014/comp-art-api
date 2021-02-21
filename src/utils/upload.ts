@@ -16,7 +16,7 @@ export const uploadImage = async (createReadStream?: () => ReadStream, filename?
       const pathName = path.join(__dirname, '..', '..', `/public/uploads/images/${originalName}`);
 
       stream.pipe(fs.createWriteStream(pathName));
-      return `${process.env.HOST}/uploads/images/${originalName}`;
+      return `/uploads/images/${originalName}`;
     }
   } catch (error) {
     throw new UserInputError('Limite máximo excedido.', {
@@ -41,7 +41,7 @@ export const uploadAudio = async (createReadStream?: () => ReadStream, filename?
       const pathName = path.join(__dirname, '..', '..', `/public/uploads/audio/${originalName}`);
 
       stream.pipe(fs.createWriteStream(pathName));
-      return `${process.env.HOST}/uploads/audio/${originalName}`;
+      return `/uploads/audio/${originalName}`;
     }
   } catch (error) {
     throw new UserInputError('Limite máximo excedido.', {
