@@ -8,7 +8,7 @@ import UserProfile from '../../../entities/UserProfile';
 import profileValidationSchema from '../../../validators/profileSchema';
 import User from '../../../entities/User';
 import findProfile from './services/find';
-import { follower, following } from './services/update';
+import { follower, following, updateProfileService } from './services/update';
 import { unfollower, unfollowing } from './services/delete';
 import { isAlreadyFollow } from '../../../middlewares/isAlreadyFollow';
 
@@ -92,6 +92,38 @@ const profileResolvers: IResolvers = {
 
       return true;
     },
+
+    async updateProfile(_, { newProfileInput }: { newProfileInput: ICreateProfile }, context) {
+      const user = checkAuth(context);
+
+      if (!user) {
+        throw new UserInputError('Usuário não encontrado', {
+          errors: 'Usuário não encontrado',
+        });
+      }
+
+      const errors = profileValidationSchema.validate({
+        name: newProfileInput.name,
+        bio: newProfileInput.bio,
+      });
+
+      if (errors.error) {
+        throw new UserInputError('Erros', {
+          errors: errors.error.message,
+        });
+      }
+
+      if (user.isArtist) {
+        await updateProfileService(user, ArtistProfile, newProfileInput);
+
+        return true;
+      }
+
+      await createProfile(user, UserProfile, newProfileInput);
+
+      return true;
+    },
+
     async follow(_, { username }: { username: string }, context) {
       const userWhoFollows = checkAuth(context);
 

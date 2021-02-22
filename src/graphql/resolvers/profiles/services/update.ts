@@ -1,8 +1,12 @@
 import { UserInputError } from 'apollo-server-express';
+import { Model } from 'mongoose';
+
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Follower from '../../../../entities/Follower';
 import Following from '../../../../entities/Following';
 import UserProfile from '../../../../entities/UserProfile';
+import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../interfaces/Profile';
+import { IToken } from '../../../../interfaces/Token';
 import { isAlreadyFollow, isAlreadyFollowing } from '../../../../middlewares/isAlreadyFollow';
 
 const options = {
@@ -125,4 +129,22 @@ export const following = async (
     },
     options,
   );
+};
+
+export const updateProfileService = async (
+  user: IToken,
+  Profile: Model<IArtistProfile> | Model<IUserProfile>,
+  data: ICreateProfile,
+) => {
+  const oldProfile = await Profile.findOne({ owner: user.username });
+
+  if (!oldProfile) {
+    throw new UserInputError('Não há perfil');
+  }
+
+  const { bio, name, hashtags, links } = data;
+
+  await oldProfile.updateOne({ bio: bio.trim(), name: name.trim(), hashtags, links });
+
+  return true;
 };

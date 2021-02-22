@@ -175,6 +175,7 @@ const typeDefs = gql`
     like(id: ID!): Boolean
     dislike(id: ID!): Boolean
     comment(postID: ID!, comment: String!): Boolean
+    updateProfile(newProfileInput: CreateProfileInput): Boolean
   }
 `;
 export default typeDefs;
