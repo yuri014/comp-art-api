@@ -102,7 +102,7 @@ const profileResolvers: IResolvers = {
         });
       }
 
-      if (newProfileInput.name.length < 4 && newProfileInput.name.length > 24) {
+      if (newProfileInput.name.length < 4 || newProfileInput.name.length > 24) {
         throw new UserInputError('Erros', {
           errors: 'Nome deve contér mais de quatro caractéres',
         });
