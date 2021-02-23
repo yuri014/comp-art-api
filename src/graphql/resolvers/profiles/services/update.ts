@@ -8,6 +8,8 @@ import UserProfile from '../../../../entities/UserProfile';
 import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import { isAlreadyFollow, isAlreadyFollowing } from '../../../../middlewares/isAlreadyFollow';
+import removeFile from '../../../../utils/removeFile';
+import { uploadImage } from '../../../../utils/upload';
 
 const options = {
   upsert: true,
@@ -142,9 +144,23 @@ export const updateProfileService = async (
     throw new UserInputError('Não há perfil');
   }
 
-  const { bio, name, hashtags, links } = data;
+  const { avatar, bio, coverImage, name, hashtags, links } = data;
 
-  await oldProfile.updateOne({ bio: bio.trim(), name: name.trim(), hashtags, links });
+  await removeFile(oldProfile.avatar);
+  await removeFile(oldProfile.coverImage);
+  const { file: avatarFile } = await avatar;
+  const avatarImageUrl = await uploadImage(avatarFile?.createReadStream, avatarFile?.filename);
+  const { file: coverFile } = await coverImage;
+  const coverImageUrl = await uploadImage(coverFile?.createReadStream, coverFile?.filename);
+
+  await oldProfile.updateOne({
+    bio: bio.trim(),
+    name: name.trim(),
+    hashtags,
+    links,
+    avatar: avatarImageUrl,
+    coverImage: coverImageUrl,
+  });
 
   return true;
 };
