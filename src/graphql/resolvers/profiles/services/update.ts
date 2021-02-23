@@ -146,8 +146,11 @@ export const updateProfileService = async (
 
   const { avatar, bio, coverImage, name, hashtags, links } = data;
 
-  await removeFile(oldProfile.avatar);
-  await removeFile(oldProfile.coverImage);
+  if (oldProfile.avatar !== '' && oldProfile.coverImage !== '') {
+    await removeFile(oldProfile.avatar);
+    await removeFile(oldProfile.coverImage);
+  }
+
   const { file: avatarFile } = await avatar;
   const avatarImageUrl = await uploadImage(avatarFile?.createReadStream, avatarFile?.filename);
   const { file: coverFile } = await coverImage;

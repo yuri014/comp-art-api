@@ -78,7 +78,9 @@ export const deletePostService = async (id: string, user: IToken) => {
   }
 
   try {
-    await removeFile(post.body);
+    if (post.body) {
+      await removeFile(post.body);
+    }
     await post.deleteOne();
   } catch (error) {
     throw new Error(error);
