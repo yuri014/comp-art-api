@@ -114,7 +114,7 @@ const profileResolvers: IResolvers = {
         return true;
       }
 
-      await createProfile(user, UserProfile, newProfileInput);
+      await updateProfileService(user, UserProfile, newProfileInput);
 
       return true;
     },
