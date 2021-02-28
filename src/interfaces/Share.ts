@@ -17,5 +17,6 @@ export interface IShare extends Document {
   sharedCount: number;
   commentsCount: number;
   createdAt: string;
-  artist: string | IUserProfile;
+  profile: IArtistProfile | IUserProfile | string;
+  onModel: string;
 }
