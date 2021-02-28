@@ -14,10 +14,8 @@ const ShareSchema = new Schema({
   sharedCount: { type: Number, default: 0 },
   commentsCount: { type: Number, default: 0 },
   createdAt: String,
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'UserProfile',
-  },
+  profile: { type: Schema.Types.ObjectId, refPath: 'likes.onModel' },
+  onModel: { type: String, enum: ['ArtistProfile', 'UserProfile'] },
 });
 
 export default mongoose.model<IShare>('Share', ShareSchema);
