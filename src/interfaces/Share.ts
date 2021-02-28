@@ -20,3 +20,7 @@ export interface IShare extends Document {
   profile: IArtistProfile | IUserProfile | string;
   onModel: string;
 }
+export interface IShareInput {
+  postID: string;
+  description: string;
+}
