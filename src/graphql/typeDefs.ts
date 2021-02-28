@@ -149,6 +149,11 @@ const typeDefs = gql`
     isAudio: Boolean!
   }
 
+  input SharePost {
+    postID: String!
+    description: String!
+  }
+
   type Query {
     getProfile(username: String!): Profile
     getLoggedProfile: Profile!
@@ -176,6 +181,7 @@ const typeDefs = gql`
     dislike(id: ID!): Boolean
     comment(postID: ID!, comment: String!): Boolean
     updateProfile(newProfileInput: CreateProfileInput): Boolean
+    createSharePost(shareInput: SharePost!): Boolean
   }
 `;
 export default typeDefs;
