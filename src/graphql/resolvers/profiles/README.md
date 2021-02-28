@@ -27,6 +27,6 @@ Missões que darão xp bônus.
 |AÇÃO        |XP |
 |------------|---|
 |Curtir      |75 |
-|Comentar    |125|
-|Compartilhar|200|
-|Postar      |250|
+|Comentar    |150|
+|Compartilhar|250|
+|Postar      |400|
