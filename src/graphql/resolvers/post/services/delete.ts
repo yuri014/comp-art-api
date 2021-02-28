@@ -100,5 +100,5 @@ export const deletePostService = async (id: string, user: IToken) => {
     throw Error();
   }
 
-  return levelDown(updatedProfile, 250);
+  return levelDown(updatedProfile, 400);
 };

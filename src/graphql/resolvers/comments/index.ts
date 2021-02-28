@@ -85,7 +85,7 @@ const commentsResolvers: IResolvers = {
       const updatedProfile = await profile.updateOne(
         {
           $inc: {
-            xp: 125,
+            xp: 150,
           },
         },
         { useFindAndModify: false, new: true },

@@ -57,7 +57,7 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
 
   const updatedProfile = await ArtistProfile.findOneAndUpdate(
     { owner: profile.owner },
-    { $inc: { postCount: 1, xp: 250 } },
+    { $inc: { postCount: 1, xp: 400 } },
     { useFindAndModify: false, new: true },
   );
 
