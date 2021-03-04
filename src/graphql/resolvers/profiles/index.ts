@@ -7,11 +7,14 @@ import createProfile from './services/create';
 import UserProfile from '../../../entities/UserProfile';
 import profileValidationSchema from '../../../validators/profileSchema';
 import User from '../../../entities/User';
-import findProfile from './services/find';
 import { follower, following, updateProfileService } from './services/update';
 import { unfollower, unfollowing } from './services/delete';
 import { isAlreadyFollow } from '../../../middlewares/isAlreadyFollow';
 import Follower from '../../../entities/Follower';
+import Following from '../../../entities/Following';
+import findProfile from './services/utils/findProfileUtil';
+import findFollows from './services/find';
+import { IFollower, IFollowing } from '../../../interfaces/Follow';
 
 type IUsername = {
   username: string;
@@ -62,19 +65,29 @@ const profileResolvers: IResolvers = {
       return false;
     },
 
-    async getFollowers(_, { offset, username }: { offset: number; username: string }) {
-      const followers = await Follower.findOne({ username })
-        .where('artistFollowers')
-        .slice([offset, offset + 8])
-        .populate('artistFollowers')
-        .where('userFollowers')
-        .slice([offset, offset + 8])
-        .populate('userFollowers');
+    async getFollowers(_, params: { offset: number; username: string }) {
+      const followsResult = await findFollows(Follower, params);
+      const followers = followsResult as IFollower;
 
-      const artists = followers?.artistFollowers || [];
-      const users = followers?.userFollowers || [];
+      const artists = followers.artistFollowers || [];
+      const users = followers.userFollowers || [];
 
-      const profiles = artists?.concat(users as []);
+      const profiles = artists.concat(users as []);
+
+      const sortedProfiles = profiles.sort(() => Math.random() - 0.5);
+
+      return sortedProfiles;
+    },
+
+    async getFollowing(_, params: { offset: number; username: string }) {
+      const followsResult = await findFollows(Following, params);
+
+      const follows = followsResult as IFollowing;
+
+      const artists = follows.artistFollowing || [];
+      const users = follows.userFollowing || [];
+
+      const profiles = artists.concat(users as []);
 
       const sortedProfiles = profiles.sort(() => Math.random() - 0.5);
 
