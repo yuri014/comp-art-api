@@ -1,19 +1,30 @@
 import { UserInputError } from 'apollo-server-express';
-import ArtistProfile from '../../../../entities/ArtistProfile';
-import UserProfile from '../../../../entities/UserProfile';
-import { IToken } from '../../../../interfaces/Token';
-import { IUser } from '../../../../interfaces/User';
+import { Model } from 'mongoose';
 
-const findProfile = async (user: IUser | IToken) => {
-  const profile = user.isArtist
-    ? await ArtistProfile.findOne({ owner: user.username })
-    : await UserProfile.findOne({ owner: user.username });
+import { IFollower, IFollowing } from '../../../../interfaces/Follow';
 
-  if (!profile) {
-    throw new UserInputError('Perfil não encontrado');
-  }
-
-  return { ...profile, isArtist: user.isArtist };
+type IOffset = {
+  offset: number;
+  username: string;
 };
 
-export default findProfile;
+const findFollows = async (
+  FollowModel: Model<IFollower> | Model<IFollowing>,
+  { offset, username }: IOffset,
+) => {
+  const follows = await FollowModel.findOne({ username })
+    .where('artistFollowing')
+    .slice([offset, offset + 8])
+    .populate('artistFollowing')
+    .where('userFollowing')
+    .slice([offset, offset + 8])
+    .populate('userFollowing');
+
+  if (!follows) {
+    throw new UserInputError('Não está seguindo ninguém');
+  }
+
+  return follows;
+};
+
+export default findFollows;
