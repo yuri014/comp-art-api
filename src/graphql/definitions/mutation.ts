@@ -1,28 +1,6 @@
 import { gql } from 'apollo-server-express';
 
-export const queries = gql`
-  scalar Upload
-
-  type File {
-    url: String
-  }
-
-  type Query {
-    getProfile(username: String!): Profile
-    getLoggedProfile: Profile!
-    getPost(id: ID!): Post
-    getPosts(offset: Int!): [Post]
-    getProfilePosts(offset: Int!, username: String!): [Post]
-    getIsFollowing(username: String!): Boolean
-    getExplorePosts(offset: Int!): [Post]
-    getComments(postID: ID!, offset: Int!): [Comments]
-    getLikes(postID: ID!, offset: Int!): [Profile]
-    getFollowers(offset: Int!, username: String!): [Profile]
-    getFollowing(offset: Int!, username: String!): [Profile]
-  }
-`;
-
-export const mutations = gql`
+const mutations = gql`
   type Mutation {
     register(registerInput: RegisterInput!): Boolean
     login(email: String!, password: String!): User!
@@ -41,3 +19,5 @@ export const mutations = gql`
     createSharePost(shareInput: SharePost!): Boolean
   }
 `;
+
+export default mutations;

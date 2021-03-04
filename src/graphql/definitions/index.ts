@@ -1,11 +1,12 @@
 import interactionsDefinitions from './interactions';
+import mutations from './mutation';
 import { postDefinitions, postInputDefinitions } from './post';
 import {
   profileDefinitions,
   userAndProfileInputsDefinitions,
   userDefinitions,
 } from './profileAndUser';
-import { mutations, queries } from './typeDefs';
+import queries from './query';
 
 const typeDefs = [
   interactionsDefinitions,
