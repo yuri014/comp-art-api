@@ -5,7 +5,7 @@ import Following from '../../../../entities/Following';
 import Post from '../../../../entities/Post';
 import { IToken } from '../../../../interfaces/Token';
 import getUser from '../../../../utils/getUser';
-import findProfile from '../../profiles/services/find';
+import findProfile from '../../profiles/services/utils/findProfileUtil';
 
 export const getPostService = async (id: string, token: string) => {
   const user = getUser(token);

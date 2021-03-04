@@ -5,7 +5,7 @@ import Post from '../../../../entities/Post';
 import UserProfile from '../../../../entities/UserProfile';
 import { IToken } from '../../../../interfaces/Token';
 import levelUp from '../../../../utils/levelUp';
-import findProfile from '../../profiles/services/find';
+import findProfile from '../../profiles/services/utils/findProfileUtil';
 
 const options = {
   new: true,
