@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server-express';
 import { graphqlUploadExpress } from 'graphql-upload';
 
-import typeDefs from './graphql/typeDefs';
+import typeDefs from './graphql/definitions';
 import resolvers from './graphql/resolvers';
 import rateLimiterMiddleware from './middlewares/limiter';
 

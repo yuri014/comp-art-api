@@ -11,6 +11,11 @@ import findProfile from './services/find';
 import { follower, following, updateProfileService } from './services/update';
 import { unfollower, unfollowing } from './services/delete';
 import { isAlreadyFollow } from '../../../middlewares/isAlreadyFollow';
+import Follower from '../../../entities/Follower';
+
+type IUsername = {
+  username: string;
+};
 
 const profileResolvers: IResolvers = {
   Query: {
@@ -44,7 +49,7 @@ const profileResolvers: IResolvers = {
       return { ...profileView, isArtist: profile.isArtist };
     },
 
-    async getIsFollowing(_, { username }: { username: string }, context) {
+    async getIsFollowing(_, { username }: IUsername, context) {
       const user = checkAuth(context);
 
       const { artistFollower, userFollower } = await isAlreadyFollow(user.username, username);
@@ -55,6 +60,25 @@ const profileResolvers: IResolvers = {
       }
 
       return false;
+    },
+
+    async getFollowers(_, { offset, username }: { offset: number; username: string }) {
+      const followers = await Follower.findOne({ username })
+        .where('artistFollowers')
+        .slice([offset, offset + 8])
+        .populate('artistFollowers')
+        .where('userFollowers')
+        .slice([offset, offset + 8])
+        .populate('userFollowers');
+
+      const artists = followers?.artistFollowers || [];
+      const users = followers?.userFollowers || [];
+
+      const profiles = artists?.concat(users as []);
+
+      const sortedProfiles = profiles.sort(() => Math.random() - 0.5);
+
+      return sortedProfiles;
     },
   },
   Mutation: {
@@ -119,7 +143,7 @@ const profileResolvers: IResolvers = {
       return true;
     },
 
-    async follow(_, { username }: { username: string }, context) {
+    async follow(_, { username }: IUsername, context) {
       const userWhoFollows = checkAuth(context);
 
       const followedUser = await User.findOne({ username });
@@ -155,7 +179,7 @@ const profileResolvers: IResolvers = {
       return true;
     },
 
-    async unfollow(_, { username }: { username: string }, context) {
+    async unfollow(_, { username }: IUsername, context) {
       const userWhoFollows = checkAuth(context);
 
       const followedUser = await User.findOne({ username });
