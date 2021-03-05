@@ -30,4 +30,6 @@ const UserProfileSchema = new Schema({
   },
 });
 
+UserProfileSchema.index({ name: 'text', owner: 'text' });
+
 export default model<IUserProfile>('UserProfile', UserProfileSchema);

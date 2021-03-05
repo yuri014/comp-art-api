@@ -33,4 +33,6 @@ const ArtistProfileSchema = new Schema({
   },
 });
 
+ArtistProfileSchema.index({ name: 'text', owner: 'text' });
+
 export default model<IArtistProfile>('ArtistProfile', ArtistProfileSchema);
