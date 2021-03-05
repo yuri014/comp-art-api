@@ -15,7 +15,7 @@ import Following from '../../../entities/Following';
 import findProfile from './services/utils/findProfileUtil';
 import findFollows from './services/find';
 import { IFollower, IFollowing } from '../../../interfaces/Follow';
-import shuffleArray from './services/utils/shuffleArrayFollow';
+import shuffleArray from './services/utils/shuffleProfilesArray';
 
 type IUsername = {
   username: string;
@@ -85,6 +85,18 @@ const profileResolvers: IResolvers = {
       const users = follows.userFollowing || [];
 
       return shuffleArray(artists, users);
+    },
+
+    async searchProfiles(_, { query, offset }: { query: string; offset: number }) {
+      const artistsProfiles = await ArtistProfile.find({ $text: { $search: query } })
+        .skip(offset)
+        .limit(5);
+
+      const usersProfiles = await UserProfile.find({ $text: { $search: query } })
+        .skip(offset)
+        .limit(5);
+
+      return shuffleArray(artistsProfiles, usersProfiles);
     },
   },
   Mutation: {
