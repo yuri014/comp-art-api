@@ -15,6 +15,7 @@ import Following from '../../../entities/Following';
 import findProfile from './services/utils/findProfileUtil';
 import findFollows from './services/find';
 import { IFollower, IFollowing } from '../../../interfaces/Follow';
+import shuffleArray from './services/utils/shuffleArrayFollow';
 
 type IUsername = {
   username: string;
@@ -72,11 +73,7 @@ const profileResolvers: IResolvers = {
       const artists = followers.artistFollowers || [];
       const users = followers.userFollowers || [];
 
-      const profiles = artists.concat(users as []);
-
-      const sortedProfiles = profiles.sort(() => Math.random() - 0.5);
-
-      return sortedProfiles;
+      return shuffleArray(artists, users);
     },
 
     async getFollowing(_, params: { offset: number; username: string }) {
@@ -87,11 +84,7 @@ const profileResolvers: IResolvers = {
       const artists = follows.artistFollowing || [];
       const users = follows.userFollowing || [];
 
-      const profiles = artists.concat(users as []);
-
-      const sortedProfiles = profiles.sort(() => Math.random() - 0.5);
-
-      return sortedProfiles;
+      return shuffleArray(artists, users);
     },
   },
   Mutation: {
