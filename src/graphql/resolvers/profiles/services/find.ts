@@ -11,14 +11,15 @@ type IOffset = {
 const findFollows = async (
   FollowModel: Model<IFollower> | Model<IFollowing>,
   { offset, username }: IOffset,
+  queryParams: Array<string>,
 ) => {
   const follows = await FollowModel.findOne({ username })
-    .where('artistFollowing')
-    .slice([offset, offset + 8])
-    .populate('artistFollowing')
-    .where('userFollowing')
-    .slice([offset, offset + 8])
-    .populate('userFollowing');
+    .where(queryParams[0])
+    .slice([offset > 0 ? Math.round(offset / 2) : offset, offset + 4])
+    .populate(queryParams[0])
+    .where(queryParams[1])
+    .slice([offset > 0 ? Math.round(offset / 2) : offset, offset + 4])
+    .populate(queryParams[1]);
 
   if (!follows) {
     throw new UserInputError('Não está seguindo ninguém');

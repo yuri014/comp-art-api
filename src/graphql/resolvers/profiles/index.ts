@@ -67,7 +67,10 @@ const profileResolvers: IResolvers = {
     },
 
     async getFollowers(_, params: { offset: number; username: string }) {
-      const followsResult = await findFollows(Follower, params);
+      const followsResult = await findFollows(Follower, params, [
+        'artistFollowers',
+        'userFollowers',
+      ]);
       const followers = followsResult as IFollower;
 
       const artists = followers.artistFollowers || [];
@@ -77,7 +80,10 @@ const profileResolvers: IResolvers = {
     },
 
     async getFollowing(_, params: { offset: number; username: string }) {
-      const followsResult = await findFollows(Following, params);
+      const followsResult = await findFollows(Following, params, [
+        'artistFollowing',
+        'userFollowing',
+      ]);
 
       const follows = followsResult as IFollowing;
 
@@ -89,11 +95,11 @@ const profileResolvers: IResolvers = {
 
     async searchProfiles(_, { query, offset }: { query: string; offset: number }) {
       const artistsProfiles = await ArtistProfile.find({ $text: { $search: query } })
-        .skip(offset)
+        .skip(offset > 0 ? Math.round(offset / 2) : offset)
         .limit(5);
 
       const usersProfiles = await UserProfile.find({ $text: { $search: query } })
-        .skip(offset)
+        .skip(offset > 0 ? Math.round(offset / 2) : offset)
         .limit(5);
 
       return shuffleArray(artistsProfiles, usersProfiles);
