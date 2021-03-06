@@ -89,10 +89,10 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     const sharesView = shares.map((share, index) => ({ ...share._doc, isLiked: !!likes[index] }));
     const postsView = posts.map((post, index) => ({ ...post._doc, isLiked: !!likes[index] }));
     const timeline = shuffleArray(postsView, sharesView);
-    return timeline;
+    return postsView;
   }
 
-  return shuffleArray(posts, shares);
+  return posts;
 };
 
 export const getProfilePostsService = async (token: string, username: string, offset: number) => {
