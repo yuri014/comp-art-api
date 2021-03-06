@@ -20,6 +20,7 @@ const queries = gql`
     getFollowers(offset: Int!, username: String!): [Profile]
     getFollowing(offset: Int!, username: String!): [Profile]
     searchProfiles(query: String!, offset: Int!): [Profile]
+    searchPost(query: String!, offset: Int!): [Post]
   }
 `;
 

@@ -11,6 +11,7 @@ import {
   getPostLikes,
 } from './services/find';
 import { deletePostService, dislikePost } from './services/delete';
+import Post from '../../../entities/Post';
 
 interface Context {
   req: {
@@ -55,6 +56,14 @@ const postResolvers: IResolvers = {
     },
     async getLikes(_, { postID, offset }: { postID: string; offset: number }) {
       return getPostLikes(postID, offset);
+    },
+
+    async searchPost(_, { query, offset }: { query: string; offset: number }) {
+      const profiles = await Post.find({ $text: { $search: query } })
+        .skip(offset)
+        .limit(10);
+
+      return profiles;
     },
   },
   Mutation: {
