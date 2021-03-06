@@ -1,6 +1,4 @@
-import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile';
-
-const shuffleArray = (artists: Array<IArtistProfile>, users: Array<IUserProfile>) => {
+const shuffleArray = (artists: Array<unknown>, users: Array<unknown>) => {
   const profiles = artists.concat(users as []);
 
   const shuffledProfiles = profiles.sort(() => Math.random() - 0.5);
