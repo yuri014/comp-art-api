@@ -1,11 +1,15 @@
+/* eslint-disable function-paren-newline */
 import { UserInputError } from 'apollo-server-express';
 
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Following from '../../../../entities/Following';
 import Post from '../../../../entities/Post';
+import Share from '../../../../entities/Share';
+import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import getUser from '../../../../utils/getUser';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
+import shuffleArray from '../../profiles/services/utils/shuffleProfilesArray';
 
 export const getPostService = async (id: string, token: string) => {
   const user = getUser(token);
@@ -26,17 +30,19 @@ export const getPostService = async (id: string, token: string) => {
 };
 
 export const getTimelinePosts = async (offset: number, user: IToken) => {
-  const following = await Following.find({ username: user.username });
+  const following = await Following.findOne({ username: user.username })
+    .where('artistFollowing')
+    .slice([offset, offset + 40])
+    .where('userFollowing')
+    .slice([offset, offset + 40]);
 
-  if (following.length === 0) {
+  if (!following) {
     throw new UserInputError('Não está seguindo nenhum usuário');
   }
 
-  const [artists] = following.map(profile => profile.artistFollowing);
+  const artists = following.artistFollowing;
 
-  if (artists.length === 0) {
-    throw new UserInputError('Não está seguindo nenhum artista');
-  }
+  const followingProfiles = shuffleArray(artists, following.userFollowing);
 
   const posts = await Post.find({
     artist: {
@@ -51,15 +57,42 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     .where('likes')
     .slice([0, 3]);
 
-  // @ts-ignore
-  const likes = posts.map(post => post.likes.find(like => like.profile.owner === user.username));
+  const shares = await Share.find({
+    profile: {
+      $in: followingProfiles as Array<string>,
+    },
+  })
+    .skip(offset)
+    .limit(3)
+    .sort({ createdAt: -1 })
+    .populate('post')
+    .populate('profile')
+    .populate('likes.profile')
+    .where('likes')
+    .slice([0, 3]);
 
-  if (likes.length > 0) {
+  const likes = posts.map(post =>
+    post.likes.find(like => {
+      const profile = like.profile as IArtistProfile;
+      return profile.owner === user.username;
+    }),
+  );
+
+  const shareLikes = shares.map(share =>
+    share.likes.find(like => {
+      const profile = like.profile as IUserProfile;
+      return profile.owner === user.username;
+    }),
+  );
+
+  if (likes.length > 0 || shareLikes.length > 0) {
+    const sharesView = shares.map((share, index) => ({ ...share._doc, isLiked: !!likes[index] }));
     const postsView = posts.map((post, index) => ({ ...post._doc, isLiked: !!likes[index] }));
-    return postsView;
+    const timeline = shuffleArray(postsView, sharesView);
+    return timeline;
   }
 
-  return posts;
+  return shuffleArray(posts, shares);
 };
 
 export const getProfilePostsService = async (token: string, username: string, offset: number) => {
