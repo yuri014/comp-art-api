@@ -93,6 +93,35 @@ const commentsResolvers: IResolvers = {
 
       return levelUp(updatedProfile);
     },
+
+    async likeComment(_, { id }: { id: string }, context) {
+      const user = checkAuth(context);
+
+      const query = {
+        comments: {
+          $elemMatch: {
+            _id: id,
+          },
+        },
+      };
+
+      const update = {
+        author: user.username,
+        onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',
+      };
+
+      const comment = await Comments.updateOne(
+        query,
+        { $push: { 'comments.$.likes': update } },
+        { useFindAndModify: false },
+      );
+
+      if (!comment) {
+        throw new UserInputError('Não há comentário');
+      }
+
+      return false;
+    },
   },
 };
 
