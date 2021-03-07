@@ -124,7 +124,7 @@ const commentsResolvers: IResolvers = {
         throw new UserInputError('Não há comentário');
       }
 
-      return false;
+      return true;
     },
   },
 };
