@@ -98,12 +98,16 @@ const commentsResolvers: IResolvers = {
       const user = checkAuth(context);
 
       const query = {
-        comments: {
-          $elemMatch: {
-            _id: id,
-          },
-        },
+        'comments._id': id,
       };
+
+      const hasLike = await Comments.findOne({
+        'comments.likes.author': user.username,
+      });
+
+      if (hasLike) {
+        throw new UserInputError('Já curtiu esse comentário');
+      }
 
       const update = {
         author: user.username,
