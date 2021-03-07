@@ -11,6 +11,12 @@ export interface Comment extends Document {
       onModel: string;
       body: string;
       createdAt: string;
+      likes?: [
+        {
+          author: string | IArtistProfile | IUserProfile;
+          onModel: string;
+        },
+      ];
     },
   ];
 }
