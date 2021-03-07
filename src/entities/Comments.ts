@@ -10,6 +10,12 @@ const CommentSchema = new Schema({
       onModel: { type: String, required: true, enum: ['ArtistProfile', 'UserProfile'] },
       body: { type: String, required: true },
       createdAt: String,
+      likes: [
+        {
+          author: { type: Schema.Types.String, refPath: 'likes.onModel' },
+          onModel: { type: String, required: true, enum: ['ArtistProfile', 'UserProfile'] },
+        },
+      ],
     },
   ],
 });
