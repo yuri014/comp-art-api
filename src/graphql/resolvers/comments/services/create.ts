@@ -77,10 +77,11 @@ export const createLikeComment = async (id: string, user: IToken) => {
   };
 
   const hasLike = await Comments.findOne({
+    'comments._id': id,
     'comments.likes.author': user.username,
-  });
+  }).select({ comments: { $elemMatch: { _id: id, 'likes.author': user.username } } });
 
-  if (hasLike) {
+  if (hasLike && hasLike.comments.length > 0) {
     throw new UserInputError('Já curtiu esse comentário');
   }
 
