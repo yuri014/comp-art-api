@@ -18,11 +18,10 @@ const levelDown = async (profile: IArtistProfile | IUserProfile, xp: number) => 
   if (profile.xp < targetXp && profile.level > 1) {
     await profile.updateOne({
       $inc: {
-        level: -1,
         xp: -xp,
       },
     });
-    return true;
+    return false;
   }
 
   if (profile.level === 1) {
