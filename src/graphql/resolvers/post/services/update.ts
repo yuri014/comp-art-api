@@ -21,16 +21,15 @@ const likePost = async (id: string, user: IToken) => {
     throw new UserInputError('Não há perfil');
   }
 
-  const post = await Post.findById(id).populate('likes.profile');
+  const post = await Post.findById(id)
+    .populate('likes.profile')
+    .select({ likes: { $elemMatch: { profile: profileDoc._id } } });
 
   if (!post) {
     throw new UserInputError('Não há post');
   }
 
-  // @ts-ignore
-  const hasAlreadyLike = post.likes.find(({ profile }) => profile.owner === profileDoc.owner);
-
-  if (hasAlreadyLike) {
+  if (post.likes.length > 0) {
     throw new UserInputError('Já curtiu esse post');
   }
 
