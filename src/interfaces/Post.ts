@@ -13,12 +13,10 @@ export interface IPost extends Document {
   description: string;
   body: string;
   isAudio: boolean;
-  likes: [
-    {
-      profile: IArtistProfile | IUserProfile | string;
-      onModel: string;
-    },
-  ];
+  likes: Array<{
+    profile: IArtistProfile | IUserProfile | string;
+    onModel: string;
+  }>;
   likesCount: number;
   sharedCount: number;
   commentsCount: number;

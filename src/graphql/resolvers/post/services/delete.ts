@@ -7,6 +7,7 @@ import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import levelDown from '../../../../utils/levelDown';
 import removeFile from '../../../../utils/removeFile';
+import findProfile from '../../profiles/services/utils/findProfileUtil';
 
 const options = {
   new: true,
@@ -14,16 +15,23 @@ const options = {
 };
 
 export const dislikePost = async (id: string, user: IToken) => {
-  const post = await Post.findById(id).populate('likes.profile');
+  const getProfile = await findProfile(user);
+
+  const profileDoc = getProfile._doc;
+
+  if (!profileDoc) {
+    throw new UserInputError('Não há perfil');
+  }
+
+  const post = await Post.findById(id)
+    .populate('likes.profile')
+    .select({ likes: { $elemMatch: { profile: profileDoc._id } } });
 
   if (!post) {
     throw new UserInputError('Não há post');
   }
 
-  // @ts-ignore
-  const hasAlreadyLike = post.likes.find(({ profile }) => profile.owner === user.username);
-
-  if (!hasAlreadyLike) {
+  if (post.likes.length === 0) {
     throw new UserInputError('Não curtiu esse post');
   }
 
@@ -32,7 +40,7 @@ export const dislikePost = async (id: string, user: IToken) => {
       {
         $pull: {
           likes: {
-            profile: hasAlreadyLike.profile,
+            profile: post.likes[0].profile,
           },
         },
         $inc: {
