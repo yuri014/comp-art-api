@@ -18,6 +18,7 @@ const mutations = gql`
     updateProfile(newProfileInput: CreateProfileInput): Boolean
     createSharePost(shareInput: SharePost!): Boolean
     likeComment(id: ID!): Boolean
+    dislikeComment(id: ID!): Boolean
   }
 `;
 

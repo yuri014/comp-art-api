@@ -4,6 +4,7 @@ import checkAuth from '../../../middlewares/checkAuth';
 import levelUp from '../../../utils/levelUp';
 import findComments from './services/find';
 import { createComment, createLikeComment } from './services/create';
+import dislikeCommentService from './services/delete';
 
 const commentsResolvers: IResolvers = {
   Query: {
@@ -24,6 +25,12 @@ const commentsResolvers: IResolvers = {
       const user = checkAuth(context);
 
       return createLikeComment(id, user);
+    },
+
+    async dislikeComment(_, { id }: { id: string }, context) {
+      const user = checkAuth(context);
+
+      return dislikeCommentService(id, user);
     },
   },
 };
