@@ -48,8 +48,16 @@ export const deleteCommentService = async (commentId: string, user: IToken) => {
     throw new UserInputError('Não há perfil');
   }
 
-  await Comments.updateOne(
-    { 'comments._id': commentId, 'comments.author': profile._id },
+  const comment = await Comments.findOne({
+    'comments._id': commentId,
+    'comments.author': profile._id,
+  });
+
+  if (!comment) {
+    throw new UserInputError('Não há comentário');
+  }
+
+  await comment.updateOne(
     {
       $pull: {
         comments: {
