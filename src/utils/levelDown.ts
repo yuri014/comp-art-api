@@ -31,7 +31,7 @@ const levelDown = async (profile: IArtistProfile | IUserProfile, xp: number) => 
       },
     });
 
-    return true;
+    return false;
   }
 
   return false;
