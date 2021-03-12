@@ -1,6 +1,7 @@
 import interactionsDefinitions from './interactions';
 import mutations from './mutation';
 import { postDefinitions, postInputDefinitions } from './post';
+import { productDefinition, productInputDefinition } from './product';
 import {
   profileDefinitions,
   userAndProfileInputsDefinitions,
@@ -12,8 +13,10 @@ const typeDefs = [
   interactionsDefinitions,
   profileDefinitions,
   userDefinitions,
-  userAndProfileInputsDefinitions,
   postDefinitions,
+  productDefinition,
+  productInputDefinition,
+  userAndProfileInputsDefinitions,
   postInputDefinitions,
   queries,
   mutations,
