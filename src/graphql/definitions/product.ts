@@ -16,7 +16,6 @@ export const productInputDefinition = gql`
   input ProductInput {
     artist: ID!
     name: String!
-    name: String!
     description: String!
     value: Int!
     category: String!
