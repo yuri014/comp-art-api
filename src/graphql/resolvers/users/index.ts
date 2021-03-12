@@ -113,7 +113,7 @@ const usersResolvers: IResolvers = {
         throw new UserInputError('Credenciais erradas', { errors });
       }
 
-      const token = generateToken(user, '1d');
+      const token = generateToken(user, '2d');
 
       return {
         ...user._doc,
