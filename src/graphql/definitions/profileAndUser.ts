@@ -28,34 +28,6 @@ export const profileDefinitions = gql`
     sharedPostCount: Int
     postCount: Int
   }
-
-  type ArtistProfile {
-    id: ID!
-    name: String!
-    avatar: File
-    coverImage: File
-    bio: String
-    xp: Int!
-    level: Int!
-    postCount: Int!
-    followers: Int!
-    following: Int!
-    isBlockedToPost: Boolean!
-    postsRemainingToUnblock: Int!
-  }
-
-  type UserProfile {
-    id: ID!
-    name: String!
-    avatar: File
-    coverImage: File
-    bio: String
-    xp: Int!
-    level: Int!
-    sharedPostCount: Int!
-    followers: Int!
-    following: Int!
-  }
 `;
 
 export const userDefinitions = gql`
