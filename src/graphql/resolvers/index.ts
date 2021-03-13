@@ -3,6 +3,7 @@ import postResolvers from './post';
 import profileResolvers from './profiles';
 import usersResolvers from './users';
 import shareResolvers from './share';
+import productsResolvers from './products';
 
 const resolvers = {
   Query: {
@@ -16,6 +17,7 @@ const resolvers = {
     ...postResolvers.Mutation,
     ...commentsResolvers.Mutation,
     ...shareResolvers.Mutation,
+    ...productsResolvers.Mutation,
   },
 };
 
