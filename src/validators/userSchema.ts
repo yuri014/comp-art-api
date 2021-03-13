@@ -6,7 +6,7 @@ const userValidateSchema = Joi.object({
     'string.base': 'Username deve ser um texto',
     'string.alphanum': 'Username apenas pode ser alfanumérico',
     'string.min': 'Username deve contér mais de seis caractéres',
-    'string.required': 'Username é obrigátório',
+    'string.required': 'Username é obrigatório',
   }),
 
   email: Joi.string()
@@ -23,7 +23,7 @@ const userValidateSchema = Joi.object({
       'string.base': 'Senha deve ser um texto',
       'string.pattern.base':
         'Senha deve conter uma letra maiuscúla, uma letra minúscula, um número,e um caracter especial e mínimo de 8 caracteres',
-      'string.required': 'Senha é obrigátório',
+      'string.required': 'Senha é obrigatório',
     }),
 
   confirmPassword: Joi.any()
