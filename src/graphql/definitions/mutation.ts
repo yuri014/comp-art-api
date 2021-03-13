@@ -20,6 +20,7 @@ const mutations = gql`
     createSharePost(shareInput: SharePost!): Boolean
     likeComment(id: ID!): Boolean
     dislikeComment(id: ID!): Boolean
+    createProduct(productInput: ProductInput!): Boolean
   }
 `;
 
