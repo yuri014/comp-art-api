@@ -9,6 +9,7 @@ export interface IProduct extends Document {
   value: number;
   category: string;
   image: Array<string>;
+  number: string;
   createdAt: string;
   artist: string | IArtistProfile;
 }

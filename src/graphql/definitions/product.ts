@@ -8,6 +8,7 @@ export const productDefinition = gql`
     value: Int!
     category: String!
     image: [String]
+    number: String!
     createdAt: String!
   }
 `;
@@ -20,5 +21,6 @@ export const productInputDefinition = gql`
     value: Int!
     category: String!
     image: Upload
+    number: String!
   }
 `;

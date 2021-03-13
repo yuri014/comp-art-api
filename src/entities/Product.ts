@@ -8,6 +8,7 @@ const ProductSchema = new Schema({
   value: { type: Number, required: true },
   category: { type: String, required: true },
   image: [{ type: String, required: true }],
+  phone: [{ type: String, required: true }],
   createdAt: { type: String, required: true },
   artist: {
     type: Schema.Types.ObjectId,
