@@ -24,7 +24,7 @@ const productsResolvers: IResolvers = {
         });
       }
 
-      const { category, images, name, phone, value, description } = productInput;
+      const { category, images, name, phone, price, description } = productInput;
 
       const uploadedImages = await images;
 
@@ -37,7 +37,7 @@ const productsResolvers: IResolvers = {
         artist: user.username,
         category: category.trim(),
         phone: phone.trim(),
-        value,
+        price,
         description: description?.trim(),
         images: imagesUrl,
       });

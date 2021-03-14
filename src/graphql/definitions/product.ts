@@ -5,7 +5,7 @@ export const productDefinition = gql`
     artist: Profile!
     name: String!
     description: String!
-    value: Int!
+    price: Float!
     category: String!
     images: [String]
     phone: String!
@@ -17,7 +17,7 @@ export const productInputDefinition = gql`
   input ProductInput {
     name: String!
     description: String
-    value: Int!
+    price: Float!
     category: String!
     images: Upload
     phone: String!
