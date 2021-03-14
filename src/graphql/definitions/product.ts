@@ -7,7 +7,7 @@ export const productDefinition = gql`
     description: String!
     value: Int!
     category: String!
-    image: [String]
+    images: [String]
     phone: String!
     createdAt: String!
   }
@@ -15,12 +15,11 @@ export const productDefinition = gql`
 
 export const productInputDefinition = gql`
   input ProductInput {
-    artist: ID!
     name: String!
     description: String
     value: Int!
     category: String!
-    image: Upload
+    images: Upload
     phone: String!
   }
 `;

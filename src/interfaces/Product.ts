@@ -16,11 +16,10 @@ export interface IProduct extends Document {
 }
 
 export interface IProductInput {
-  artist: string;
   name: string;
   description?: string;
   value: number;
   category: string;
-  image: Promise<IUpload>;
+  images: Promise<IUpload[]>;
   phone: string;
 }

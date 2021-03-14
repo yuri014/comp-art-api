@@ -7,11 +7,11 @@ const ProductSchema = new Schema({
   description: { type: String, required: true },
   value: { type: Number, required: true },
   category: { type: String, required: true },
-  image: [{ type: String, required: true }],
+  images: [{ type: String, required: true }],
   phone: [{ type: String, required: true }],
   createdAt: { type: String, required: true },
   artist: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.String,
     ref: 'ArtistProfile',
   },
 });
