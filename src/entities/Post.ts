@@ -2,10 +2,19 @@ import mongoose, { Schema } from 'mongoose';
 
 import { IPost } from '../interfaces/Post';
 
+/**
+ * @field
+ * mediaId:
+ * 1 - image
+ * 2 - audio
+ * 3 - video
+ * 4 - text
+ */
+
 const PostSchema = new Schema({
   description: { type: String },
   body: { type: String, required: true },
-  isAudio: { type: Boolean, required: true, default: false },
+  mediaId: { type: Number, required: true, default: 1 },
   likes: [
     {
       profile: { type: Schema.Types.ObjectId, refPath: 'likes.onModel' },

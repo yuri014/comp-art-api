@@ -5,14 +5,14 @@ import { IUpload } from './Upload';
 export interface IPostInput {
   description: string;
   body: Promise<IUpload>;
-  isAudio: boolean;
+  mediaId: number;
 }
 
 export interface IPost extends Document {
   _doc?: IPost;
   description: string;
   body: string;
-  isAudio: boolean;
+  mediaId: number;
   likes: Array<{
     profile: IArtistProfile | IUserProfile | string;
     onModel: string;

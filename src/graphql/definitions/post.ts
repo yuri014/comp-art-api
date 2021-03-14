@@ -31,7 +31,7 @@ export const postInputDefinitions = gql`
   input CreatePostInput {
     description: String!
     body: Upload!
-    isAudio: Boolean!
+    mediaId: Int!
   }
 
   input SharePost {

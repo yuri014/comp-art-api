@@ -18,7 +18,7 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
   const post = {
     description: postInput.description.trim(),
     body: postInput.body,
-    isAudio: postInput.isAudio,
+    mediaId: postInput.mediaId,
   };
 
   const errors = postValidationSchema.validate({
@@ -34,7 +34,7 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
   const { file } = await post.body;
 
   const media = async () => {
-    if (post.isAudio) {
+    if (post.mediaId === 2) {
       return uploadAudio(file.createReadStream, file.filename);
     }
 
