@@ -6,8 +6,8 @@ import User from '../../../entities/User';
 import { validateLoginInput, validateRegisterInput } from '../../../utils/validateRegisterInput';
 import { IRegisterFields } from '../../../interfaces/User';
 import sendEmailVerification from '../../../utils/sendEmail';
-import generateToken from './services/generateToken';
 import { emailConfirmationMessage, passwordRecoverMessage } from './services/userEmailMessages';
+import generateToken from '../../../utils/generateToken';
 
 const usersResolvers: IResolvers = {
   Mutation: {
@@ -54,7 +54,7 @@ const usersResolvers: IResolvers = {
 
       const result = await newUser.save();
 
-      const token = generateToken(result, '1d');
+      const token = generateToken(result, '2d');
 
       const message = emailConfirmationMessage(
         username,

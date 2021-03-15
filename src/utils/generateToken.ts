@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { IUser } from '../../../../interfaces/User';
+import { IUser } from '../interfaces/User';
 
 const generateToken = (user: IUser, expiresIn: string) =>
   jwt.sign(
