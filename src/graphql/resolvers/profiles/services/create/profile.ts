@@ -1,32 +1,22 @@
-import { UserInputError } from 'apollo-server-express';
 import { Model } from 'mongoose';
 
-import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../interfaces/Profile';
-import { IToken } from '../../../../interfaces/Token';
-import { uploadImage } from '../../../../utils/upload';
+import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../../interfaces/Profile';
+import { IToken } from '../../../../../interfaces/Token';
+import { uploadImage } from '../../../../../utils/upload';
+import canCreateProfile from '../utils/profileValidation';
 
 const createProfile = async (
   user: IToken,
   Profile: Model<IArtistProfile> | Model<IUserProfile>,
   data: ICreateProfile,
 ) => {
-  const profileExists = await Profile.findOne({ owner: user.username });
-
   const { avatar, bio, coverImage, name, hashtags, links } = data;
 
-  if (profileExists) {
-    throw new UserInputError('Usuário já é dono de um perfil', {
-      errors: 'Usuário já é dono de um perfil',
-    });
-  }
+  const validation = await canCreateProfile(user, name, bio, hashtags);
 
-  const hashtagsLength = data.hashtags.length;
+  const profileExists = await Profile.findOne({ owner: user.username });
 
-  if (hashtagsLength > 5 || hashtagsLength !== new Set(data.hashtags).size) {
-    throw new UserInputError('Limite de 5 hashtags não repetidas', {
-      errors: 'Limite de 5 hashtags não repetidas',
-    });
-  }
+  await validation(profileExists);
 
   const { file: avatarFile } = await avatar;
   const avatarImageUrl = await uploadImage(avatarFile?.createReadStream, avatarFile?.filename);
@@ -45,6 +35,8 @@ const createProfile = async (
   });
 
   await newProfile.save();
+
+  return true;
 };
 
 export default createProfile;

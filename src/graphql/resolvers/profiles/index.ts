@@ -3,9 +3,7 @@ import { IResolvers, UserInputError } from 'apollo-server-express';
 import ArtistProfile from '../../../entities/ArtistProfile';
 import { ICreateProfile } from '../../../interfaces/Profile';
 import checkAuth from '../../../middlewares/checkAuth';
-import createProfile from './services/create';
 import UserProfile from '../../../entities/UserProfile';
-import profileValidationSchema from '../../../validators/profileSchema';
 import User from '../../../entities/User';
 import { follower, following, updateProfileService } from './services/update';
 import { unfollower, unfollowing } from './services/delete';
@@ -17,6 +15,7 @@ import {
 } from './services/find/profile';
 import { getFollowersService, getFollowingService, isFollowing } from './services/find/follow';
 import { IOffset } from './services/utils/findFollows';
+import createProfile from './services/create/profile';
 
 type IUsername = {
   username: string;
@@ -60,32 +59,11 @@ const profileResolvers: IResolvers = {
     ) {
       const user = checkAuth(context);
 
-      if (!user) {
-        throw new UserInputError('Usuário não encontrado', {
-          errors: 'Usuário não encontrado',
-        });
-      }
-
-      const errors = profileValidationSchema.validate({
-        name: createProfileInput.name,
-        bio: createProfileInput.bio,
-      });
-
-      if (errors.error) {
-        throw new UserInputError('Erros', {
-          errors: errors.error.message,
-        });
-      }
-
       if (user.isArtist) {
-        await createProfile(user, ArtistProfile, createProfileInput);
-
-        return true;
+        return createProfile(user, ArtistProfile, createProfileInput);
       }
 
-      await createProfile(user, UserProfile, createProfileInput);
-
-      return true;
+      return createProfile(user, UserProfile, createProfileInput);
     },
 
     async updateProfile(_, { newProfileInput }: { newProfileInput: ICreateProfile }, context) {
