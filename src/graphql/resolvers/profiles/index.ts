@@ -9,13 +9,14 @@ import profileValidationSchema from '../../../validators/profileSchema';
 import User from '../../../entities/User';
 import { follower, following, updateProfileService } from './services/update';
 import { unfollower, unfollowing } from './services/delete';
-import { isAlreadyFollow } from '../../../middlewares/isAlreadyFollow';
-import Follower from '../../../entities/Follower';
-import Following from '../../../entities/Following';
 import findProfile from './services/utils/findProfileUtil';
-import findFollows from './services/find';
-import { IFollower, IFollowing } from '../../../interfaces/Follow';
-import shuffleArray from './services/utils/shuffleProfilesArray';
+import {
+  getLoggedProfileService,
+  getProfileService,
+  searchProfilesService,
+} from './services/find/profile';
+import { getFollowersService, getFollowingService, isFollowing } from './services/find/follow';
+import { IOffset } from './services/utils/findFollows';
 
 type IUsername = {
   username: string;
@@ -23,86 +24,32 @@ type IUsername = {
 
 const profileResolvers: IResolvers = {
   Query: {
-    async getProfile(_, { username }) {
-      const user = await User.findOne({ username });
-
-      if (!user) {
-        throw new UserInputError('Usuário não encontrado');
-      }
-
-      const profile = await findProfile(user);
-
-      return { ...profile._doc, isArtist: profile.isArtist };
+    async getProfile(_, { username }: IUsername) {
+      return getProfileService(username);
     },
 
-    async getLoggedProfile(parent, args, context) {
+    async getLoggedProfile(_, __, context) {
       const user = checkAuth(context);
 
-      const profile = await findProfile(user);
-
-      const profileView = profile._doc;
-
-      if (!profileView) {
-        throw new Error();
-      }
-
-      const targetXp = 1000 * profileView.level * 1.25;
-
-      profileView.xp = Math.floor((profileView.xp / targetXp) * 100);
-
-      return { ...profileView, isArtist: profile.isArtist };
+      return getLoggedProfileService(user);
     },
 
     async getIsFollowing(_, { username }: IUsername, context) {
       const user = checkAuth(context);
 
-      const { artistFollower, userFollower } = await isAlreadyFollow(user.username, username);
-
-      if (!artistFollower || !userFollower) return false;
-      if (artistFollower.artistFollowers.length > 0 || userFollower.userFollowers.length > 0) {
-        return true;
-      }
-
-      return false;
+      return isFollowing(username, user.username);
     },
 
-    async getFollowers(_, params: { offset: number; username: string }) {
-      const followsResult = await findFollows(Follower, params, [
-        'artistFollowers',
-        'userFollowers',
-      ]);
-      const followers = followsResult as IFollower;
-
-      const artists = followers.artistFollowers || [];
-      const users = followers.userFollowers || [];
-
-      return shuffleArray(artists, users);
+    async getFollowers(_, params: IOffset) {
+      return getFollowersService(params);
     },
 
-    async getFollowing(_, params: { offset: number; username: string }) {
-      const followsResult = await findFollows(Following, params, [
-        'artistFollowing',
-        'userFollowing',
-      ]);
-
-      const follows = followsResult as IFollowing;
-
-      const artists = follows.artistFollowing || [];
-      const users = follows.userFollowing || [];
-
-      return shuffleArray(artists, users);
+    async getFollowing(_, params: IOffset) {
+      return getFollowingService(params);
     },
 
     async searchProfiles(_, { query, offset }: { query: string; offset: number }) {
-      const artistsProfiles = await ArtistProfile.find({ $text: { $search: query } })
-        .skip(offset > 0 ? Math.round(offset / 2) : offset)
-        .limit(5);
-
-      const usersProfiles = await UserProfile.find({ $text: { $search: query } })
-        .skip(offset > 0 ? Math.round(offset / 2) : offset)
-        .limit(5);
-
-      return shuffleArray(artistsProfiles, usersProfiles);
+      return searchProfilesService(query, offset);
     },
   },
   Mutation: {
