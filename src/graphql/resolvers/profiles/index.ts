@@ -5,7 +5,7 @@ import { ICreateProfile } from '../../../interfaces/Profile';
 import checkAuth from '../../../middlewares/checkAuth';
 import UserProfile from '../../../entities/UserProfile';
 import User from '../../../entities/User';
-import { follower, following, updateProfileService } from './services/update';
+import { updateProfileService } from './services/update';
 import { unfollower, unfollowing } from './services/delete';
 import findProfile from './services/utils/findProfileUtil';
 import {
@@ -16,6 +16,7 @@ import {
 import { getFollowersService, getFollowingService, isFollowing } from './services/find/follow';
 import { IOffset } from './services/utils/findFollows';
 import createProfile from './services/create/profile';
+import followService from './services/create/follow';
 
 type IUsername = {
   username: string;
@@ -95,37 +96,7 @@ const profileResolvers: IResolvers = {
     async follow(_, { username }: IUsername, context) {
       const userWhoFollows = checkAuth(context);
 
-      const followedUser = await User.findOne({ username });
-
-      if (!followedUser) {
-        throw new UserInputError('Usuário não encontrado', {
-          errors: 'Usuário não encontrado',
-        });
-      }
-
-      if (username === userWhoFollows.username) {
-        throw new UserInputError('Usuário não pode se seguir', {
-          errors: 'Usuário não pode se seguir',
-        });
-      }
-
-      const profileWhoIsFollowed = await findProfile(followedUser);
-
-      const authProfile = await findProfile(userWhoFollows);
-
-      if (!authProfile._doc || !profileWhoIsFollowed._doc) {
-        throw new Error();
-      }
-
-      await follower(userWhoFollows.isArtist, authProfile._doc._id, followedUser.username);
-
-      await following(
-        followedUser.isArtist,
-        profileWhoIsFollowed._doc._id,
-        userWhoFollows.username,
-      );
-
-      return true;
+      return followService(userWhoFollows, username);
     },
 
     async unfollow(_, { username }: IUsername, context) {
