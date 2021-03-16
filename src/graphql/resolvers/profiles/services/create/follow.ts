@@ -1,7 +1,7 @@
 import { UserInputError } from 'apollo-server-express';
 import User from '../../../../../entities/User';
 import { IToken } from '../../../../../interfaces/Token';
-import { follower, following } from '../update';
+import { follower, following } from '../update/follow';
 import findProfile from '../utils/findProfileUtil';
 
 const followService = async (userWhoFollows: IToken, username: string) => {
