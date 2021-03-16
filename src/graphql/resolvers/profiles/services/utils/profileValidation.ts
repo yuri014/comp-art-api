@@ -4,7 +4,7 @@ import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile'
 import { IToken } from '../../../../../interfaces/Token';
 import profileValidationSchema from '../../../../../validators/profileSchema';
 
-const canCreateProfile = async (
+const profileValidation = async (
   user: IToken,
   name: string,
   bio: string,
@@ -44,4 +44,4 @@ const canCreateProfile = async (
   };
 };
 
-export default canCreateProfile;
+export default profileValidation;

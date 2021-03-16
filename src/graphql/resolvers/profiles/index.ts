@@ -5,7 +5,6 @@ import { ICreateProfile } from '../../../interfaces/Profile';
 import checkAuth from '../../../middlewares/checkAuth';
 import UserProfile from '../../../entities/UserProfile';
 import User from '../../../entities/User';
-import { updateProfileService } from './services/update';
 import { unfollower, unfollowing } from './services/delete';
 import findProfile from './services/utils/findProfileUtil';
 import {
@@ -17,6 +16,8 @@ import { getFollowersService, getFollowingService, isFollowing } from './service
 import { IOffset } from './services/utils/findFollows';
 import createProfile from './services/create/profile';
 import followService from './services/create/follow';
+import updateProfileService from './services/update/profile';
+import profileValidation from './services/utils/profileValidation';
 
 type IUsername = {
   username: string;
@@ -70,17 +71,12 @@ const profileResolvers: IResolvers = {
     async updateProfile(_, { newProfileInput }: { newProfileInput: ICreateProfile }, context) {
       const user = checkAuth(context);
 
-      if (!user) {
-        throw new UserInputError('Usuário não encontrado', {
-          errors: 'Usuário não encontrado',
-        });
-      }
-
-      if (newProfileInput.name.length < 4 || newProfileInput.name.length > 24) {
-        throw new UserInputError('Erros', {
-          errors: 'Nome deve contér mais de quatro caractéres',
-        });
-      }
+      await profileValidation(
+        user,
+        newProfileInput.name,
+        newProfileInput.bio,
+        newProfileInput.hashtags,
+      );
 
       if (user.isArtist) {
         await updateProfileService(user, ArtistProfile, newProfileInput);

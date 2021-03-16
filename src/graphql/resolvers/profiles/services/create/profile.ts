@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../../interfaces/Profile';
 import { IToken } from '../../../../../interfaces/Token';
 import { uploadImage } from '../../../../../utils/upload';
-import canCreateProfile from '../utils/profileValidation';
+import profileValidation from '../utils/profileValidation';
 
 const createProfile = async (
   user: IToken,
@@ -12,7 +12,7 @@ const createProfile = async (
 ) => {
   const { avatar, bio, coverImage, name, hashtags, links } = data;
 
-  const validation = await canCreateProfile(user, name, bio, hashtags);
+  const validation = await profileValidation(user, name, bio, hashtags);
 
   const profileExists = await Profile.findOne({ owner: user.username });
 
