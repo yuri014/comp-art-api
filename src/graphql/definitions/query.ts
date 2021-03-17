@@ -7,6 +7,10 @@ const queries = gql`
     url: String
   }
 
+  extend type Profile {
+    followsYou: Boolean
+  }
+
   type Query {
     getProfile(username: String!): Profile
     getLoggedProfile: Profile!
