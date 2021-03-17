@@ -37,7 +37,7 @@ export const follower = async (
         username: userWhoIsFollowed,
       },
       {
-        $set: {
+        $push: {
           // @ts-ignore
           artistFollowers: profileIdThatFollows,
         },
@@ -61,7 +61,7 @@ export const follower = async (
       username: userWhoIsFollowed,
     },
     {
-      $set: {
+      $push: {
         // @ts-ignore
         userFollowers: profileIdThatFollows,
       },
@@ -95,7 +95,7 @@ export const following = async (
         username: userWhoIsFollowing,
       },
       {
-        $set: {
+        $push: {
           // @ts-ignore
           artistFollowing: profileIdThatIsFollowing,
         },
@@ -118,7 +118,7 @@ export const following = async (
       username: userWhoIsFollowing,
     },
     {
-      $set: {
+      $push: {
         // @ts-ignore
         userFollowing: profileIdThatIsFollowing,
       },
