@@ -3,7 +3,7 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 import Follower from '../../../../entities/Follower';
 import Following from '../../../../entities/Following';
 import UserProfile from '../../../../entities/UserProfile';
-import { IArtistProfile, IProfileView, IUserProfile } from '../../../../interfaces/Profile';
+import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { isAlreadyFollow, isAlreadyFollowing } from '../../../../middlewares/isAlreadyFollow';
 
 const options = {
@@ -17,13 +17,13 @@ export const unfollower = async (
   userWhoIsFollowed: string,
 ) => {
   const { artistFollower, userFollower } = await isAlreadyFollow(
-    profileThatFollows.owner,
+    profileThatFollows._id,
     userWhoIsFollowed,
   );
 
   if (isArtist) {
     // @ts-ignore
-    if (artistFollower.artistFollowers.lenght) {
+    if (artistFollower && artistFollower.artistFollowers.lenght === 0) {
       throw new UserInputError('Não é seguido');
     }
 
@@ -70,11 +70,11 @@ export const unfollower = async (
 
 export const unfollowing = async (
   isArtist: boolean,
-  profileThatIsFollowing: IProfileView,
+  profileThatIsFollowing: IArtistProfile | IUserProfile,
   userWhoIsFollowing: string,
 ) => {
   const { artistFollowing, userFollowing } = await isAlreadyFollowing(
-    profileThatIsFollowing.owner,
+    profileThatIsFollowing._id,
     userWhoIsFollowing,
   );
 
@@ -84,7 +84,7 @@ export const unfollowing = async (
 
   if (isArtist) {
     // @ts-ignore
-    if (artistFollowing.artistFollowing.lenght) {
+    if (artistFollowing.artistFollowing.lenght === 0) {
       throw new UserInputError('Já é seguido');
     }
 

@@ -4,13 +4,13 @@ import Following from '../entities/Following';
 export const isAlreadyFollow = async (id: string, username: string) => {
   const artistFollower = await Follower.findOne({
     username,
-  }).select({
+    // @ts-ignore
     artistFollowers: id,
   });
 
   const userFollower = await Follower.findOne({
     username,
-  }).select({
+    // @ts-ignore
     userFollowers: id,
   });
 
@@ -20,13 +20,13 @@ export const isAlreadyFollow = async (id: string, username: string) => {
 export const isAlreadyFollowing = async (id: string, username: string) => {
   const artistFollowing = await Following.findOne({
     username,
-  }).select({
+    // @ts-ignore
     artistFollowing: id,
   });
 
   const userFollowing = await Following.findOne({
     username,
-  }).select({
+    // @ts-ignore
     userFollowing: id,
   });
 
