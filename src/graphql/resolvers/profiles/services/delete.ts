@@ -3,7 +3,7 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 import Follower from '../../../../entities/Follower';
 import Following from '../../../../entities/Following';
 import UserProfile from '../../../../entities/UserProfile';
-import { IProfileView } from '../../../../interfaces/Profile';
+import { IArtistProfile, IProfileView, IUserProfile } from '../../../../interfaces/Profile';
 import { isAlreadyFollow, isAlreadyFollowing } from '../../../../middlewares/isAlreadyFollow';
 
 const options = {
@@ -13,7 +13,7 @@ const options = {
 
 export const unfollower = async (
   isArtist: boolean,
-  profileThatFollows: IProfileView,
+  profileThatFollows: IArtistProfile | IUserProfile,
   userWhoIsFollowed: string,
 ) => {
   const { artistFollower, userFollower } = await isAlreadyFollow(
@@ -38,11 +38,7 @@ export const unfollower = async (
       {
         $pull: {
           // @ts-ignore
-          artistFollowers: {
-            avatar: profileThatFollows.avatar,
-            owner: profileThatFollows.owner,
-            name: profileThatFollows.name,
-          },
+          artistFollowers: profileThatFollows._id,
         },
       },
       options,
@@ -65,11 +61,7 @@ export const unfollower = async (
     {
       $pull: {
         // @ts-ignore
-        userFollowers: {
-          avatar: profileThatFollows.avatar,
-          owner: profileThatFollows.owner,
-          name: profileThatFollows.name,
-        },
+        userFollowers: profileThatFollows._id,
       },
     },
     options,
@@ -109,11 +101,7 @@ export const unfollowing = async (
       {
         $pull: {
           // @ts-ignore
-          artistFollowing: {
-            avatar: profileThatIsFollowing.avatar,
-            owner: profileThatIsFollowing.owner,
-            name: profileThatIsFollowing.name,
-          },
+          artistFollowing: profileThatIsFollowing._id,
         },
       },
       options,
@@ -138,11 +126,7 @@ export const unfollowing = async (
     {
       $pull: {
         // @ts-ignore
-        userFollowing: {
-          avatar: profileThatIsFollowing.avatar,
-          owner: profileThatIsFollowing.owner,
-          name: profileThatIsFollowing.name,
-        },
+        userFollowing: profileThatIsFollowing._id,
       },
     },
     options,
