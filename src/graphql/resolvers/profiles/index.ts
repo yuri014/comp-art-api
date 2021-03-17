@@ -18,6 +18,7 @@ import createProfile from './services/create/profile';
 import followService from './services/create/follow';
 import updateProfileService from './services/update/profile';
 import profileValidation from './services/utils/profileValidation';
+import getToken from '../../../utils/getToken';
 
 type IUsername = {
   username: string;
@@ -41,12 +42,16 @@ const profileResolvers: IResolvers = {
       return isFollowing(username, user.username);
     },
 
-    async getFollowers(_, params: IOffset) {
-      return getFollowersService(params);
+    async getFollowers(_, params: IOffset, context) {
+      const token = getToken(context);
+
+      return getFollowersService(params, token);
     },
 
-    async getFollowing(_, params: IOffset) {
-      return getFollowingService(params);
+    async getFollowing(_, params: IOffset, context) {
+      const token = getToken(context);
+
+      return getFollowingService(params, token);
     },
 
     async searchProfiles(_, { query, offset }: { query: string; offset: number }) {
