@@ -1,4 +1,3 @@
-import { UserInputError } from 'apollo-server-express';
 import { Model } from 'mongoose';
 
 import { IFollower, IFollowing } from '../../../../../interfaces/Follow';
@@ -22,7 +21,7 @@ const findFollows = async (
     .populate(queryParams[1]);
 
   if (!follows) {
-    throw new UserInputError('Não está seguindo ninguém');
+    return [];
   }
 
   return follows;
