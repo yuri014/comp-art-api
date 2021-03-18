@@ -5,6 +5,7 @@ import Post from '../../../../entities/Post';
 import UserProfile from '../../../../entities/UserProfile';
 
 import { IToken } from '../../../../interfaces/Token';
+import xpValues from '../../../../utils/xpValues';
 import commentValidationSchema from '../../../../validators/commentSchema';
 
 export const createComment = async (id: string, comment: string, user: IToken) => {
@@ -59,10 +60,12 @@ export const createComment = async (id: string, comment: string, user: IToken) =
     },
   );
 
+  const { commentXP } = xpValues;
+
   const updatedProfile = await profile.updateOne(
     {
       $inc: {
-        xp: 150,
+        xp: commentXP,
       },
     },
     { useFindAndModify: false, new: true },

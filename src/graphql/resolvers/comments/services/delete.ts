@@ -5,6 +5,7 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 import UserProfile from '../../../../entities/UserProfile';
 import { IToken } from '../../../../interfaces/Token';
 import levelDown from '../../../../utils/levelDown';
+import xpValues from '../../../../utils/xpValues';
 
 export const dislikeCommentService = async (likeID: string, user: IToken) => {
   const hasLike = await Comments.findOne({
@@ -57,6 +58,8 @@ export const deleteCommentService = async (commentId: string, user: IToken) => {
     throw new UserInputError('Não há comentário');
   }
 
+  const { commentXP } = xpValues;
+
   await comment.updateOne(
     {
       $pull: {
@@ -69,5 +72,5 @@ export const deleteCommentService = async (commentId: string, user: IToken) => {
     { useFindAndModify: false },
   );
 
-  return levelDown(profile, 150);
+  return levelDown(profile, commentXP);
 };

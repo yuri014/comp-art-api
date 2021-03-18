@@ -6,6 +6,7 @@ import { IToken } from '../../../../interfaces/Token';
 import checkAbilityToPost from '../../../../middlewares/checkAbilityToPost';
 import levelUp from '../../../../utils/levelUp';
 import { uploadAudio, uploadImage } from '../../../../utils/upload';
+import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';
 
 const createNewPost = async (postInput: IPostInput, user: IToken) => {
@@ -33,8 +34,10 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
 
   const { file } = await post.body;
 
+  const audioId = 2;
+
   const media = async () => {
-    if (post.mediaId === 2) {
+    if (post.mediaId === audioId) {
       return uploadAudio(file.createReadStream, file.filename);
     }
 
@@ -47,7 +50,7 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
     description: post.description,
     body: fileUrl,
     createdAt: new Date().toISOString(),
-    isAudio: post.isAudio,
+    mediaId: post.mediaId,
     artist: profile._id,
   });
 
@@ -55,9 +58,11 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
 
   await newPost.save();
 
+  const { postXP } = xpValues;
+
   const updatedProfile = await ArtistProfile.findOneAndUpdate(
     { owner: profile.owner },
-    { $inc: { postCount: 1, xp: 400 } },
+    { $inc: { postCount: 1, xp: postXP } },
     { useFindAndModify: false, new: true },
   );
 

@@ -5,6 +5,7 @@ import Post from '../../../../entities/Post';
 import UserProfile from '../../../../entities/UserProfile';
 import { IToken } from '../../../../interfaces/Token';
 import levelUp from '../../../../utils/levelUp';
+import xpValues from '../../../../utils/xpValues';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 
 const options = {
@@ -57,12 +58,14 @@ const likePost = async (id: string, user: IToken) => {
     throw new Error(error);
   }
 
+  const { likeXP } = xpValues;
+
   if (user.isArtist) {
     const updatedProfile = await ArtistProfile.findOneAndUpdate(
       { owner: user.username },
       {
         $inc: {
-          xp: 75,
+          xp: likeXP,
         },
       },
       options,
@@ -79,7 +82,7 @@ const likePost = async (id: string, user: IToken) => {
     { owner: user.username },
     {
       $inc: {
-        xp: 75,
+        xp: likeXP,
       },
     },
     options,

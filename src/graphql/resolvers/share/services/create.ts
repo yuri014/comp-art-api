@@ -8,6 +8,7 @@ import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IShareInput } from '../../../../interfaces/Share';
 import { IToken } from '../../../../interfaces/Token';
 import levelUp from '../../../../utils/levelUp';
+import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';
 
 const share = async (user: IToken, input: IShareInput) => {
@@ -51,6 +52,8 @@ const share = async (user: IToken, input: IShareInput) => {
     },
   });
 
+  const { shareXP } = xpValues;
+
   if (user.isArtist) {
     const artist = profile as IArtistProfile;
 
@@ -74,7 +77,7 @@ const share = async (user: IToken, input: IShareInput) => {
       {
         $inc: {
           postCount: 1,
-          xp: 250,
+          xp: shareXP,
         },
       },
       { new: true },
@@ -87,7 +90,7 @@ const share = async (user: IToken, input: IShareInput) => {
     {
       $inc: {
         sharedPostCount: 1,
-        xp: 250,
+        xp: shareXP,
       },
     },
     { new: true },

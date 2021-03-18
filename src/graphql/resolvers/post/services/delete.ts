@@ -7,6 +7,7 @@ import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import levelDown from '../../../../utils/levelDown';
 import removeFile from '../../../../utils/removeFile';
+import xpValues from '../../../../utils/xpValues';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 
 const options = {
@@ -53,6 +54,8 @@ export const dislikePost = async (id: string, user: IToken) => {
     throw new Error(error);
   }
 
+  const { likeXP } = xpValues;
+
   if (user.isArtist) {
     const updatedProfile = await ArtistProfile.findOne({ owner: user.username });
 
@@ -60,7 +63,7 @@ export const dislikePost = async (id: string, user: IToken) => {
       throw Error();
     }
 
-    return levelDown(updatedProfile, 75);
+    return levelDown(updatedProfile, likeXP);
   }
 
   const updatedProfile = await UserProfile.findOne({ owner: user.username });
@@ -69,7 +72,7 @@ export const dislikePost = async (id: string, user: IToken) => {
     throw Error();
   }
 
-  return levelDown(updatedProfile, 75);
+  return levelDown(updatedProfile, likeXP);
 };
 
 export const deletePostService = async (id: string, user: IToken) => {
@@ -108,5 +111,7 @@ export const deletePostService = async (id: string, user: IToken) => {
     throw Error();
   }
 
-  return levelDown(updatedProfile, 400);
+  const { postXP } = xpValues;
+
+  return levelDown(updatedProfile, postXP);
 };
