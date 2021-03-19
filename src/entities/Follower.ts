@@ -4,7 +4,7 @@ import { IFollower } from '../interfaces/Follow';
 const FollowerSchema = new Schema({
   username: {
     type: Schema.Types.String,
-    ref: 'users',
+    ref: 'User',
     required: true,
   },
   userFollowers: [

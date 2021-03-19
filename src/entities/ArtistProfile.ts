@@ -18,7 +18,7 @@ const ArtistProfileSchema = new Schema({
   updatedAt: String,
   owner: {
     type: Schema.Types.String,
-    ref: 'users',
+    ref: 'User',
   },
   hashtags: { type: [String], maxlength: 6 },
   links: {
