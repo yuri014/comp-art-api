@@ -1,6 +1,8 @@
 import { Document } from 'mongoose';
-import { IArtistProfile, IUserProfile } from './Profile';
+
 import { IUpload } from './Upload';
+import { IOnModel } from './General';
+import { IArtistProfile, IUserProfile } from './Profile';
 
 interface Post {
   description?: string;
@@ -12,7 +14,7 @@ export interface IPost extends Document, Post {
   body: string;
   likes: Array<{
     profile: IArtistProfile | IUserProfile | string;
-    onModel: string;
+    onModel: IOnModel;
   }>;
   likesCount: number;
   sharedCount: number;

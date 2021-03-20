@@ -1,5 +1,7 @@
 import { Document } from 'mongoose';
+
 import { IPost } from './Post';
+import { IOnModel } from './General';
 import { IArtistProfile, IUserProfile } from './Profile';
 
 export interface IShare extends Document {
@@ -10,7 +12,7 @@ export interface IShare extends Document {
   likes: [
     {
       profile: IArtistProfile | IUserProfile | string;
-      onModel: string;
+      onModel: IOnModel;
     },
   ];
   likesCount: number;
@@ -18,7 +20,7 @@ export interface IShare extends Document {
   commentsCount: number;
   createdAt: string;
   profile: IArtistProfile | IUserProfile | string;
-  onModel: string;
+  onModel: IOnModel;
 }
 export interface IShareInput {
   postID: string;
