@@ -18,3 +18,18 @@
 - middlewares: Aqui ficam todas as regras que **precisam** ser feitas antes de manipular algum dado.
 - utils: Aqui ficam todas as regras que vão ser utilizadas por múltiplos _resolvers_.
 - validators: Aqui ficam os _schemas_ de validação do **Joi**.
+
+### Arquivos
+
+Nomeie os arquivos com o seguinte padrão:
+
+- **Entidades:** PascalCase.
+- **Interfaces:** PascalCase.
+- **Emails:** camelCase.
+- **Definitions:** camelCase.
+- **Resolvers:** camelCase.
+- **Middlewares:** camelCase.
+- **Utils:**  camelCase.
+- **Validators:** camelCase.
+
+[Voltar ao índice](../README.md)
