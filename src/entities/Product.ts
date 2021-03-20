@@ -10,6 +10,16 @@ const ProductSchema = new Schema({
   images: [{ type: String, required: true }],
   phone: [{ type: String, required: true }],
   createdAt: { type: String, required: true },
+  reviewsStars: [Number],
+  reviews: [
+    {
+      author: { type: Schema.Types.String, refPath: 'likes.onModel' },
+      onModel: { type: String, required: true, enum: ['ArtistProfile', 'UserProfile'] },
+      review: String,
+      createdAt: String,
+    },
+  ],
+  totalSales: { type: Number, required: true, default: 0 },
   artist: {
     type: Schema.Types.String,
     ref: 'ArtistProfile',
