@@ -4,7 +4,7 @@ import { IArtistProfile, IUserProfile } from './Profile';
 
 export interface IShare extends Document {
   _doc?: IShare;
-  description: string;
+  description?: string;
   post: string | IPost;
   isAudio: boolean;
   likes: [
@@ -22,5 +22,5 @@ export interface IShare extends Document {
 }
 export interface IShareInput {
   postID: string;
-  description: string;
+  description?: string;
 }

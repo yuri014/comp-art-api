@@ -1,20 +1,19 @@
 import { Document } from 'mongoose';
 
-export interface IUser extends Document {
-  _doc: IUser;
+interface User {
   username: string;
   email: string;
   password: string;
-  confirmed: boolean;
   isArtist: boolean;
+}
+
+export interface IUser extends Document, User {
+  _doc: IUser;
+  confirmed: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface IRegisterFields {
-  username: string;
-  email: string;
-  password: string;
-  isArtist: boolean;
+export interface IRegisterFields extends User {
   confirmPassword: string;
 }

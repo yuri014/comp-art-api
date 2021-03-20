@@ -1,19 +1,11 @@
 import { Document } from 'mongoose';
 import { IUpload } from './Upload';
 
-export interface IProfileView {
+interface Profile {
   name: string;
-  avatar: string;
-  owner: string;
-}
-
-export interface IUserProfile extends Document {
-  _doc?: IUserProfile;
-  name: string;
+  bio: string;
   avatar: string;
   coverImage: string;
-  bio: string;
-  sharedPostCount: number;
   followers: number;
   following: number;
   xp: number;
@@ -23,22 +15,7 @@ export interface IUserProfile extends Document {
   owner: string;
 }
 
-export interface IArtistProfile extends Document {
-  _doc?: IArtistProfile;
-  name: string;
-  avatar: string;
-  coverImage: string;
-  bio: string;
-  postCount: number;
-  followers: number;
-  following: number;
-  xp: number;
-  level: number;
-  isBlockedToPost: boolean;
-  postsRemainingToUnblock: number;
-  createdAt: string;
-  updatedAt: string;
-  owner: string;
+interface HashtagsAndLinks {
   hashtags: Array<string>;
   links: {
     soundcloud: string;
@@ -52,20 +29,21 @@ export interface IArtistProfile extends Document {
   };
 }
 
-export interface ICreateProfile {
+export interface IUserProfile extends Document, Profile, HashtagsAndLinks {
+  _doc?: IUserProfile;
+  sharedPostCount: number;
+}
+
+export interface IArtistProfile extends Document, Profile, HashtagsAndLinks {
+  _doc?: IArtistProfile;
+  postCount: number;
+  isBlockedToPost: boolean;
+  postsRemainingToUnblock: number;
+}
+
+export interface ICreateProfile extends HashtagsAndLinks {
   name: string;
   avatar: Promise<IUpload>;
   coverImage: Promise<IUpload>;
   bio: string;
-  hashtags: Array<string>;
-  links: {
-    soundcloud: string;
-    twitter: string;
-    facebook: string;
-    wattpad: string;
-    pinterest: string;
-    deviantart: string;
-    bandcamp: string;
-    customLink: string;
-  };
 }

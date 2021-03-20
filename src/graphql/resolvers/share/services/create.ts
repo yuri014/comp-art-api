@@ -13,7 +13,7 @@ import postValidationSchema from '../../../../validators/postSchema';
 
 const share = async (user: IToken, input: IShareInput) => {
   const errors = postValidationSchema.validate({
-    description: input.description.trim(),
+    description: input.description?.trim(),
   });
 
   if (errors.error) {
@@ -37,7 +37,7 @@ const share = async (user: IToken, input: IShareInput) => {
   }
 
   const newShare = new Share({
-    description: input.description.trim(),
+    description: input.description?.trim(),
     post: input.postID,
     createdAt: new Date().toISOString(),
     onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',

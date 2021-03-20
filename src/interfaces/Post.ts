@@ -2,17 +2,14 @@ import { Document } from 'mongoose';
 import { IArtistProfile, IUserProfile } from './Profile';
 import { IUpload } from './Upload';
 
-export interface IPostInput {
-  description: string;
-  body: Promise<IUpload>;
+interface Post {
+  description?: string;
   mediaId: number;
 }
 
-export interface IPost extends Document {
+export interface IPost extends Document, Post {
   _doc?: IPost;
-  description: string;
   body: string;
-  mediaId: number;
   likes: Array<{
     profile: IArtistProfile | IUserProfile | string;
     onModel: string;
@@ -22,4 +19,8 @@ export interface IPost extends Document {
   commentsCount: number;
   createdAt: string;
   artist: string | IArtistProfile;
+}
+
+export interface IPostInput extends Post {
+  body: Promise<IUpload>;
 }

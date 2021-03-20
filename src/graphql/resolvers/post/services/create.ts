@@ -17,7 +17,7 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
   const profile = await checkAbilityToPost(user.username);
 
   const post = {
-    description: postInput.description.trim(),
+    description: postInput.description?.trim(),
     body: postInput.body,
     mediaId: postInput.mediaId,
   };
