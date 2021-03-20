@@ -10,7 +10,6 @@ Para interfaces locais da pasta **interfaces**, nomeie sem o "I".
 _Não Faça:_
 
 ```typescript
-import { Document } from 'mongoose';
 export interface IUser extends Document {
   _doc: IUser;
   username: string;
@@ -34,8 +33,6 @@ export interface IRegisterFields {
 _Faça:_
 
 ```typescript
-import { Document } from 'mongoose';
-
 interface User {
   username: string;
   email: string;
