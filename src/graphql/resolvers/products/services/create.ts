@@ -35,6 +35,7 @@ const createProductService = async (user: IToken, productInput: IProductInput) =
     price,
     description: description?.trim(),
     images: imagesUrl,
+    createdAt: new Date().toISOString(),
   });
 
   await newProduct.save();
