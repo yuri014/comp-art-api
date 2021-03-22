@@ -19,7 +19,7 @@ export const productInputDefinition = gql`
     description: String
     price: Float!
     category: String!
-    images: Upload
+    images: [Upload]!
     phone: String!
   }
 `;
