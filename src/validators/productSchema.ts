@@ -13,13 +13,9 @@ const productValidationSchema = Joi.object({
     'string.max': 'Nome deve contér menos de vinte e quatro caractéres',
     'string.required': 'Nome é obrigatório',
   }),
-  artist: isValidText.required().messages({
-    'string.base': 'Artista deve ser um texto',
-    'string.required': 'Artista é obrigatório',
-  }),
-  value: Joi.number().required().messages({
-    'number.base': 'Valor deve ser um número',
-    'number.required': 'Valor é obrigatório',
+  price: Joi.number().required().messages({
+    'number.base': 'Preço deve ser um número',
+    'number.required': 'Preço é obrigatório',
   }),
   category: isValidText.required().min(4).max(32).messages({
     'string.base': 'Categoria deve ser um texto',
