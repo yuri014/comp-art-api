@@ -23,6 +23,7 @@ const ProductSchema = new Schema({
     type: Schema.Types.String,
     ref: 'ArtistProfile',
   },
+  available: { type: Boolean, default: true },
 });
 
 export default mongoose.model<IProduct>('Product', ProductSchema);

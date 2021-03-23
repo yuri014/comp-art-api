@@ -24,6 +24,7 @@ export interface IProduct extends Document, Product {
   }>;
   totalSales: { type: Number; required: true; default: 0 };
   artist: string | IArtistProfile;
+  available: boolean;
 }
 
 export interface IProductInput extends Product {

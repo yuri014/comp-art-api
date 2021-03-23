@@ -9,6 +9,7 @@ export const productDefinition = gql`
     category: String!
     images: [String]
     createdAt: String!
+    available: Boolean!
   }
 `;
 
