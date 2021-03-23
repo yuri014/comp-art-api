@@ -27,6 +27,7 @@ export const profileDefinitions = gql`
     isArtist: Boolean!
     sharedPostCount: Int
     postCount: Int
+    phone: String
   }
 `;
 

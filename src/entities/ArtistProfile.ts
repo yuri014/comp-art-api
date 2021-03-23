@@ -31,6 +31,7 @@ const ArtistProfileSchema = new Schema({
     deviantart: String,
     customLink: String,
   },
+  phone: { type: String },
 });
 
 ArtistProfileSchema.index({ name: 'text', owner: 'text' });

@@ -39,6 +39,7 @@ export interface IArtistProfile extends Document, Profile, HashtagsAndLinks {
   postCount: number;
   isBlockedToPost: boolean;
   postsRemainingToUnblock: number;
+  phone: string;
 }
 
 export interface ICreateProfile extends HashtagsAndLinks {
