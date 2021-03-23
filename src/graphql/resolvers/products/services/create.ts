@@ -19,7 +19,7 @@ const createProductService = async (user: IToken, productInput: IProductInput) =
     });
   }
 
-  const { category, images, name, phone, price, description } = productInput;
+  const { category, images, name, price, description } = productInput;
 
   const uploadedImages = await images;
 
@@ -31,7 +31,6 @@ const createProductService = async (user: IToken, productInput: IProductInput) =
     name: name.trim(),
     artist: user.username,
     category: category.trim(),
-    phone: phone.trim(),
     price,
     description: description?.trim(),
     images: imagesUrl,

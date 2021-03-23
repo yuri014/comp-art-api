@@ -8,7 +8,6 @@ export const productDefinition = gql`
     price: Float!
     category: String!
     images: [String]
-    phone: String!
     createdAt: String!
   }
 `;
@@ -20,6 +19,5 @@ export const productInputDefinition = gql`
     price: Float!
     category: String!
     images: [Upload]!
-    phone: String!
   }
 `;

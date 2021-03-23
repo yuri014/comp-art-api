@@ -8,7 +8,6 @@ const ProductSchema = new Schema({
   price: { type: Number, required: true },
   category: { type: String, required: true },
   images: [{ type: String, required: true }],
-  phone: [{ type: String, required: true }],
   createdAt: { type: String, required: true },
   reviewsStars: [Number],
   reviews: [

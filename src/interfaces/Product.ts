@@ -9,7 +9,6 @@ interface Product {
   description?: string;
   price: number;
   category: string;
-  phone: string;
 }
 
 export interface IProduct extends Document, Product {

@@ -23,12 +23,6 @@ const productValidationSchema = Joi.object({
     'string.max': 'Categoria deve contér menos de trinta e dois caractéres',
     'string.required': 'Categoria é obrigatório',
   }),
-  phone: isValidText.required().min(4).max(12).messages({
-    'string.base': 'Telefone deve ser um texto',
-    'string.min': 'Telefone deve contér mais de quatro caractéres',
-    'string.max': 'Telefone deve contér menos de doze caractéres',
-    'string.required': 'Telefone é obrigatório',
-  }),
 });
 
 export default productValidationSchema;
