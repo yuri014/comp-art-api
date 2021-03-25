@@ -24,6 +24,7 @@ export const postDefinitions = gql`
     isAudio: Boolean!
     avatar: String!
     isLiked: Boolean
+    alt: String
   }
 `;
 
