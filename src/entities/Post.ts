@@ -24,6 +24,7 @@ const PostSchema = new Schema({
   likesCount: { type: Number, default: 0 },
   sharedCount: { type: Number, default: 0 },
   commentsCount: { type: Number, default: 0 },
+  alt: String,
   createdAt: String,
   artist: {
     type: Schema.Types.ObjectId,

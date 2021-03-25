@@ -20,11 +20,14 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
     description: postInput.description?.trim(),
     body: postInput.body,
     mediaId: postInput.mediaId,
+    alt: postInput.alt,
   };
 
   const errors = postValidationSchema.validate({
     description: post.description,
   });
+
+  const audioId = 2;
 
   if (errors.error) {
     throw new UserInputError('Erros', {
@@ -33,8 +36,6 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
   }
 
   const { file } = await post.body;
-
-  const audioId = 2;
 
   const media = async () => {
     if (post.mediaId === audioId) {
@@ -52,6 +53,7 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
     createdAt: new Date().toISOString(),
     mediaId: post.mediaId,
     artist: profile._id,
+    alt: post.alt,
   });
 
   // await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
