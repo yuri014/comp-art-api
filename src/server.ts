@@ -1,5 +1,5 @@
 import debug from 'debug';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server-express';
 import { graphqlUploadExpress } from 'graphql-upload';
@@ -22,7 +22,7 @@ app.use(rateLimiterMiddleware);
 
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.send({
     title: 'CompArt API',
     version: '0.0.1',
