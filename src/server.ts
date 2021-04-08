@@ -37,4 +37,4 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true,
   })
-  .then(() => app.listen(PORT, () => debug.log(`Server running at: ${PORT}`)));
+  .then(() => app.listen(process.env.PORT || PORT, () => debug.log(`Server running at: ${PORT}`)));
