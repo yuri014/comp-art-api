@@ -25,7 +25,7 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.send({
     title: 'CompArt API',
-    version: '0.0.3',
+    version: '0.0.1',
     sponsor: 'https://www.catarse.me/compart_6d8c?ref=project_link',
     website: 'https://comp-art.vercel.app/',
   });
