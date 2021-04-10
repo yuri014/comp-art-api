@@ -25,6 +25,7 @@ const queries = gql`
     getFollowing(offset: Int!, username: String!): [Profile]
     searchProfiles(query: String!, offset: Int!, limit: Int!): [Profile]
     searchPost(query: String!, offset: Int!): [Post]
+    getSuggestedProfiles: [Profile]
   }
 `;
 

@@ -19,6 +19,7 @@ import followService from './services/create/follow';
 import updateProfileService from './services/update/profile';
 import profileValidation from './services/utils/profileValidation';
 import getToken from '../../../utils/getToken';
+import shuffleArray from './services/utils/shuffleProfilesArray';
 
 type IUsername = {
   username: string;
@@ -58,6 +59,24 @@ const profileResolvers: IResolvers = {
 
     async searchProfiles(_, { query, offset, limit }: Query) {
       return searchProfilesService(query, offset, limit);
+    },
+
+    async getSuggestedProfiles(_, params, context) {
+      const user = checkAuth(context);
+      const profile = await findProfile(user);
+
+      if (!profile._doc) {
+        throw new Error();
+      }
+
+      if (profile._doc.following === 0) {
+        const suggestedUsers = await UserProfile.find().sort({ followers: -1 }).limit(2);
+        const suggestedArtists = await ArtistProfile.find().sort({ followers: -1 }).limit(3);
+
+        return shuffleArray(suggestedArtists, suggestedUsers);
+      }
+
+      return user;
     },
   },
   Mutation: {
