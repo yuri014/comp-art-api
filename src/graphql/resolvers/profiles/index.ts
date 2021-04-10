@@ -24,6 +24,8 @@ type IUsername = {
   username: string;
 };
 
+type Query = { query: string; offset: number; limit: number };
+
 const profileResolvers: IResolvers = {
   Query: {
     async getProfile(_, { username }: IUsername) {
@@ -54,8 +56,8 @@ const profileResolvers: IResolvers = {
       return getFollowingService(params, token);
     },
 
-    async searchProfiles(_, { query, offset }: { query: string; offset: number }) {
-      return searchProfilesService(query, offset);
+    async searchProfiles(_, { query, offset, limit }: Query) {
+      return searchProfilesService(query, offset, limit);
     },
   },
   Mutation: {

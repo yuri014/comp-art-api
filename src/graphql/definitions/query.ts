@@ -23,7 +23,7 @@ const queries = gql`
     getLikes(postID: ID!, offset: Int!): [Profile]
     getFollowers(offset: Int!, username: String!): [Profile]
     getFollowing(offset: Int!, username: String!): [Profile]
-    searchProfiles(query: String!, offset: Int!): [Profile]
+    searchProfiles(query: String!, offset: Int!, limit: Int!): [Profile]
     searchPost(query: String!, offset: Int!): [Post]
   }
 `;

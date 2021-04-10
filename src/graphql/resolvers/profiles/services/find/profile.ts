@@ -35,14 +35,18 @@ export const getLoggedProfileService = async (user: IToken) => {
   return { ...profileView, isArtist: profile.isArtist };
 };
 
-export const searchProfilesService = async (query: string, offset: number) => {
-  const artistsProfiles = await ArtistProfile.find({ $text: { $search: query } })
-    .skip(offset > 0 ? Math.round(offset / 2) : offset)
-    .limit(5);
+export const searchProfilesService = async (query: string, offset: number, limit: number) => {
+  if (query.length > 0) {
+    const artistsProfiles = await ArtistProfile.find({ name: { $regex: query, $options: 'i' } })
+      .skip(offset > 0 ? Math.round(offset / 2) : offset)
+      .limit(limit);
 
-  const usersProfiles = await UserProfile.find({ $text: { $search: query } })
-    .skip(offset > 0 ? Math.round(offset / 2) : offset)
-    .limit(5);
+    const usersProfiles = await UserProfile.find({ name: { $regex: query, $options: 'i' } })
+      .skip(offset > 0 ? Math.round(offset / 2) : offset)
+      .limit(limit);
 
-  return shuffleArray(artistsProfiles, usersProfiles);
+    return shuffleArray(artistsProfiles, usersProfiles);
+  }
+
+  return [];
 };
