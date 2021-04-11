@@ -2,7 +2,7 @@ import Follower from '../../../../../entities/Follower';
 import Following from '../../../../../entities/Following';
 import { IFollower, IFollowing } from '../../../../../interfaces/Follow';
 import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile';
-import { isAlreadyFollow } from '../../../../../middlewares/isAlreadyFollow';
+import { isAlreadyFollowing } from '../../../../../middlewares/isAlreadyFollow';
 import getUser from '../../../../../utils/getUser';
 import findFollows, { IOffset } from '../utils/findFollows';
 import shuffleArray from '../utils/shuffleProfilesArray';
@@ -68,11 +68,10 @@ export const getFollowersService = async (params: IOffset, token: string) => {
   return shuffleArray(artists, users);
 };
 
-export const isFollowing = async (username: string, loggedUsername: string) => {
-  const { artistFollower, userFollower } = await isAlreadyFollow(loggedUsername, username);
+export const isFollowing = async (id: string, loggedUsername: string) => {
+  const { artistFollowing, userFollowing } = await isAlreadyFollowing(id, loggedUsername);
 
-  if (!artistFollower || !userFollower) return false;
-  if (artistFollower.artistFollowers.length > 0 || userFollower.userFollowers.length > 0) {
+  if (artistFollowing || userFollowing) {
     return true;
   }
 
