@@ -13,6 +13,7 @@ export const profileDefinitions = gql`
   }
 
   type Profile {
+    _id: String
     name: String!
     avatar: String
     coverImage: String
