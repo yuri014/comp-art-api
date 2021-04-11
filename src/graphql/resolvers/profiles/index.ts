@@ -20,6 +20,7 @@ import updateProfileService from './services/update/profile';
 import profileValidation from './services/utils/profileValidation';
 import getToken from '../../../utils/getToken';
 import shuffleArray from './services/utils/shuffleProfilesArray';
+import Following from '../../../entities/Following';
 
 type IUsername = {
   username: string;
@@ -39,10 +40,10 @@ const profileResolvers: IResolvers = {
       return getLoggedProfileService(user);
     },
 
-    async getIsFollowing(_, { username }: IUsername, context) {
+    async getIsFollowing(_, { id }: { id: string }, context) {
       const user = checkAuth(context);
 
-      return isFollowing(username, user.username);
+      return isFollowing(id, user.username);
     },
 
     async getFollowers(_, params: IOffset, context) {
@@ -76,7 +77,26 @@ const profileResolvers: IResolvers = {
         return shuffleArray(suggestedArtists, suggestedUsers);
       }
 
-      return user;
+      const following = await Following.findOne({ username: user.username })
+        .populate('userFollowing', 'owner')
+        .populate('artistFollowing', 'owner');
+
+      if (!following) {
+        throw new Error();
+      }
+
+      const followingIds = following.artistFollowing
+        .map(artist => artist._id)
+        .concat(following.userFollowing.map(userProfile => userProfile._id));
+
+      const suggestedUsers = await UserProfile.find({ _id: { $nin: followingIds } })
+        .sort({ followers: -1 })
+        .limit(2);
+      const suggestedArtists = await ArtistProfile.find({ _id: { $nin: followingIds } })
+        .sort({ followers: -1 })
+        .limit(3);
+
+      return shuffleArray(suggestedArtists, suggestedUsers);
     },
   },
   Mutation: {
