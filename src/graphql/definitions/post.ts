@@ -21,7 +21,7 @@ export const postDefinitions = gql`
     commentsCount: Int!
     createdAt: String!
     artist: PostArtist!
-    isAudio: Boolean!
+    mediaId: Int!
     avatar: String!
     isLiked: Boolean
     alt: String

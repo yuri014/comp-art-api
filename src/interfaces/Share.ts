@@ -8,7 +8,7 @@ export interface IShare extends Document {
   _doc?: IShare;
   description?: string;
   post: string | IPost;
-  isAudio: boolean;
+  mediaId: number;
   likes: [
     {
       profile: IArtistProfile | IUserProfile | string;
