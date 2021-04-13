@@ -89,10 +89,15 @@ const profileResolvers: IResolvers = {
         .map(artist => artist._id)
         .concat(following.userFollowing.map(userProfile => userProfile._id));
 
-      const suggestedUsers = await UserProfile.find({ _id: { $nin: followingIds } })
+      const suggestedUsers = await UserProfile.find({
+        _id: { $nin: [...followingIds, profile._doc._id] },
+      })
         .sort({ followers: -1 })
         .limit(2);
-      const suggestedArtists = await ArtistProfile.find({ _id: { $nin: followingIds } })
+
+      const suggestedArtists = await ArtistProfile.find({
+        _id: { $nin: [...followingIds, profile._doc._id] },
+      })
         .sort({ followers: -1 })
         .limit(3);
 
