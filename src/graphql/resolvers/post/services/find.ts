@@ -53,12 +53,6 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     .limit(3)
     .sort({ createdAt: -1 })
     .populate('artist')
-    .populate({
-      path: 'post',
-      populate: {
-        path: 'artist',
-      },
-    })
     .populate('likes.profile')
     .where('likes')
     .slice([0, 3]);
@@ -73,6 +67,12 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     .sort({ createdAt: -1 })
     .populate('post')
     .populate('profile')
+    .populate({
+      path: 'post',
+      populate: {
+        path: 'artist',
+      },
+    })
     .populate('likes.profile')
     .where('likes')
     .slice([0, 3]);
