@@ -30,11 +30,13 @@ export const getPostService = async (id: string, token: string) => {
 };
 
 export const getTimelinePosts = async (offset: number, user: IToken) => {
-  const following = await Following.findOne({ username: user.username })
-    .where('artistFollowing')
-    .slice([offset, offset + 40])
-    .where('userFollowing')
-    .slice([offset, offset + 40]);
+  if (offset % 2 === 1) {
+    return [];
+  }
+
+  const newOffset = offset > 0 ? offset / 2 : 0;
+
+  const following = await Following.findOne({ username: user.username });
 
   if (!following) {
     throw new UserInputError('Não está seguindo nenhum usuário');
@@ -49,7 +51,7 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
       $in: artists.map(artist => artist._id),
     },
   })
-    .skip(offset)
+    .skip(newOffset)
     .limit(3)
     .sort({ createdAt: -1 })
     .populate('artist')
@@ -62,7 +64,7 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
       $in: followingProfiles as Array<string>,
     },
   })
-    .skip(offset)
+    .skip(newOffset)
     .limit(3)
     .sort({ createdAt: -1 })
     .populate('post')
@@ -97,7 +99,6 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     const timeline = shuffleArray(postsView, sharesView);
     return timeline;
   }
-
   return shuffleArray(posts, shares);
 };
 
