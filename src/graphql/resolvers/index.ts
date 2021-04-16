@@ -4,8 +4,20 @@ import profileResolvers from './profiles';
 import usersResolvers from './users';
 import shareResolvers from './share';
 import productsResolvers from './products';
+import { IArtistProfile, IUserProfile } from '../../interfaces/Profile';
 
 const resolvers = {
+  Timeline: {
+    __resolveType(obj: { artist: IArtistProfile; profile: IArtistProfile | IUserProfile }) {
+      if (obj.artist) {
+        return 'Post';
+      }
+      if (obj.profile) {
+        return 'Share';
+      }
+      return null; // GraphQLError is thrown
+    },
+  },
   Query: {
     ...profileResolvers.Query,
     ...postResolvers.Query,

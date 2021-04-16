@@ -53,6 +53,12 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     .limit(3)
     .sort({ createdAt: -1 })
     .populate('artist')
+    .populate({
+      path: 'post',
+      populate: {
+        path: 'artist',
+      },
+    })
     .populate('likes.profile')
     .where('likes')
     .slice([0, 3]);
@@ -89,10 +95,10 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     const sharesView = shares.map((share, index) => ({ ...share._doc, isLiked: !!likes[index] }));
     const postsView = posts.map((post, index) => ({ ...post._doc, isLiked: !!likes[index] }));
     const timeline = shuffleArray(postsView, sharesView);
-    return postsView;
+    return timeline;
   }
 
-  return posts;
+  return shuffleArray(posts, shares);
 };
 
 export const getProfilePostsService = async (token: string, username: string, offset: number) => {

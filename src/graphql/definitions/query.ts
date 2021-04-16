@@ -11,11 +11,13 @@ const queries = gql`
     followsYou: Boolean
   }
 
+  union Timeline = Post | Share
+
   type Query {
     getProfile(username: String!): Profile
     getLoggedProfile: Profile!
     getPost(id: ID!): Post
-    getPosts(offset: Int!): [Post]
+    getPosts(offset: Int!): [Timeline]
     getProfilePosts(offset: Int!, username: String!): [Post]
     getIsFollowing(id: String!): Boolean
     getExplorePosts(offset: Int!): [Post]

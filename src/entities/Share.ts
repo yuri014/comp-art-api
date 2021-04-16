@@ -14,7 +14,7 @@ const ShareSchema = new Schema({
   sharedCount: { type: Number, default: 0 },
   commentsCount: { type: Number, default: 0 },
   createdAt: String,
-  profile: { type: Schema.Types.ObjectId, refPath: 'likes.onModel' },
+  profile: { type: Schema.Types.ObjectId, refPath: 'onModel' },
   onModel: { type: String, enum: ['ArtistProfile', 'UserProfile'] },
 });
 

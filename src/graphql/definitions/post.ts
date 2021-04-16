@@ -26,6 +26,19 @@ export const postDefinitions = gql`
     isLiked: Boolean
     alt: String
   }
+
+  type Share {
+    _id: Int!
+    description: String
+    post: Post!
+    likes: [PostLikes]
+    likesCount: Int!
+    sharedCount: Int!
+    commentsCount: Int!
+    avatar: String!
+    profile: Profile!
+    isLiked: Boolean
+  }
 `;
 
 export const postInputDefinitions = gql`
