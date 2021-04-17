@@ -35,8 +35,8 @@ export const postDefinitions = gql`
     likesCount: Int!
     sharedCount: Int!
     commentsCount: Int!
-    avatar: String!
     profile: Profile!
+    createdAt: String!
     isLiked: Boolean
   }
 `;
