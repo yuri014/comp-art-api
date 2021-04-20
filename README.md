@@ -6,19 +6,19 @@ Indíce para a documentação
 
 Servidor de desenvolvimento:
 
-```bash
+```properties
 yarn dev
 ```
 
 Gerar build:
 
-```bash
+```properties
 yarn build
 ```
 
 Servidor de produção:
 
-```bash
+```properties
 yarn start
 ```
 
