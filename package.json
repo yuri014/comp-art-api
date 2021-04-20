@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts"
+    "build": "tsc",
+    "start": "yarn build && node dist/server.js",
+    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts"
   },
   "keywords": [],
   "author": "yuri014",
@@ -27,6 +29,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
     "prettier": "^2.2.1",
+    "ts-node-dev": "^1.1.6",
     "typescript": "^4.1.5"
   },
   "dependencies": {
@@ -44,6 +47,6 @@
     "mongoose": "^5.12.3",
     "nodemailer": "^6.4.18",
     "rate-limiter-flexible": "^2.2.1",
-    "ts-node-dev": "^1.1.6"
+    "ts-node": "^9.1.1"
   }
 }
