@@ -7,18 +7,14 @@ import { IArtistProfile, IUserProfile } from './Profile';
 export interface Comment extends Document {
   _doc?: Comment;
   post: string | IPost;
-  comments: [
-    {
+  comments: Array<{
+    author: string | IArtistProfile | IUserProfile;
+    onModel: IOnModel;
+    body: string;
+    createdAt: string;
+    likes?: Array<{
       author: string | IArtistProfile | IUserProfile;
       onModel: IOnModel;
-      body: string;
-      createdAt: string;
-      likes?: [
-        {
-          author: string | IArtistProfile | IUserProfile;
-          onModel: IOnModel;
-        },
-      ];
-    },
-  ];
+    }>;
+  }>;
 }
