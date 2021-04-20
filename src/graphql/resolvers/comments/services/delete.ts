@@ -25,6 +25,7 @@ export const dislikeCommentService = async (likeID: string, user: IToken) => {
       },
       {
         $pull: {
+          // @ts-ignore
           'comments.$.likes': {
             _id: likeID,
             author: user.username,
