@@ -22,7 +22,6 @@ export const postDefinitions = gql`
     createdAt: String!
     artist: PostArtist!
     mediaId: Int!
-    avatar: String!
     isLiked: Boolean
     alt: String
   }
