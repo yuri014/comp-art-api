@@ -43,7 +43,12 @@ const postResolvers: IResolvers = {
     async searchPost(_, { query, offset }: { query: string; offset: number }) {
       const profiles = await Post.find({ $text: { $search: query } })
         .skip(offset)
-        .limit(10);
+        .limit(10)
+        .sort({ createdAt: -1 })
+        .populate('artist')
+        .populate('likes.profile')
+        .where('likes')
+        .slice([0, 3]);
 
       return profiles;
     },
