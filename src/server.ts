@@ -33,7 +33,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use(
   graphqlUploadExpress({
-    maxFileSize: 3000000,
+    maxFileSize: 8000000,
     maxFiles: 2,
   }),
 );
