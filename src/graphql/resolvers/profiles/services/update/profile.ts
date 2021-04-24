@@ -29,13 +29,15 @@ const updateProfileService = async (
   const { file: coverFile } = await coverImage;
   const coverImageUrl = await uploadImage(coverFile?.createReadStream, coverFile?.filename);
 
+  const newBio = bio ? bio.trim() : '';
+
   await oldProfile.updateOne({
-    bio: bio.trim(),
     name: name.trim(),
+    bio: newBio,
     hashtags,
     links,
-    avatar: avatarImageUrl,
-    coverImage: coverImageUrl,
+    avatar: avatarImageUrl || oldProfile.avatar,
+    coverImage: coverImageUrl || oldProfile.coverImage,
   });
 
   return true;
