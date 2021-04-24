@@ -19,8 +19,11 @@ const updateProfileService = async (
 
   const { avatar, bio, coverImage, name, hashtags, links } = data;
 
-  if (oldProfile.avatar !== '' && oldProfile.coverImage !== '') {
+  if (oldProfile.avatar !== '') {
     await removeFile(oldProfile.avatar);
+  }
+
+  if (oldProfile.coverImage !== '') {
     await removeFile(oldProfile.coverImage);
   }
 
