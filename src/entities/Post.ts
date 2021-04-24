@@ -32,6 +32,6 @@ const PostSchema = new Schema({
   },
 });
 
-PostSchema.index({ description: 'text', body: 'text' });
+PostSchema.index({ description: 'text', body: 'text', alt: 'text' });
 
 export default mongoose.model<IPost>('Post', PostSchema);
