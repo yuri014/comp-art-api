@@ -37,11 +37,21 @@ export const getLoggedProfileService = async (user: IToken) => {
 
 export const searchProfilesService = async (query: string, offset: number, limit: number) => {
   if (query.length > 0) {
-    const artistsProfiles = await ArtistProfile.find({ name: { $regex: query, $options: 'i' } })
+    const artistsProfiles = await ArtistProfile.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } },
+        { owner: { $regex: query, $options: 'i' } },
+      ],
+    })
       .skip(offset > 0 ? Math.round(offset / 2) : offset)
       .limit(limit);
 
-    const usersProfiles = await UserProfile.find({ name: { $regex: query, $options: 'i' } })
+    const usersProfiles = await UserProfile.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } },
+        { owner: { $regex: query, $options: 'i' } },
+      ],
+    })
       .skip(offset > 0 ? Math.round(offset / 2) : offset)
       .limit(limit);
 
