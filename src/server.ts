@@ -41,7 +41,7 @@ app.use(
 );
 server.applyMiddleware({ app, cors: { origin: process.env.FRONT_END_HOST } });
 app.use(express.urlencoded({ extended: true }));
-const PORT = 3333;
+const PORT = process.env.PORT || 3333;
 
 mongoose
   .connect(process.env.CLUSTER_URL as string, {
@@ -49,4 +49,4 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true,
   })
-  .then(() => app.listen(process.env.PORT || PORT, () => debug.log(`Server running at: ${PORT}`)));
+  .then(() => app.listen(PORT, () => debug.log(`Server running at: ${PORT}`)));
