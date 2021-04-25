@@ -3,10 +3,6 @@ import mongoose from 'mongoose';
 
 import app, { PORT } from './app';
 
-require('dotenv').config({
-  path: process.env.NODE_ENV === 'development' ? '.env.development' : '.env',
-});
-
 mongoose
   .connect(process.env.CLUSTER_URL as string, {
     useNewUrlParser: true,
