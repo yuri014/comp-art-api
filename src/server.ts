@@ -8,6 +8,9 @@ import typeDefs from './graphql/definitions';
 import resolvers from './graphql/resolvers';
 import rateLimiterMiddleware from './middlewares/limiter';
 
+const https = require('https');
+const fs = require('fs');
+
 require('dotenv').config({
   path: process.env.NODE_ENV === 'development' ? '.env.development' : '.env',
 });
@@ -43,10 +46,18 @@ server.applyMiddleware({ app, cors: { origin: process.env.FRONT_END_HOST } });
 app.use(express.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 3333;
 
+const options = {
+  // tls
+  key: fs.readFileSync('/etc/letsencrypt/live/compart.leonardoflores.dev/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/compart.leonardoflores.dev/fullchain.pem'),
+};
+
+const serverHttps = https.createServer(options, app);
+
 mongoose
   .connect(process.env.CLUSTER_URL as string, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
   })
-  .then(() => app.listen(PORT, () => debug.log(`Server running at: ${PORT}`)));
+  .then(() => serverHttps.listen(PORT, () => debug.log(`Server running at: ${PORT}`)));
