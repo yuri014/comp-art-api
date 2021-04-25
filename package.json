@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "yarn build && node dist/server.js",
-    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts"
+    "dev": "ts-node-dev NODE_ENV=development --transpile-only --ignore-watch node_modules src/server.ts"
   },
   "keywords": [],
   "author": "yuri014",
