@@ -3,7 +3,7 @@ import { IUser } from './User';
 
 interface IConfirmationCode extends Document {
   user: string | IUser;
-  code: number;
+  code: string;
 }
 
 export default IConfirmationCode;
