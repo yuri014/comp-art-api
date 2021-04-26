@@ -2,12 +2,13 @@ import { IResolvers } from 'apollo-server-express';
 
 import User from '../../../entities/User';
 import { IRegisterFields } from '../../../interfaces/User';
-import { passwordRecoverMessage } from '../../../emails/userEmailMessages';
 import generateToken from '../../../utils/generateToken';
 import createUser from './services/create';
 import loginUser from './services/find';
 import { confirmUser, updatePassword } from './services/update';
 import sendEmail from '../../../utils/sendEmail';
+import recoverPasswordEmail from '../../../emails/templates/recoverPasswordEmail';
+import createEmail from '../../../emails/createEmail';
 
 const usersResolvers: IResolvers = {
   Mutation: {
@@ -28,11 +29,18 @@ const usersResolvers: IResolvers = {
 
       if (user) {
         const token = generateToken(user, '10m');
-        const message = passwordRecoverMessage(
+        const recoverPassoword = recoverPasswordEmail(
           user.username,
-          email,
           `${process.env.FRONT_END_HOST}/recover-password/${token}`,
         );
+
+        const message = createEmail({
+          recipient: email,
+          subject: 'Recuperar senha',
+          text: 'Recuperar senha',
+          template: recoverPassoword,
+          username: user.username,
+        });
 
         await sendEmail(message);
 
