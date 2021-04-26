@@ -4,6 +4,7 @@ import { UserInputError } from 'apollo-server-express';
 import User from '../../../../entities/User';
 import { validateLoginInput } from '../../../../utils/validateRegisterInput';
 import generateToken from '../../../../utils/generateToken';
+import handleSendConfirmationEmail from '../../../../utils/handleSendConfirmationEmail';
 
 const loginUser = async (email: string, password: string) => {
   const { errors, valid } = validateLoginInput(email, password);
@@ -33,7 +34,10 @@ const loginUser = async (email: string, password: string) => {
       throw new UserInputError('Usuário excluído', { errors });
     }
 
-    errors.general = 'Email não confirmado, acesse a opção de reenviar email de confirmação';
+    await handleSendConfirmationEmail(user);
+
+    const message = 'Um email de confirmação foi enviado a você, por favor confirme seu email!';
+    errors.general = message;
 
     throw new UserInputError('Email não confirmado', { errors });
   }
