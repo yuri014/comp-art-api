@@ -7,6 +7,7 @@ import User from '../../../../entities/User';
 import sendEmail from '../../../../utils/sendEmail';
 import confirmationEmailTemplate from '../../../../emails/templates/confirmationEmail';
 import createEmail from '../../../../emails/createEmail';
+import ConfirmationCode from '../../../../entities/ConfirmationCode';
 
 const createUser = async (input: IRegisterFields) => {
   const user = {
@@ -36,6 +37,7 @@ const createUser = async (input: IRegisterFields) => {
   }
 
   const encryptedPassword = await bcrypt.hash(user.password, 12);
+
   const newUser = new User({
     username: user.username,
     email: user.email,
@@ -44,9 +46,16 @@ const createUser = async (input: IRegisterFields) => {
     createdAt: new Date().toISOString(),
   });
 
-  await newUser.save();
+  const result = await newUser.save();
 
-  const randomCode = Math.floor(1000 + Math.random() * 9000);
+  const randomCode = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+
+  const newConfirmationCode = new ConfirmationCode({
+    user: result?._id,
+    code: randomCode,
+  });
+
+  await newConfirmationCode.save();
 
   const confirmationEmail = confirmationEmailTemplate(user.username, randomCode.toString());
 
