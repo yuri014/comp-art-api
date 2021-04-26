@@ -14,7 +14,6 @@
     "removeComments": true,
     "noImplicitReturns": true,
     "moduleResolution": "node",
-    "baseUrl": ".",
     // "paths": {},                           
     "rootDirs": ["./src"],
     // "typeRoots": [],                       
