@@ -4,9 +4,9 @@ import { UserInputError } from 'apollo-server-express';
 import { IRegisterFields } from '../../../../interfaces/User';
 import { validateRegisterInput } from '../../../../utils/validateRegisterInput';
 import User from '../../../../entities/User';
-import generateToken from '../../../../utils/generateToken';
-import { emailConfirmationMessage } from '../../../../emails/userEmailMessages';
 import sendEmail from '../../../../utils/sendEmail';
+import confirmationEmailTemplate from '../../../../emails/templates/confirmationEmail';
+import createEmail from '../../../../emails/createEmail';
 
 const createUser = async (input: IRegisterFields) => {
   const user = {
@@ -44,15 +44,19 @@ const createUser = async (input: IRegisterFields) => {
     createdAt: new Date().toISOString(),
   });
 
-  const result = await newUser.save();
+  await newUser.save();
 
-  const token = generateToken(result, '2d');
+  const randomCode = Math.floor(1000 + Math.random() * 9000);
 
-  const message = emailConfirmationMessage(
-    input.username,
-    input.email,
-    `${process.env.FRONT_END_HOST}/confirmation-email/${token}`,
-  );
+  const confirmationEmail = confirmationEmailTemplate(user.username, randomCode.toString());
+
+  const message = createEmail({
+    recipient: input.email,
+    subject: 'Email de confirmação ✔',
+    text: `Confirme seu email, ${user.username}`,
+    template: confirmationEmail,
+    username: user.username,
+  });
 
   await sendEmail(message);
 
