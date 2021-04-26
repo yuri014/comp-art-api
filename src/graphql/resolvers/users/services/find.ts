@@ -33,6 +33,8 @@ const loginUser = async (email: string, password: string) => {
       throw new UserInputError('Usuário excluído', { errors });
     }
 
+    errors.general = 'Email não confirmado, acesse a opção de reenviar email de confirmação';
+
     throw new UserInputError('Email não confirmado', { errors });
   }
 
