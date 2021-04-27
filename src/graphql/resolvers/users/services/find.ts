@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { UserInputError } from 'apollo-server-express';
+import moment from 'moment';
 
 import User from '../../../../entities/User';
 import { validateLoginInput } from '../../../../utils/validateRegisterInput';
@@ -25,13 +26,15 @@ const loginUser = async (email: string, password: string) => {
   const match = await bcrypt.compare(password, user.password);
 
   if (!user.confirmed && match) {
-    const now = new Date(new Date().toISOString()).getTime() / 60000;
-    const diff = now - new Date(user?.createdAt).getTime() / 60000;
+    const now = moment(new Date().toISOString());
+    const userCreatedAt = moment(user?.createdAt);
+    const duration = moment.duration(now.diff(userCreatedAt));
+    const daysBetweenDates = duration.asDays();
+    const limitDaysForConfirm = 2;
 
-    if (diff >= 1440) {
+    if (daysBetweenDates >= limitDaysForConfirm) {
       user.delete();
-      errors.general = 'Usuário não encontrado';
-      throw new UserInputError('Usuário excluído', { errors });
+      throw new UserInputError('Usuário excluído, refaça seu cadastro');
     }
 
     await handleSendConfirmationEmail(user);
