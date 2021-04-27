@@ -4,7 +4,7 @@ const mutations = gql`
   type Mutation {
     register(registerInput: RegisterInput!): Boolean
     login(email: String!, password: String!): User!
-    confirmationEmail(token: String!): User!
+    confirmationEmail(code: String!, email: String!): User!
     sendForgotPasswordEmail(email: String!): Boolean
     recoverPassword(token: String!, newPassword: String!): String!
     createProfile(createProfileInput: CreateProfileInput!): Boolean

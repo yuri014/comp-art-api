@@ -20,8 +20,8 @@ const usersResolvers: IResolvers = {
       return loginUser(email, password);
     },
 
-    async confirmationEmail(_, { token }: { token: string }) {
-      return confirmUser(token);
+    async confirmationEmail(_, { code, email }: { code: string; email: string }) {
+      return confirmUser(code, email);
     },
 
     async sendForgotPasswordEmail(_, { email }: { email: string }) {

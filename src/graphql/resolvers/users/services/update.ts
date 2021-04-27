@@ -1,11 +1,27 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { UserInputError } from 'apollo-server-express';
 
 import User from '../../../../entities/User';
+import ConfirmationCode from '../../../../entities/ConfirmationCode';
 
-export const confirmUser = async (token: string) => {
+export const confirmUser = async (code: string, email: string) => {
   try {
-    const user = jwt.verify(token, process.env.SECRET as string) as { id: string };
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new UserInputError('Não há usuário com esse email!');
+    }
+
+    const confirmationCode = await ConfirmationCode.findOne({
+      user: user?._id,
+      code,
+    });
+
+    if (!confirmationCode) {
+      throw new UserInputError('Oops... Código incorreto, tente novamente!');
+    }
+
     const userById = await User.findByIdAndUpdate(
       user.id,
       { confirmed: true },
