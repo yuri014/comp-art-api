@@ -30,9 +30,7 @@ export const createComment = async (id: string, comment: string, user: IToken) =
   const post = await Post.findById(id);
 
   if (!post) {
-    throw new UserInputError('Post inválido', {
-      errors: 'Não há post',
-    });
+    throw new UserInputError('Não há post');
   }
 
   await Comments.updateOne(

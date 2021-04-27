@@ -11,9 +11,7 @@ const profileValidation = async (
   hashtags: Array<string>,
 ) => {
   if (!user) {
-    throw new UserInputError('Usuário não encontrado', {
-      errors: 'Usuário não encontrado',
-    });
+    throw new UserInputError('Usuário não encontrado');
   }
 
   const errors = profileValidationSchema.validate({

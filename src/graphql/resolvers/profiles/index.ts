@@ -152,9 +152,7 @@ const profileResolvers: IResolvers = {
       const followedUser = await User.findOne({ username });
 
       if (!followedUser) {
-        throw new UserInputError('Usuário não encontrado', {
-          errors: 'Usuário não encontrado',
-        });
+        throw new UserInputError('Usuário não encontrado');
       }
 
       const profileWhoIsFollowed = await findProfile(followedUser);

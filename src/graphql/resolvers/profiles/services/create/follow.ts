@@ -8,15 +8,11 @@ const followService = async (userWhoFollows: IToken, username: string) => {
   const followedUser = await User.findOne({ username });
 
   if (!followedUser) {
-    throw new UserInputError('Usuário não encontrado', {
-      errors: 'Usuário não encontrado',
-    });
+    throw new UserInputError('Usuário não encontrado');
   }
 
   if (username === userWhoFollows.username) {
-    throw new UserInputError('Usuário não pode se seguir', {
-      errors: 'Usuário não pode se seguir',
-    });
+    throw new UserInputError('Usuário não pode se seguir');
   }
 
   const profileWhoIsFollowed = await findProfile(followedUser);
