@@ -6,9 +6,9 @@ import generateToken from '../../../utils/generateToken';
 import createUser from './services/create';
 import loginUser from './services/find';
 import { confirmUser, updatePassword } from './services/update';
-import sendEmail from '../../../utils/sendEmail';
 import recoverPasswordEmail from '../../../emails/templates/recoverPasswordEmail';
 import createEmail from '../../../emails/createEmail';
+import sendEmail from '../../../emails/sendEmail';
 
 const usersResolvers: IResolvers = {
   Mutation: {

@@ -1,8 +1,8 @@
 import createEmail from '../emails/createEmail';
+import sendEmail from '../emails/sendEmail';
 import confirmationEmailTemplate from '../emails/templates/confirmationEmail';
 import ConfirmationCode from '../entities/ConfirmationCode';
 import { IUser } from '../interfaces/User';
-import sendEmail from './sendEmail';
 
 const handleSendConfirmationEmail = async (user: IUser) => {
   const confirmationCode = await ConfirmationCode.findOne({ user: user?._id });
