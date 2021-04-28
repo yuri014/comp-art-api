@@ -11,7 +11,7 @@ import levelUp from '../../../../utils/levelUp';
 import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';
 
-const share = async (user: IToken, input: IShareInput) => {
+const createShare = async (user: IToken, input: IShareInput) => {
   const errors = postValidationSchema.validate({
     description: input.description?.trim(),
   });
@@ -99,4 +99,4 @@ const share = async (user: IToken, input: IShareInput) => {
   return levelUp(updatedProfile);
 };
 
-export default share;
+export default createShare;
