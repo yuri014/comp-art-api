@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { UserInputError } from 'apollo-server-express';
-import moment from 'moment';
 
+import { differenceInDays } from 'date-fns';
 import User from '../../../../entities/User';
 import { validateLoginInput } from '../../../../utils/validateRegisterInput';
 import generateToken from '../../../../utils/generateToken';
@@ -26,11 +26,10 @@ const loginUser = async (email: string, password: string) => {
   const match = await bcrypt.compare(password, user.password);
 
   if (!user.confirmed && match) {
-    const now = moment(new Date().toISOString());
-    const userCreatedAt = moment(user?.createdAt);
-    const duration = moment.duration(now.diff(userCreatedAt));
-    const daysBetweenDates = duration.asDays();
+    const now = new Date(new Date().toISOString());
+    const userCreatedAt = new Date(user?.createdAt);
     const limitDaysForConfirm = 2;
+    const daysBetweenDates = differenceInDays(now, userCreatedAt);
 
     if (daysBetweenDates >= limitDaysForConfirm) {
       user.delete();
