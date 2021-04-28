@@ -1,4 +1,4 @@
-import { IResolvers } from 'apollo-server-express';
+import { IResolvers, UserInputError } from 'apollo-server-express';
 
 import User from '../../../entities/User';
 import { IRegisterFields } from '../../../interfaces/User';
@@ -9,6 +9,7 @@ import { confirmUser, updatePassword } from './services/update';
 import recoverPasswordEmail from '../../../emails/templates/recoverPasswordEmail';
 import createEmail from '../../../emails/createEmail';
 import sendEmail from '../../../emails/sendEmail';
+import handleSendConfirmationEmail from '../../../utils/handleSendConfirmationEmail';
 
 const usersResolvers: IResolvers = {
   Mutation: {
@@ -52,6 +53,18 @@ const usersResolvers: IResolvers = {
 
     async recoverPassword(_, { token, newPassword }: { token: string; newPassword: string }) {
       return updatePassword(token, newPassword);
+    },
+
+    async resendConfirmationCode(_, { email }: { email: string }) {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        throw new UserInputError('Não há usuário com esse email');
+      }
+
+      await handleSendConfirmationEmail(user);
+
+      return true;
     },
   },
 };
