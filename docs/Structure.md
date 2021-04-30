@@ -7,7 +7,7 @@
 - auth: Onde ficam os métodos que lidam com a autenticação do usuário.
 - emails: Onde fican os HTMLs dos emails.
 - entities: Onde as entidades do banco são definidas.
-- functions: Onde ficam as funções reutilizáveis com acesso ao BD.
+- functions: Onde ficam as funções reutilizáveis que manipulam dados no DB.
 - generators: Onde são gerados tokens e afins.
 - graphql:
   - **definitions**: Onde os _schemas_ são definidos.
