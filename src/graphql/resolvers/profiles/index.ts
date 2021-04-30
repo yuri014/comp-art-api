@@ -21,6 +21,7 @@ import profileValidation from './services/utils/profileValidation';
 import shuffleArray from './services/utils/shuffleProfilesArray';
 import Following from '../../../entities/Following';
 import getToken from '../../../auth/getToken';
+import { ID } from '../../../interfaces/General';
 
 type IUsername = {
   username: string;
@@ -40,7 +41,7 @@ const profileResolvers: IResolvers = {
       return getLoggedProfileService(user);
     },
 
-    async getIsFollowing(_, { id }: { id: string }, context) {
+    async getIsFollowing(_, { id }: ID, context) {
       const user = checkAuth(context);
 
       return isFollowing(id, user.username);

@@ -4,6 +4,7 @@ import { UserInputError } from 'apollo-server-express';
 
 import User from '../../../../entities/User';
 import ConfirmationCode from '../../../../entities/ConfirmationCode';
+import { ID } from '../../../../interfaces/General';
 
 export const confirmUser = async (code: string, email: string) => {
   try {
@@ -38,7 +39,7 @@ export const confirmUser = async (code: string, email: string) => {
 
 export const updatePassword = async (token: string, newPassword: string) => {
   try {
-    const { id } = jwt.verify(token, process.env.SECRET as string) as { id: string };
+    const { id } = jwt.verify(token, process.env.SECRET as string) as ID;
     const user = User.findById(id);
     const encryptedPassword = await bcrypt.hash(newPassword, 12);
     if (user) {

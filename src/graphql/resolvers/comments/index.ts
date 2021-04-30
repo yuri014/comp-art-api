@@ -5,6 +5,7 @@ import findComments from './services/find';
 import { createComment, createLikeComment } from './services/create';
 import { deleteCommentService, dislikeCommentService } from './services/delete';
 import levelUp from '../../../functions/levelUp';
+import { ID } from '../../../interfaces/General';
 
 const commentsResolvers: IResolvers = {
   Query: {
@@ -21,19 +22,19 @@ const commentsResolvers: IResolvers = {
       return levelUp(updatedProfile);
     },
 
-    async deleteComment(_, { id }: { id: string }, context) {
+    async deleteComment(_, { id }: ID, context) {
       const user = checkAuth(context);
 
       return deleteCommentService(id, user);
     },
 
-    async likeComment(_, { id }: { id: string }, context) {
+    async likeComment(_, { id }: ID, context) {
       const user = checkAuth(context);
 
       return createLikeComment(id, user);
     },
 
-    async dislikeComment(_, { id }: { id: string }, context) {
+    async dislikeComment(_, { id }: ID, context) {
       const user = checkAuth(context);
 
       return dislikeCommentService(id, user);
