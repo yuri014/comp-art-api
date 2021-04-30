@@ -1,28 +1,10 @@
-import { Model } from 'mongoose';
 import { UserInputError } from 'apollo-server-express';
 
 import { IPost } from '../interfaces/Post';
+import { IArtistProfile, IUserProfile } from '../interfaces/Profile';
 import { IShare } from '../interfaces/Share';
-import { IToken } from '../interfaces/Token';
-import findProfile from '../graphql/resolvers/profiles/services/utils/findProfileUtil';
 
-const dislikeContent = async (id: string, user: IToken, Entity: Model<IPost> | Model<IShare>) => {
-  const getProfile = await findProfile(user);
-
-  const profileDoc = getProfile._doc;
-
-  if (!profileDoc) {
-    throw new UserInputError('Não há perfil');
-  }
-
-  const post = await Entity.findById(id)
-    .populate('likes.profile')
-    .select({ likes: { $elemMatch: { profile: profileDoc._id } } });
-
-  if (!post) {
-    throw new UserInputError('Não há post');
-  }
-
+const dislikeContent = async (post: IShare | IPost, profileDoc: IArtistProfile | IUserProfile) => {
   if (post.likes.length === 0) {
     throw new UserInputError('Não curtiu esse post');
   }
@@ -32,7 +14,7 @@ const dislikeContent = async (id: string, user: IToken, Entity: Model<IPost> | M
       {
         $pull: {
           likes: {
-            profile: post.likes[0].profile,
+            profile: profileDoc._id as string,
           },
         },
         $inc: {

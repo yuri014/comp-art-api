@@ -1,10 +1,10 @@
 import { IResolvers } from 'apollo-server-express';
 
 import Share from '../../../entities/Share';
-import likeContent from '../../../functions/likeContent';
 import { ID } from '../../../interfaces/General';
 import { IShareInput } from '../../../interfaces/Share';
 import checkAuth from '../../../middlewares/checkAuth';
+import likeHandler from '../../../utils/likeHandle';
 import createShare from './services/create';
 import deleteShareService from './services/delete';
 
@@ -24,7 +24,7 @@ const shareResolvers: IResolvers = {
     async likeShare(_, { id }: ID, context) {
       const user = checkAuth(context);
 
-      await likeContent(id, user, Share);
+      await likeHandler(id, user, Share).then(handle => handle('dislike'));
 
       return true;
     },

@@ -1,28 +1,15 @@
 import { UserInputError } from 'apollo-server-express';
-import { Model } from 'mongoose';
 
 import { IPost } from '../interfaces/Post';
+import { IArtistProfile, IUserProfile } from '../interfaces/Profile';
 import { IShare } from '../interfaces/Share';
 import { IToken } from '../interfaces/Token';
-import findProfile from '../graphql/resolvers/profiles/services/utils/findProfileUtil';
 
-const likeContent = async (id: string, user: IToken, Entity: Model<IPost> | Model<IShare>) => {
-  const getProfile = await findProfile(user);
-
-  const profileDoc = getProfile._doc;
-
-  if (!profileDoc) {
-    throw new UserInputError('Não há perfil');
-  }
-
-  const post = await Entity.findById(id)
-    .populate('likes.profile')
-    .select({ likes: { $elemMatch: { profile: profileDoc._id } } });
-
-  if (!post) {
-    throw new UserInputError('Não há post');
-  }
-
+const likeContent = async (
+  post: IShare | IPost,
+  profileDoc: IArtistProfile | IUserProfile,
+  user: IToken,
+) => {
   if (post.likes.length > 0) {
     throw new UserInputError('Já curtiu esse post');
   }
