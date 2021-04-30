@@ -9,12 +9,10 @@ export interface IShare extends Document {
   description?: string;
   post: string | IPost;
   mediaId: number;
-  likes: [
-    {
-      profile: IArtistProfile | IUserProfile | string;
-      onModel: IOnModel;
-    },
-  ];
+  likes: Array<{
+    profile: IArtistProfile | IUserProfile | string;
+    onModel: IOnModel;
+  }>;
   likesCount: number;
   sharedCount: number;
   commentsCount: number;
