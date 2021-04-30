@@ -3,6 +3,7 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 
 import Share from '../../../../entities/Share';
 import UserProfile from '../../../../entities/UserProfile';
+import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
 import levelDown from '../../../../utils/levelDown';
@@ -15,7 +16,9 @@ const deleteShareService = async (id: string, user: IToken) => {
     throw new UserInputError('Não há compartilhamento');
   }
 
-  if (share.profile !== user.username) {
+  const profile = share.profile as IArtistProfile | IUserProfile;
+
+  if (profile.owner !== user.username) {
     throw new AuthenticationError('Você não é o autor deste compartilhamento');
   }
 
