@@ -1,54 +1,18 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
-import ArtistProfile from '../../../../entities/ArtistProfile';
 
+import ArtistProfile from '../../../../entities/ArtistProfile';
 import Post from '../../../../entities/Post';
 import UserProfile from '../../../../entities/UserProfile';
+import dislikeContent from '../../../../functions/dislikeContent';
 import levelDown from '../../../../functions/levelDown';
 import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
 import removeFile from '../../../../utils/removeFile';
 import xpValues from '../../../../utils/xpValues';
-import findProfile from '../../profiles/services/utils/findProfileUtil';
 
 export const dislikePost = async (id: string, user: IToken) => {
-  const getProfile = await findProfile(user);
-
-  const profileDoc = getProfile._doc;
-
-  if (!profileDoc) {
-    throw new UserInputError('Não há perfil');
-  }
-
-  const post = await Post.findById(id)
-    .populate('likes.profile')
-    .select({ likes: { $elemMatch: { profile: profileDoc._id } } });
-
-  if (!post) {
-    throw new UserInputError('Não há post');
-  }
-
-  if (post.likes.length === 0) {
-    throw new UserInputError('Não curtiu esse post');
-  }
-
-  try {
-    await post.updateOne(
-      {
-        $pull: {
-          likes: {
-            profile: post.likes[0].profile,
-          },
-        },
-        $inc: {
-          likesCount: -1,
-        },
-      },
-      { useFindAndModify: false },
-    );
-  } catch (error) {
-    throw new Error(error);
-  }
+  await dislikeContent(id, user, Post);
 
   const { likeXP } = xpValues;
 
