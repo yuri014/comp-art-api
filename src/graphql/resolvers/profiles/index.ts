@@ -18,9 +18,9 @@ import createProfile from './services/create/profile';
 import followService from './services/create/follow';
 import updateProfileService from './services/update/profile';
 import profileValidation from './services/utils/profileValidation';
-import getToken from '../../../utils/getToken';
 import shuffleArray from './services/utils/shuffleProfilesArray';
 import Following from '../../../entities/Following';
+import getToken from '../../../auth/getToken';
 
 type IUsername = {
   username: string;

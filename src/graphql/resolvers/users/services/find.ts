@@ -3,9 +3,9 @@ import { UserInputError } from 'apollo-server-express';
 
 import { differenceInDays } from 'date-fns';
 import User from '../../../../entities/User';
-import { validateLoginInput } from '../../../../utils/validateRegisterInput';
-import generateToken from '../../../../utils/generateToken';
 import handleSendConfirmationEmail from '../../../../utils/handleSendConfirmationEmail';
+import { validateLoginInput } from '../../../../validators/utils/validateRegisterInput';
+import generateToken from '../../../../generators/generateToken';
 
 const loginUser = async (email: string, password: string) => {
   const { errors, valid } = validateLoginInput(email, password);

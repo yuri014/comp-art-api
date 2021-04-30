@@ -12,7 +12,7 @@ import {
 } from './services/find';
 import { deletePostService, dislikePost } from './services/delete';
 import Post from '../../../entities/Post';
-import getToken from '../../../utils/getToken';
+import getToken from '../../../auth/getToken';
 
 const postResolvers: IResolvers = {
   Query: {

@@ -1,9 +1,9 @@
+import getUser from '../../../../../auth/getUser';
 import Follower from '../../../../../entities/Follower';
 import Following from '../../../../../entities/Following';
 import { IFollower, IFollowing } from '../../../../../interfaces/Follow';
 import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile';
 import { isAlreadyFollowing } from '../../../../../middlewares/isAlreadyFollow';
-import getUser from '../../../../../utils/getUser';
 import findFollows, { IOffset } from '../utils/findFollows';
 import shuffleArray from '../utils/shuffleProfilesArray';
 

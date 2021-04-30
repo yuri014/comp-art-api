@@ -4,8 +4,8 @@ import Comments from '../../../../entities/Comments';
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import UserProfile from '../../../../entities/UserProfile';
 import { IToken } from '../../../../interfaces/Token';
-import levelDown from '../../../../utils/levelDown';
 import xpValues from '../../../../utils/xpValues';
+import levelDown from '../../../../functions/levelDown';
 
 export const dislikeCommentService = async (likeID: string, user: IToken) => {
   const hasLike = await Comments.findOne({

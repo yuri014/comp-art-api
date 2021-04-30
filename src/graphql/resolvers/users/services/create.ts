@@ -2,9 +2,9 @@ import bcrypt from 'bcryptjs';
 import { UserInputError } from 'apollo-server-express';
 
 import { IRegisterFields } from '../../../../interfaces/User';
-import { validateRegisterInput } from '../../../../utils/validateRegisterInput';
 import User from '../../../../entities/User';
 import handleSendConfirmationEmail from '../../../../utils/handleSendConfirmationEmail';
+import { validateRegisterInput } from '../../../../validators/utils/validateRegisterInput';
 
 const createUser = async (input: IRegisterFields) => {
   const user = {

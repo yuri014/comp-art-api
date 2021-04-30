@@ -3,10 +3,10 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 
 import Share from '../../../../entities/Share';
 import UserProfile from '../../../../entities/UserProfile';
+import levelDown from '../../../../functions/levelDown';
 import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
-import levelDown from '../../../../utils/levelDown';
 import xpValues from '../../../../utils/xpValues';
 
 const deleteShareService = async (id: string, user: IToken) => {

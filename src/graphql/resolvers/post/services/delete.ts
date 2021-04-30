@@ -3,10 +3,10 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 
 import Post from '../../../../entities/Post';
 import UserProfile from '../../../../entities/UserProfile';
+import levelDown from '../../../../functions/levelDown';
 import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
-import levelDown from '../../../../utils/levelDown';
 import removeFile from '../../../../utils/removeFile';
 import xpValues from '../../../../utils/xpValues';
 import findProfile from '../../profiles/services/utils/findProfileUtil';

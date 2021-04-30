@@ -1,10 +1,10 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Post from '../../../../entities/Post';
+import levelUp from '../../../../functions/levelUp';
 import { IPostInput } from '../../../../interfaces/Post';
 import { IToken } from '../../../../interfaces/Token';
 import checkAbilityToPost from '../../../../middlewares/checkAbilityToPost';
-import levelUp from '../../../../utils/levelUp';
 import { uploadAudio, uploadImage } from '../../../../utils/upload';
 import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';

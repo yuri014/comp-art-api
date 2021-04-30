@@ -4,10 +4,10 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 import Post from '../../../../entities/Post';
 import Share from '../../../../entities/Share';
 import UserProfile from '../../../../entities/UserProfile';
+import levelUp from '../../../../functions/levelUp';
 import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IShareInput } from '../../../../interfaces/Share';
 import { IToken } from '../../../../interfaces/Token';
-import levelUp from '../../../../utils/levelUp';
 import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';
 

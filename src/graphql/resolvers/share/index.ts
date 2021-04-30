@@ -1,9 +1,9 @@
 import { IResolvers } from 'apollo-server-express';
 import Share from '../../../entities/Share';
+import likeContent from '../../../functions/likeContent';
 
 import { IShareInput } from '../../../interfaces/Share';
 import checkAuth from '../../../middlewares/checkAuth';
-import likeContent from '../../../utils/likeContent';
 import createShare from './services/create';
 import deleteShareService from './services/delete';
 
