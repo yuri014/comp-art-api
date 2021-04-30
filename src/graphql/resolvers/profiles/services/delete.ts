@@ -5,11 +5,7 @@ import Following from '../../../../entities/Following';
 import UserProfile from '../../../../entities/UserProfile';
 import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { isAlreadyFollow, isAlreadyFollowing } from '../../../../middlewares/isAlreadyFollow';
-
-const options = {
-  new: true,
-  useFindAndModify: false,
-};
+import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
 
 export const unfollower = async (
   isArtist: boolean,
@@ -41,7 +37,7 @@ export const unfollower = async (
           artistFollowers: profileThatFollows._id,
         },
       },
-      options,
+      genericUpdateOptions,
     );
   }
 
@@ -64,7 +60,7 @@ export const unfollower = async (
         userFollowers: profileThatFollows._id,
       },
     },
-    options,
+    genericUpdateOptions,
   );
 };
 
@@ -104,7 +100,7 @@ export const unfollowing = async (
           artistFollowing: profileThatIsFollowing._id,
         },
       },
-      options,
+      genericUpdateOptions,
     );
   }
 
@@ -129,6 +125,6 @@ export const unfollowing = async (
         userFollowing: profileThatIsFollowing._id,
       },
     },
-    options,
+    genericUpdateOptions,
   );
 };

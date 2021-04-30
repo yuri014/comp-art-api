@@ -4,14 +4,10 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 import Post from '../../../../entities/Post';
 import UserProfile from '../../../../entities/UserProfile';
 import { IToken } from '../../../../interfaces/Token';
+import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
 import levelUp from '../../../../utils/levelUp';
 import xpValues from '../../../../utils/xpValues';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
-
-const options = {
-  new: true,
-  useFindAndModify: false,
-};
 
 const likePost = async (id: string, user: IToken) => {
   const getProfile = await findProfile(user);
@@ -68,7 +64,7 @@ const likePost = async (id: string, user: IToken) => {
           xp: likeXP,
         },
       },
-      options,
+      genericUpdateOptions,
     );
 
     if (!updatedProfile) {
@@ -85,7 +81,7 @@ const likePost = async (id: string, user: IToken) => {
         xp: likeXP,
       },
     },
-    options,
+    genericUpdateOptions,
   );
 
   if (!updatedProfile) {

@@ -5,15 +5,11 @@ import Post from '../../../../entities/Post';
 import UserProfile from '../../../../entities/UserProfile';
 import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
+import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
 import levelDown from '../../../../utils/levelDown';
 import removeFile from '../../../../utils/removeFile';
 import xpValues from '../../../../utils/xpValues';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
-
-const options = {
-  new: true,
-  useFindAndModify: false,
-};
 
 export const dislikePost = async (id: string, user: IToken) => {
   const getProfile = await findProfile(user);
@@ -104,7 +100,7 @@ export const deletePostService = async (id: string, user: IToken) => {
         postCount: -1,
       },
     },
-    options,
+    genericUpdateOptions,
   );
 
   if (!updatedProfile) {
