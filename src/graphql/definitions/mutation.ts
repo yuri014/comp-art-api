@@ -33,6 +33,8 @@ const mutations = gql`
     #share
     createSharePost(shareInput: SharePost!): Boolean
     deleteShare(id: ID!): Boolean
+    likeShare(id: ID!): Boolean
+    dislikeShare(id: ID!): Boolean
 
     #product
     createProduct(productInput: ProductInput!): Boolean
