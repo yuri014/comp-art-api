@@ -1,6 +1,6 @@
-import { IArtistProfile, IUserProfile } from '../interfaces/Profile';
+import { IProfileEntity } from '../interfaces/Models';
 
-const levelUp = async (profile: IArtistProfile | IUserProfile) => {
+const levelUp = async (profile: IProfileEntity) => {
   const targetXp = 1000 * profile.level * 1.25;
 
   if (profile.xp >= targetXp) {

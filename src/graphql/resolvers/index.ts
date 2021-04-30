@@ -4,11 +4,12 @@ import profileResolvers from './profiles';
 import usersResolvers from './users';
 import shareResolvers from './share';
 import productsResolvers from './products';
-import { IArtistProfile, IUserProfile } from '../../interfaces/Profile';
+import { IArtistProfile } from '../../interfaces/Profile';
+import { IProfileEntity } from '../../interfaces/Models';
 
 const resolvers = {
   Timeline: {
-    __resolveType(obj: { artist: IArtistProfile; profile: IArtistProfile | IUserProfile }) {
+    __resolveType(obj: { artist: IArtistProfile; profile: IProfileEntity }) {
       if (obj.artist) {
         return 'Post';
       }

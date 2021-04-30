@@ -1,10 +1,10 @@
 import { UserInputError } from 'apollo-server-express';
+import { IProfileEntity } from '../interfaces/Models';
 
 import { IPost } from '../interfaces/Post';
-import { IArtistProfile, IUserProfile } from '../interfaces/Profile';
 import { IShare } from '../interfaces/Share';
 
-const dislikeContent = async (post: IShare | IPost, profileDoc: IArtistProfile | IUserProfile) => {
+const dislikeContent = async (post: IShare | IPost, profileDoc: IProfileEntity) => {
   if (post.likes.length === 0) {
     throw new UserInputError('Não curtiu esse post');
   }

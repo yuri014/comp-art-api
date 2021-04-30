@@ -3,13 +3,13 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 import Follower from '../../../../entities/Follower';
 import Following from '../../../../entities/Following';
 import UserProfile from '../../../../entities/UserProfile';
-import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
+import { IProfileEntity } from '../../../../interfaces/Models';
 import { isAlreadyFollow, isAlreadyFollowing } from '../../../../middlewares/isAlreadyFollow';
 import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
 
 export const unfollower = async (
   isArtist: boolean,
-  profileThatFollows: IArtistProfile | IUserProfile,
+  profileThatFollows: IProfileEntity,
   userWhoIsFollowed: string,
 ) => {
   const { artistFollower, userFollower } = await isAlreadyFollow(
@@ -66,7 +66,7 @@ export const unfollower = async (
 
 export const unfollowing = async (
   isArtist: boolean,
-  profileThatIsFollowing: IArtistProfile | IUserProfile,
+  profileThatIsFollowing: IProfileEntity,
   userWhoIsFollowing: string,
 ) => {
   const { artistFollowing, userFollowing } = await isAlreadyFollowing(

@@ -2,12 +2,12 @@ import getUser from '../../../../../auth/getUser';
 import Follower from '../../../../../entities/Follower';
 import Following from '../../../../../entities/Following';
 import { IFollower, IFollowing } from '../../../../../interfaces/Follow';
-import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile';
+import { IProfileEntity } from '../../../../../interfaces/Models';
 import { isAlreadyFollowing } from '../../../../../middlewares/isAlreadyFollow';
 import findFollows, { IOffset } from '../utils/findFollows';
 import shuffleArray from '../utils/shuffleProfilesArray';
 
-const isFollowingLoggedUser = async (profile: IArtistProfile | IUserProfile, username: string) => {
+const isFollowingLoggedUser = async (profile: IProfileEntity, username: string) => {
   const isFollowing = await Follower.findOne({
     username,
     // @ts-ignore

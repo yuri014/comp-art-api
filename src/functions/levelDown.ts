@@ -1,6 +1,6 @@
-import { IArtistProfile, IUserProfile } from '../interfaces/Profile';
+import { IProfileEntity } from '../interfaces/Models';
 
-const levelDown = async (profile: IArtistProfile | IUserProfile, xp: number) => {
+const levelDown = async (profile: IProfileEntity, xp: number) => {
   const previousTargetXp = 1000 * (profile.level - 1) * 1.25;
   const targetXp = 1000 * profile.level * 1.25;
 

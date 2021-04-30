@@ -1,15 +1,11 @@
 import { UserInputError } from 'apollo-server-express';
+import { IProfileEntity } from '../interfaces/Models';
 
 import { IPost } from '../interfaces/Post';
-import { IArtistProfile, IUserProfile } from '../interfaces/Profile';
 import { IShare } from '../interfaces/Share';
 import { IToken } from '../interfaces/Token';
 
-const likeContent = async (
-  post: IShare | IPost,
-  profileDoc: IArtistProfile | IUserProfile,
-  user: IToken,
-) => {
+const likeContent = async (post: IShare | IPost, profileDoc: IProfileEntity, user: IToken) => {
   if (post.likes.length > 0) {
     throw new UserInputError('Já curtiu esse post');
   }

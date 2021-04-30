@@ -1,5 +1,5 @@
 import { UserInputError } from 'apollo-server-express';
-import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile';
+import { IProfileEntity } from '../../../../../interfaces/Models';
 
 import { IToken } from '../../../../../interfaces/Token';
 import profileValidationSchema from '../../../../../validators/profileSchema';
@@ -33,7 +33,7 @@ const profileValidation = async (
     });
   }
 
-  return async (profileExists: IArtistProfile | IUserProfile | null) => {
+  return async (profileExists: IProfileEntity | null) => {
     if (profileExists) {
       throw new UserInputError('Usuário já é dono de um perfil', {
         errors: 'Usuário já é dono de um perfil',
