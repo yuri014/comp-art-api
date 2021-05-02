@@ -25,16 +25,20 @@ const mutations = gql`
     #post interactions
     like(id: ID!): Boolean
     dislike(id: ID!): Boolean
-    comment(postID: ID!, comment: String!): Boolean
-    deleteComment(id: ID!): Boolean
-    likeComment(id: ID!): Boolean
-    dislikeComment(id: ID!): Boolean
 
     #share
     createSharePost(shareInput: SharePost!): Boolean
     deleteShare(id: ID!): Boolean
+
+    #share interactions
     likeShare(id: ID!): Boolean
     dislikeShare(id: ID!): Boolean
+
+    #comment
+    comment(postID: ID!, comment: String!): Boolean
+    deleteComment(id: ID!): Boolean
+    likeComment(id: ID!): Boolean
+    dislikeComment(id: ID!): Boolean
 
     #product
     createProduct(productInput: ProductInput!): Boolean
