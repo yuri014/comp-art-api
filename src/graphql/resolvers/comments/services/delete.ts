@@ -59,8 +59,6 @@ export const deleteCommentService = async (commentId: string, user: IToken) => {
     throw new UserInputError('Não há comentário');
   }
 
-  const { commentXP } = xpValues;
-
   await comment.updateOne(
     {
       $pull: {
@@ -73,5 +71,11 @@ export const deleteCommentService = async (commentId: string, user: IToken) => {
     { useFindAndModify: false },
   );
 
-  return levelDown(profile, commentXP);
+  if (comment.onModel === 'Post') {
+    const { commentXP } = xpValues;
+
+    return levelDown(profile, commentXP);
+  }
+
+  return false;
 };
