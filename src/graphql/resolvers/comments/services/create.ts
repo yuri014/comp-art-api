@@ -2,6 +2,7 @@ import { UserInputError } from 'apollo-server-express';
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Comments from '../../../../entities/Comments';
 import Post from '../../../../entities/Post';
+import Share from '../../../../entities/Share';
 import UserProfile from '../../../../entities/UserProfile';
 
 import { IToken } from '../../../../interfaces/Token';
@@ -9,6 +10,13 @@ import xpValues from '../../../../utils/xpValues';
 import commentValidationSchema from '../../../../validators/commentSchema';
 
 export const createComment = async (id: string, comment: string, user: IToken) => {
+  const post = await Post.findById(id);
+  const share = await Share.findById(id);
+
+  if (!post && !share) {
+    throw new UserInputError('Não há post');
+  }
+
   const errors = commentValidationSchema.validate({
     comment,
   });
@@ -27,15 +35,10 @@ export const createComment = async (id: string, comment: string, user: IToken) =
     throw new UserInputError('Não há perfil');
   }
 
-  const post = await Post.findById(id);
-
-  if (!post) {
-    throw new UserInputError('Não há post');
-  }
-
   await Comments.updateOne(
     {
       post: id,
+      onModel: post?._id ? 'Post' : 'Share',
     },
     {
       $push: {
@@ -58,18 +61,22 @@ export const createComment = async (id: string, comment: string, user: IToken) =
     },
   );
 
-  const { commentXP } = xpValues;
+  if (post?._id) {
+    const { commentXP } = xpValues;
 
-  const updatedProfile = await profile.updateOne(
-    {
-      $inc: {
-        xp: commentXP,
+    const updatedProfile = await profile.updateOne(
+      {
+        $inc: {
+          xp: commentXP,
+        },
       },
-    },
-    { useFindAndModify: false, new: true },
-  );
+      { useFindAndModify: false, new: true },
+    );
 
-  return updatedProfile;
+    return updatedProfile;
+  }
+
+  return false;
 };
 
 export const createLikeComment = async (id: string, user: IToken) => {
