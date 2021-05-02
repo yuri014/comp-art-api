@@ -6,7 +6,10 @@ import { IProfileEntity } from '../interfaces/Models';
  * @returns false se o usuário só ganhou xp, mantendo o level
  */
 const levelUp = async (profile: IProfileEntity) => {
-  const targetXp = 1000 * profile.level * 1.25;
+  const xpMultiplier = 1.25;
+  const magnitudeParam = 1000;
+
+  const targetXp = magnitudeParam * profile.level * xpMultiplier;
 
   if (profile.xp >= targetXp) {
     await profile.updateOne({
