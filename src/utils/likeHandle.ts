@@ -5,6 +5,9 @@ import findProfile from '../graphql/resolvers/profiles/services/utils/findProfil
 import { PostEntity } from '../interfaces/Models';
 import { IToken } from '../interfaces/Token';
 
+/**
+ * Valida a regra de negócio de likes, é responsável por chamar a função de like ou dislike.
+ */
 const likeHandler = async (
   id: string,
   user: IToken,

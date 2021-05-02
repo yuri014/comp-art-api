@@ -5,6 +5,9 @@ import { IPost } from '../interfaces/Post';
 import { IShare } from '../interfaces/Share';
 import { IToken } from '../interfaces/Token';
 
+/**
+ * Valida se já curtiu o post e apenas adiciona o like no DB.
+ */
 const likeContent = async (post: IShare | IPost, profileDoc: IProfileEntity, user: IToken) => {
   if (post.likes.length > 0) {
     throw new UserInputError('Já curtiu esse post');

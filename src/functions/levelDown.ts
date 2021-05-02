@@ -1,5 +1,10 @@
 import { IProfileEntity } from '../interfaces/Models';
 
+/**
+ * Calcula o xp perdido e, se for necessaŕio, diminui o level do usuário
+ * @returns true se o usuário perdeu algum level
+ * @returns false se o usuário só perdeu xp, mantendo no mesmo level
+ */
 const levelDown = async (profile: IProfileEntity, xp: number) => {
   const previousTargetXp = 1000 * (profile.level - 1) * 1.25;
   const targetXp = 1000 * profile.level * 1.25;
