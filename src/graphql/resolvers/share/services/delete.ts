@@ -1,5 +1,6 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import ArtistProfile from '../../../../entities/ArtistProfile';
+import Comments from '../../../../entities/Comments';
 
 import Share from '../../../../entities/Share';
 import UserProfile from '../../../../entities/UserProfile';
@@ -54,6 +55,8 @@ const deleteShareService = async (id: string, user: IToken) => {
   };
 
   const updatedProfile = await updateProfile();
+
+  await Comments.deleteMany({ post: id });
 
   const { shareXP } = xpValues;
 
