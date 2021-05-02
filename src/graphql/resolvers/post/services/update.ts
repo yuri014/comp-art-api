@@ -9,7 +9,7 @@ import likeHandler from '../../../../utils/likeHandle';
 import xpValues from '../../../../utils/xpValues';
 
 const likePost = async (id: string, user: IToken) => {
-  await likeHandler(id, user, Post).then(handle => handle('like'));
+  await likeHandler(id, user, Post, 'like');
 
   const { likeXP } = xpValues;
 

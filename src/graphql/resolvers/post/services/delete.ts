@@ -12,7 +12,7 @@ import removeFile from '../../../../utils/removeFile';
 import xpValues from '../../../../utils/xpValues';
 
 export const dislikePost = async (id: string, user: IToken) => {
-  await likeHandler(id, user, Post).then(handle => handle('dislike'));
+  await likeHandler(id, user, Post, 'dislike');
 
   const { likeXP } = xpValues;
 

@@ -24,7 +24,7 @@ const shareResolvers: IResolvers = {
     async likeShare(_, { id }: ID, context) {
       const user = checkAuth(context);
 
-      await likeHandler(id, user, Share).then(handle => handle('dislike'));
+      await likeHandler(id, user, Share, 'dislike');
 
       return true;
     },

@@ -5,7 +5,12 @@ import findProfile from '../graphql/resolvers/profiles/services/utils/findProfil
 import { PostEntity } from '../interfaces/Models';
 import { IToken } from '../interfaces/Token';
 
-const likeHandler = async (id: string, user: IToken, Entity: PostEntity) => {
+const likeHandler = async (
+  id: string,
+  user: IToken,
+  Entity: PostEntity,
+  like: 'like' | 'dislike',
+) => {
   const getProfile = await findProfile(user);
 
   const profileDoc = getProfile._doc;
@@ -22,13 +27,11 @@ const likeHandler = async (id: string, user: IToken, Entity: PostEntity) => {
     throw new UserInputError('Não há post');
   }
 
-  return async (like: 'like' | 'dislike') => {
-    if (like === 'like') {
-      await likeContent(post, profileDoc, user);
-    } else {
-      await dislikeContent(post, profileDoc);
-    }
-  };
+  if (like === 'like') {
+    await likeContent(post, profileDoc, user);
+  } else {
+    await dislikeContent(post, profileDoc);
+  }
 };
 
 export default likeHandler;
