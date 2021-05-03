@@ -9,23 +9,16 @@ import { uploadBody, uploadThumbnail } from '../../../../utils/uploadPost';
 import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';
 
-const createNewPost = async (postInput: IPostInput, user: IToken) => {
+const createNewPost = async (post: IPostInput, user: IToken) => {
   if (!user.isArtist) {
     throw new AuthenticationError('Somente artistas podem postar');
   }
 
   const profile = await checkAbilityToPost(user.username);
 
-  const post = {
-    description: postInput.description && postInput.description?.trim(),
-    body: postInput.body,
-    mediaId: postInput.mediaId,
-    alt: postInput.alt,
-    thumbnail: postInput.thumbnail,
-  };
-
   const errors = postValidationSchema.validate({
     description: post.description,
+    alt: post.alt,
   });
 
   if (errors.error) {
@@ -36,7 +29,7 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
   const thumbnailUrl = await uploadThumbnail(post.thumbnail);
 
   const newPost = new Post({
-    description: post.description,
+    description: post.description?.trim(),
     body,
     createdAt: new Date().toISOString(),
     mediaId: post.mediaId,
