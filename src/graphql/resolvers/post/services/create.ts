@@ -5,7 +5,7 @@ import levelUp from '../../../../functions/levelUp';
 import { IPostInput } from '../../../../interfaces/Post';
 import { IToken } from '../../../../interfaces/Token';
 import checkAbilityToPost from '../../../../middlewares/checkAbilityToPost';
-import { uploadAudio, uploadImage } from '../../../../utils/upload';
+import { uploadBody, uploadThumbnail } from '../../../../utils/uploadPost';
 import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';
 
@@ -17,43 +17,32 @@ const createNewPost = async (postInput: IPostInput, user: IToken) => {
   const profile = await checkAbilityToPost(user.username);
 
   const post = {
-    description: postInput.description?.trim(),
+    description: postInput.description && postInput.description?.trim(),
     body: postInput.body,
     mediaId: postInput.mediaId,
     alt: postInput.alt,
+    thumbnail: postInput.thumbnail,
   };
 
   const errors = postValidationSchema.validate({
     description: post.description,
   });
 
-  const audioId = 2;
-
   if (errors.error) {
-    throw new UserInputError('Erros', {
-      errors: errors.error.message,
-    });
+    throw new UserInputError(errors.error.message);
   }
 
-  const { file } = await post.body;
-
-  const media = async () => {
-    if (post.mediaId === audioId) {
-      return uploadAudio(file.createReadStream, file.filename);
-    }
-
-    return uploadImage(file.createReadStream, file.filename);
-  };
-
-  const fileUrl = await media();
+  const body = post.body ? await uploadBody(post.body, post.mediaId) : '';
+  const thumbnailUrl = await uploadThumbnail(post.thumbnail);
 
   const newPost = new Post({
     description: post.description,
-    body: fileUrl,
+    body,
     createdAt: new Date().toISOString(),
     mediaId: post.mediaId,
     artist: profile._id,
     alt: post.alt,
+    thumbnail: thumbnailUrl,
   });
 
   // await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
