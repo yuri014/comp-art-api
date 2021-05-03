@@ -43,9 +43,10 @@ export const postDefinitions = gql`
 export const postInputDefinitions = gql`
   input CreatePostInput {
     description: String!
-    body: Upload!
+    body: Upload
     mediaId: Int!
     alt: String
+    thumbnail: String
   }
 
   input SharePost {
