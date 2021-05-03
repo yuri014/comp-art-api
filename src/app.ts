@@ -34,7 +34,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use(
   graphqlUploadExpress({
     maxFileSize: 8000000,
-    maxFiles: 2,
+    maxFiles: 4,
   }),
 );
 server.applyMiddleware({ app, cors: { origin: process.env.FRONT_END_HOST } });
