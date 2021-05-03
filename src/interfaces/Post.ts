@@ -28,8 +28,5 @@ export interface IPost extends Document, Post {
 
 export interface IPostInput extends Post {
   body: Promise<IUpload>;
-}
-
-export interface IPostAudio extends IPostInput {
   thumbnail?: Promise<IUpload>;
 }
