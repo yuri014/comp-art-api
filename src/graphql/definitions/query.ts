@@ -3,10 +3,6 @@ import { gql } from 'apollo-server-express';
 const queries = gql`
   scalar Upload
 
-  type File {
-    url: String
-  }
-
   extend type Profile {
     followsYou: Boolean
   }
