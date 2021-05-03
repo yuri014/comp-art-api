@@ -25,7 +25,9 @@ const PostSchema = new Schema({
   sharedCount: { type: Number, default: 0 },
   commentsCount: { type: Number, default: 0 },
   alt: String,
+  color: String,
   createdAt: String,
+  thumbnail: String,
   artist: {
     type: Schema.Types.ObjectId,
     ref: 'ArtistProfile',

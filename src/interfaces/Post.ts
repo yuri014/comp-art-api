@@ -17,13 +17,19 @@ export interface IPost extends Document, Post {
     profile: IArtistProfile | IUserProfile | string;
     onModel: IOnModel;
   }>;
+  artist: string | IArtistProfile;
+  color: string;
+  thumbnail: string;
   likesCount: number;
   sharedCount: number;
   commentsCount: number;
   createdAt: string;
-  artist: string | IArtistProfile;
 }
 
 export interface IPostInput extends Post {
   body: Promise<IUpload>;
+}
+
+export interface IPostAudio extends IPostInput {
+  thumbnail?: Promise<IUpload>;
 }
