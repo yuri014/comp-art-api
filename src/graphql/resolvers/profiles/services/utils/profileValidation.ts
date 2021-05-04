@@ -20,9 +20,7 @@ const profileValidation = async (
   });
 
   if (errors.error) {
-    throw new UserInputError('Erros', {
-      errors: errors.error.message,
-    });
+    throw new UserInputErrorerrors.error.message;
   }
 
   const hashtagsLength = hashtags.length;

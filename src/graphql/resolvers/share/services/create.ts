@@ -17,9 +17,7 @@ const createShare = async (user: IToken, input: IShareInput) => {
   });
 
   if (errors.error) {
-    throw new UserInputError('Erros', {
-      errors: errors.error.message,
-    });
+    throw new UserInputError(errors.error.message);
   }
 
   if (!input.postID) {

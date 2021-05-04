@@ -11,16 +11,13 @@ const loginUser = async (email: string, password: string) => {
   const { errors, valid } = validateLoginInput(email, password);
 
   if (!valid) {
-    throw new UserInputError('Erros', {
-      errors,
-    });
+    throw new UserInputError(errors.general);
   }
 
   const user = await User.findOne({ email });
 
   if (!user) {
-    errors.general = 'Usuário não encontrado';
-    throw new UserInputError('Usuário não encontrado', { errors });
+    throw new UserInputError('Usuário não encontrado');
   }
 
   const match = await bcrypt.compare(password, user.password);
@@ -39,14 +36,12 @@ const loginUser = async (email: string, password: string) => {
     await handleSendConfirmationEmail(user);
 
     const message = 'Um email de confirmação foi enviado a você, por favor confirme seu email!';
-    errors.general = message;
 
-    throw new UserInputError('Email não confirmado', { errors });
+    throw new UserInputError(message);
   }
 
   if (!match) {
-    errors.general = 'Credenciais erradas';
-    throw new UserInputError('Credenciais erradas', { errors });
+    throw new UserInputError('Credenciais erradas');
   }
 
   const token = generateToken(user, '2d');

@@ -22,9 +22,7 @@ export const createComment = async (id: string, comment: string, user: IToken) =
   });
 
   if (errors.error) {
-    throw new UserInputError('Erros', {
-      errors: errors.error.message,
-    });
+    throw new UserInputError(errors.error.message);
   }
 
   const profile = user.isArtist

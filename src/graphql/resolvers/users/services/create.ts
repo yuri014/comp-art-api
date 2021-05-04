@@ -17,9 +17,7 @@ const createUser = async (input: IRegisterFields) => {
   const errors = await validateRegisterInput(user as IRegisterFields);
 
   if (errors.error) {
-    throw new UserInputError('Erros', {
-      errors: errors.error.message,
-    });
+    throw new UserInputErrorerrors.error.message;
   }
 
   const usernameExists = await User.findOne({ username: user.username });

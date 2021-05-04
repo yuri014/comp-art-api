@@ -14,9 +14,7 @@ const createProductService = async (user: IToken, productInput: IProductInput) =
   const errors = productValidationSchema.validate(productInput);
 
   if (errors.error) {
-    throw new UserInputError('Erros', {
-      errors: errors.error.message,
-    });
+    throw new UserInputErrorerrors.error.message;
   }
 
   const { category, images, name, price, description } = productInput;
