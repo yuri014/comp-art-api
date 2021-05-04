@@ -4,9 +4,9 @@ import { UserInputError } from 'apollo-server-express';
 
 export const uploadImage = async (createReadStream?: () => ReadStream, filename?: string) => {
   if (filename && !filename.match(/\.(png|jpg|jpeg|webp)$/)) {
-    throw new UserInputError('Upload precisa ser em um formato de imagem suportado.', {
-      errors: 'Formatos de imagens suportados: png, webp, jpg e jpeg.',
-    });
+    throw new UserInputError(
+      'Upload precisa ser em um formato de imagem suportado. Formatos de imagens suportados: png, webp, jpg e jpeg.',
+    );
   }
 
   try {
@@ -27,9 +27,9 @@ export const uploadImage = async (createReadStream?: () => ReadStream, filename?
 
 export const uploadAudio = async (createReadStream?: () => ReadStream, filename?: string) => {
   if (filename && !filename.match(/\.(mp3|wav)$/)) {
-    throw new UserInputError('Upload precisa ser em um formato de áudio suportado.', {
-      errors: 'Formatos de imagens suportados: mp3 e wav.',
-    });
+    throw new UserInputError(
+      'Upload precisa ser em um formato de imagem suportado. Formatos de imagens suportados: mp3 e wav.',
+    );
   }
 
   try {

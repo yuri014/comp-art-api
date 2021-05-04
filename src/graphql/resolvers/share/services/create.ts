@@ -29,9 +29,7 @@ const createShare = async (user: IToken, input: IShareInput) => {
     : await UserProfile.findOne({ owner: user.username });
 
   if (!profile) {
-    throw new UserInputError('Não há perfil', {
-      errors: 'Não há perfil',
-    });
+    throw new UserInputError('Não há perfil');
   }
 
   const newShare = new Share({

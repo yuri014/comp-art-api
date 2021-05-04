@@ -17,18 +17,14 @@ const createUser = async (input: IRegisterFields) => {
   const errors = await validateRegisterInput(user as IRegisterFields);
 
   if (errors.error) {
-    throw new UserInputErrorerrors.error.message;
+    throw new UserInputError(errors.error.message);
   }
 
   const usernameExists = await User.findOne({ username: user.username });
   const emailExists = await User.findOne({ email: user.email });
 
   if (usernameExists || emailExists) {
-    throw new UserInputError('Username ou email já existe', {
-      errors: {
-        duplicate: usernameExists ? 'Username já existe' : 'Email já existe',
-      },
-    });
+    throw new UserInputError(usernameExists ? 'Username já existe' : 'Email já existe');
   }
 
   const encryptedPassword = await bcrypt.hash(user.password, 12);
