@@ -1,8 +1,8 @@
 const xpValues = {
-  likeXP: 75,
-  commentXP: 150,
-  shareXP: 250,
-  postXP: 400,
+  likeXP: 25,
+  commentXP: 75,
+  shareXP: 150,
+  postXP: 300,
 };
 
 export default xpValues;

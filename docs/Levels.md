@@ -26,10 +26,10 @@ Missões que darão xp bônus.
 
 |AÇÃO        |XP |
 |------------|---|
-|Curtir      |75 |
-|Comentar    |150|
-|Compartilhar|250|
-|Postar      |400|
+|Curtir      |25 |
+|Comentar    |75 |
+|Compartilhar|150|
+|Postar      |300|
 
 ### Tabela de permissões por nível de usuário
 

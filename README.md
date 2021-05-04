@@ -23,5 +23,5 @@ yarn start
 ```
 
 - [Estrutura](/docs/Structure.md)
-- [Nívels](/docs/Levels.md)
+- [Levels](/docs/Levels.md)
 - [TypeScript](/docs/TypeScript.md)
