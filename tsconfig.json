@@ -18,9 +18,9 @@
     "paths": {
       "@auth/*": ["src/auth/*"],
       "@emails/*": ["src/emails/*"],
-      "@entities/*": ["src/graphql/entities/*"],
-      "@functions/*": ["src/graphql/functions/*"],
-      "@generators/*": ["src/graphql/generators/*"],
+      "@entities/*": ["src/entities/*"],
+      "@functions/*": ["src/functions/*"],
+      "@generators/*": ["src/generators/*"],
       "@resolvers/*": ["src/graphql/resolvers/*"],
       "@definitions/*": ["src/graphql/definitions/*"],
       "@interfaces/*": ["src/interfaces/*"],

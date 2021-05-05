@@ -1,15 +1,15 @@
 import { IResolvers, UserInputError } from 'apollo-server-express';
 
-import User from '../../../entities/User';
-import { IRegisterFields } from '../../../interfaces/User';
+import User from '@entities/User';
+import { IRegisterFields } from '@interfaces/User';
 import createUser from './services/create';
 import loginUser from './services/find';
 import { confirmUser, updatePassword } from './services/update';
-import recoverPasswordEmail from '../../../emails/templates/recoverPasswordEmail';
-import createEmail from '../../../emails/createEmail';
-import sendEmail from '../../../emails/sendEmail';
-import handleSendConfirmationEmail from '../../../utils/handleSendConfirmationEmail';
-import generateToken from '../../../generators/generateToken';
+import recoverPasswordEmail from '@emails/templates/recoverPasswordEmail';
+import createEmail from '@emails/createEmail';
+import sendEmail from '@emails/sendEmail';
+import handleSendConfirmationEmail from '@utils/handleSendConfirmationEmail';
+import generateToken from '@generators/generateToken';
 
 const usersResolvers: IResolvers = {
   Mutation: {

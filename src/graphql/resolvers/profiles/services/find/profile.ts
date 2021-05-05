@@ -1,10 +1,10 @@
 import { UserInputError } from 'apollo-server-express';
 
-import User from '../../../../../entities/User';
-import { IToken } from '../../../../../interfaces/Token';
+import User from '@entities/User';
+import { IToken } from '@interfaces/Token';
+import ArtistProfile from '@entities/ArtistProfile';
+import UserProfile from '@entities/UserProfile';
 import findProfile from '../utils/findProfileUtil';
-import ArtistProfile from '../../../../../entities/ArtistProfile';
-import UserProfile from '../../../../../entities/UserProfile';
 import shuffleArray from '../utils/shuffleProfilesArray';
 
 export const getProfileService = async (username: string) => {

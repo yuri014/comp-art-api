@@ -1,6 +1,9 @@
 import { IResolvers } from 'apollo-server-express';
-import { IPostInput } from '../../../interfaces/Post';
-import checkAuth from '../../../middlewares/checkAuth';
+import { IPostInput } from '@interfaces/Post';
+import checkAuth from '@middlewares/checkAuth';
+import Post from '@entities/Post';
+import getToken from '@auth/getToken';
+import { ID } from '@interfaces/General';
 import likePost from './services/update';
 import createNewPost from './services/create';
 import {
@@ -11,9 +14,6 @@ import {
   getPostLikes,
 } from './services/find';
 import { deletePostService, dislikePost } from './services/delete';
-import Post from '../../../entities/Post';
-import getToken from '../../../auth/getToken';
-import { ID } from '../../../interfaces/General';
 
 const postResolvers: IResolvers = {
   Query: {

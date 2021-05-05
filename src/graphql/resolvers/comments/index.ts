@@ -1,11 +1,11 @@
 import { IResolvers } from 'apollo-server-express';
 
-import checkAuth from '../../../middlewares/checkAuth';
+import checkAuth from '@middlewares/checkAuth';
+import levelUp from '@functions/levelUp';
+import { ID } from '@interfaces/General';
 import findComments from './services/find';
 import { createComment, createLikeComment } from './services/create';
 import { deleteCommentService, dislikeCommentService } from './services/delete';
-import levelUp from '../../../functions/levelUp';
-import { ID } from '../../../interfaces/General';
 
 const commentsResolvers: IResolvers = {
   Query: {

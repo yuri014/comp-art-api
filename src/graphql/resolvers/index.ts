@@ -1,11 +1,11 @@
+import { IArtistProfile } from '@interfaces/Profile';
+import { IProfileEntity } from '@interfaces/Models';
 import commentsResolvers from './comments';
 import postResolvers from './post';
 import profileResolvers from './profiles';
 import usersResolvers from './users';
 import shareResolvers from './share';
 import productsResolvers from './products';
-import { IArtistProfile } from '../../interfaces/Profile';
-import { IProfileEntity } from '../../interfaces/Models';
 
 const resolvers = {
   Timeline: {

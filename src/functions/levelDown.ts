@@ -1,4 +1,4 @@
-import { IProfileEntity } from '../interfaces/Models';
+import { IProfileEntity } from '@interfaces/Models';
 
 /**
  * Calcula o xp perdido e, se for necessaŕio, diminui o level do usuário.

@@ -1,10 +1,10 @@
 import { IResolvers } from 'apollo-server-express';
 
-import Share from '../../../entities/Share';
-import { ID } from '../../../interfaces/General';
-import { IShareInput } from '../../../interfaces/Share';
-import checkAuth from '../../../middlewares/checkAuth';
-import likeHandler from '../../../utils/likeHandle';
+import Share from '@entities/Share';
+import { ID } from '@interfaces/General';
+import { IShareInput } from '@interfaces/Share';
+import checkAuth from '@middlewares/checkAuth';
+import likeHandler from '@utils/likeHandle';
 import createShare from './services/create';
 import deleteShareService from './services/delete';
 

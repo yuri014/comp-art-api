@@ -1,10 +1,13 @@
 import { IResolvers, UserInputError } from 'apollo-server-express';
 
-import ArtistProfile from '../../../entities/ArtistProfile';
-import { ICreateProfile } from '../../../interfaces/Profile';
-import checkAuth from '../../../middlewares/checkAuth';
-import UserProfile from '../../../entities/UserProfile';
-import User from '../../../entities/User';
+import ArtistProfile from '@entities/ArtistProfile';
+import { ICreateProfile } from '@interfaces/Profile';
+import checkAuth from '@middlewares/checkAuth';
+import UserProfile from '@entities/UserProfile';
+import User from '@entities/User';
+import Following from '@entities/Following';
+import getToken from '@auth/getToken';
+import { ID } from '@interfaces/General';
 import { unfollower, unfollowing } from './services/delete';
 import findProfile from './services/utils/findProfileUtil';
 import {
@@ -19,9 +22,6 @@ import followService from './services/create/follow';
 import updateProfileService from './services/update/profile';
 import profileValidation from './services/utils/profileValidation';
 import shuffleArray from './services/utils/shuffleProfilesArray';
-import Following from '../../../entities/Following';
-import getToken from '../../../auth/getToken';
-import { ID } from '../../../interfaces/General';
 
 type IUsername = {
   username: string;

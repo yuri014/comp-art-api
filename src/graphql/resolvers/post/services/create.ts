@@ -1,13 +1,14 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
-import ArtistProfile from '../../../../entities/ArtistProfile';
-import Post from '../../../../entities/Post';
-import levelUp from '../../../../functions/levelUp';
-import { IPostInput } from '../../../../interfaces/Post';
-import { IToken } from '../../../../interfaces/Token';
-import checkAbilityToPost from '../../../../middlewares/checkAbilityToPost';
-import { uploadBody, uploadThumbnail } from '../../../../utils/uploadPost';
-import xpValues from '../../../../utils/xpValues';
-import postValidationSchema from '../../../../validators/postSchema';
+
+import ArtistProfile from '@entities/ArtistProfile';
+import Post from '@entities/Post';
+import levelUp from '@functions/levelUp';
+import { IPostInput } from '@interfaces/Post';
+import { IToken } from '@interfaces/Token';
+import checkAbilityToPost from '@middlewares/checkAbilityToPost';
+import { uploadBody, uploadThumbnail } from '@utils/uploadPost';
+import xpValues from '@utils/xpValues';
+import postValidationSchema from '@validators/postSchema';
 
 const createNewPost = async (post: IPostInput, user: IToken) => {
   if (!user.isArtist) {

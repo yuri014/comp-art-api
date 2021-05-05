@@ -1,11 +1,12 @@
 import { UserInputError } from 'apollo-server-express';
-import ArtistProfile from '../../../../entities/ArtistProfile';
-import Follower from '../../../../entities/Follower';
-import Following from '../../../../entities/Following';
-import UserProfile from '../../../../entities/UserProfile';
-import { IProfileEntity } from '../../../../interfaces/Models';
-import { isAlreadyFollow, isAlreadyFollowing } from '../../../../middlewares/isAlreadyFollow';
-import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
+
+import ArtistProfile from '@entities/ArtistProfile';
+import Follower from '@entities/Follower';
+import Following from '@entities/Following';
+import UserProfile from '@entities/UserProfile';
+import { IProfileEntity } from '@interfaces/Models';
+import { isAlreadyFollow, isAlreadyFollowing } from '@middlewares/isAlreadyFollow';
+import genericUpdateOptions from '@utils/genericUpdateOptions';
 
 export const unfollower = async (
   isArtist: boolean,

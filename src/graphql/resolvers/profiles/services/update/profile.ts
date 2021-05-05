@@ -1,10 +1,10 @@
 import { UserInputError } from 'apollo-server-express';
 import { Model } from 'mongoose';
 
-import { IToken } from '../../../../../interfaces/Token';
-import removeFile from '../../../../../utils/removeFile';
-import { uploadImage } from '../../../../../utils/upload';
-import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../../interfaces/Profile';
+import { IToken } from '@interfaces/Token';
+import removeFile from '@utils/removeFile';
+import { uploadImage } from '@utils/upload';
+import { IArtistProfile, ICreateProfile, IUserProfile } from '@interfaces/Profile';
 
 const updateProfileService = async (
   user: IToken,

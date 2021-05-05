@@ -2,9 +2,9 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { UserInputError } from 'apollo-server-express';
 
-import User from '../../../../entities/User';
-import ConfirmationCode from '../../../../entities/ConfirmationCode';
-import { ID } from '../../../../interfaces/General';
+import User from '@entities/User';
+import ConfirmationCode from '@entities/ConfirmationCode';
+import { ID } from '@interfaces/General';
 
 export const confirmUser = async (code: string, email: string) => {
   try {

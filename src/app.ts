@@ -2,9 +2,9 @@ import express, { Request, Response } from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { graphqlUploadExpress } from 'graphql-upload';
 
+import rateLimiterMiddleware from '@middlewares/limiter';
 import typeDefs from './graphql/definitions';
 import resolvers from './graphql/resolvers';
-import rateLimiterMiddleware from './middlewares/limiter';
 
 require('dotenv').config({
   path: process.env.NODE_ENV === 'development' ? '.env.development' : '.env',

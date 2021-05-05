@@ -1,12 +1,11 @@
-import ArtistProfile from '../../../../entities/ArtistProfile';
-
-import Post from '../../../../entities/Post';
-import UserProfile from '../../../../entities/UserProfile';
-import levelUp from '../../../../functions/levelUp';
-import { IToken } from '../../../../interfaces/Token';
-import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
-import likeHandler from '../../../../utils/likeHandle';
-import xpValues from '../../../../utils/xpValues';
+import ArtistProfile from '@entities/ArtistProfile';
+import Post from '@entities/Post';
+import UserProfile from '@entities/UserProfile';
+import levelUp from '@functions/levelUp';
+import { IToken } from '@interfaces/Token';
+import genericUpdateOptions from '@utils/genericUpdateOptions';
+import likeHandler from '@utils/likeHandle';
+import xpValues from '@utils/xpValues';
 
 const likePost = async (id: string, user: IToken) => {
   await likeHandler(id, user, Post, 'like');

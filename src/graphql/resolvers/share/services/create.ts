@@ -1,15 +1,15 @@
 import { UserInputError } from 'apollo-server-express';
 
-import ArtistProfile from '../../../../entities/ArtistProfile';
-import Post from '../../../../entities/Post';
-import Share from '../../../../entities/Share';
-import UserProfile from '../../../../entities/UserProfile';
-import levelUp from '../../../../functions/levelUp';
-import { IArtistProfile } from '../../../../interfaces/Profile';
-import { IShareInput } from '../../../../interfaces/Share';
-import { IToken } from '../../../../interfaces/Token';
-import xpValues from '../../../../utils/xpValues';
-import postValidationSchema from '../../../../validators/postSchema';
+import ArtistProfile from '@entities/ArtistProfile';
+import Post from '@entities/Post';
+import Share from '@entities/Share';
+import UserProfile from '@entities/UserProfile';
+import levelUp from '@functions/levelUp';
+import { IArtistProfile } from '@interfaces/Profile';
+import { IShareInput } from '@interfaces/Share';
+import { IToken } from '@interfaces/Token';
+import xpValues from '@utils/xpValues';
+import postValidationSchema from '@validators/postSchema';
 
 const createShare = async (user: IToken, input: IShareInput) => {
   const errors = postValidationSchema.validate({

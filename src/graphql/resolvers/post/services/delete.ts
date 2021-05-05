@@ -1,17 +1,17 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 
-import ArtistProfile from '../../../../entities/ArtistProfile';
-import Comments from '../../../../entities/Comments';
-import Post from '../../../../entities/Post';
-import Share from '../../../../entities/Share';
-import UserProfile from '../../../../entities/UserProfile';
-import levelDown from '../../../../functions/levelDown';
-import { IArtistProfile } from '../../../../interfaces/Profile';
-import { IToken } from '../../../../interfaces/Token';
-import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
-import likeHandler from '../../../../utils/likeHandle';
-import removeFile from '../../../../utils/removeFile';
-import xpValues from '../../../../utils/xpValues';
+import ArtistProfile from '@entities/ArtistProfile';
+import Comments from '@entities/Comments';
+import Post from '@entities/Post';
+import Share from '@entities/Share';
+import UserProfile from '@entities/UserProfile';
+import levelDown from '@functions/levelDown';
+import { IArtistProfile } from '@interfaces/Profile';
+import { IToken } from '@interfaces/Token';
+import genericUpdateOptions from '@utils/genericUpdateOptions';
+import likeHandler from '@utils/likeHandle';
+import removeFile from '@utils/removeFile';
+import xpValues from '@utils/xpValues';
 
 export const dislikePost = async (id: string, user: IToken) => {
   await likeHandler(id, user, Post, 'dislike');

@@ -1,9 +1,9 @@
 import { UserInputError } from 'apollo-server-express';
-import { IProfileEntity } from '../interfaces/Models';
+import { IProfileEntity } from '@interfaces/Models';
 
-import { IPost } from '../interfaces/Post';
-import { IShare } from '../interfaces/Share';
-import { IToken } from '../interfaces/Token';
+import { IPost } from '@interfaces/Post';
+import { IShare } from '@interfaces/Share';
+import { IToken } from '@interfaces/Token';
 
 /**
  * Valida se já curtiu o post e apenas adiciona o like no DB.

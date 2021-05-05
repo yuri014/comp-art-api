@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
-import { Comment } from '../interfaces/Comment';
+import { Comment } from '@interfaces/Comment';
 
 const CommentSchema = new Schema({
   post: { type: Schema.Types.ObjectId, refPath: 'onModel', required: true },

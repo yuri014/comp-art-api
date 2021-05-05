@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { IUserProfile } from '../interfaces/Profile';
+import { IUserProfile } from '@interfaces/Profile';
 
 const UserProfileSchema = new Schema({
   name: { type: String, required: true },

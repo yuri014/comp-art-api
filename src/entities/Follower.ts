@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { IFollower } from '../interfaces/Follow';
+import { IFollower } from '@interfaces/Follow';
 
 const FollowerSchema = new Schema({
   username: {
