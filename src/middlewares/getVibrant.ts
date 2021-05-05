@@ -11,7 +11,7 @@ const getVibrant = async (path: string, themeColor: string) => {
   const color = palette.Vibrant?.hex;
 
   if (!tinyColor(themeColor).isValid()) {
-    throw new Error(`Color ${themeColor} is invalid, please try again...`);
+    throw new Error(`Color ${themeColor} is invalid, please try again with other color...`);
   }
 
   const hasColorAcessibility = tinyColor.isReadable(`${color}`, `${themeColor}`, {
