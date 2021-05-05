@@ -37,6 +37,7 @@
         "ts": "never"
       }
     ],
+    "import/no-unresolved": "off",
     "object-curly-newline": "off",
     "class-methods-use-this": "off",
     "no-underscore-dangle": "off"
