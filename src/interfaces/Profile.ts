@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 import { IUpload } from './Upload';
 
-interface Profile {
+export interface IProfile {
   name: string;
   bio: string;
   avatar: string;
@@ -29,12 +29,12 @@ interface HashtagsAndLinks {
   };
 }
 
-export interface IUserProfile extends Document, Profile, HashtagsAndLinks {
+export interface IUserProfile extends Document, IProfile, HashtagsAndLinks {
   _doc?: IUserProfile;
   sharedPostCount: number;
 }
 
-export interface IArtistProfile extends Document, Profile, HashtagsAndLinks {
+export interface IArtistProfile extends Document, IProfile, HashtagsAndLinks {
   _doc?: IArtistProfile;
   postCount: number;
   isBlockedToPost: boolean;
