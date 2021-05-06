@@ -8,10 +8,10 @@ import handleSendConfirmationEmail from '../../../../utils/handleSendConfirmatio
 import { validateLoginInput } from '../../../../validators/utils/validateRegisterInput';
 
 const loginUser = async (email: string, password: string) => {
-  const { errors, valid } = validateLoginInput(email, password);
+  const { error, valid } = validateLoginInput(email, password);
 
   if (!valid) {
-    throw new UserInputError(errors.general);
+    throw new UserInputError(error);
   }
 
   const user = await User.findOne({ email });

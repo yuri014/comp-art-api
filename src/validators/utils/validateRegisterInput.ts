@@ -4,19 +4,27 @@ import userValidateSchema from '../userSchema';
 const isNotEmpty = (field: string) => field.trim() === '';
 
 export const validateLoginInput = (email: string, password: string) => {
-  const errors = { general: '' };
-
   if (isNotEmpty(email)) {
-    errors.general = 'Email não pode ser vazio';
+    const error = 'Email não pode ser vazio';
+
+    return {
+      error,
+      valid: false,
+    };
   }
 
   if (isNotEmpty(password)) {
-    errors.general = 'Senha não pode ser vazia';
+    const error = 'Senha não pode ser vazia';
+
+    return {
+      error,
+      valid: false,
+    };
   }
 
   return {
-    errors,
-    valid: Object.keys(errors).length === 0,
+    error: '',
+    valid: true,
   };
 };
 
