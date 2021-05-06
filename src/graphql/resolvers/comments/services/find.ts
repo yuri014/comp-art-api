@@ -1,4 +1,4 @@
-import Comments from '@entities/Comments';
+import Comments from '../../../../entities/Comments';
 
 const findComments = async (postID: string, offset: number) => {
   const comments = await Comments.findOne({ post: postID })

@@ -1,6 +1,6 @@
 import tinyColor from 'tinycolor2';
 import Vibrant from 'node-vibrant';
-import checkColorAccessibility from '@middlewares/checkColorAccessibility';
+import checkColorAccessibility from '../middlewares/checkColorAccessibility';
 
 /**
  * @returns cor Predominante ou cor secundária

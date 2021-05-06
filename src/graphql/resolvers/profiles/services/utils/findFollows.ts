@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
 
-import { IFollower, IFollowing } from '@interfaces/Follow';
+import { IFollower, IFollowing } from '../../../../../interfaces/Follow';
 
 export type IOffset = {
   offset: number;

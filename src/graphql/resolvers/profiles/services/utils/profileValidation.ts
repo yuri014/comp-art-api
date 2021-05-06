@@ -1,8 +1,8 @@
 import { UserInputError } from 'apollo-server-express';
-import { IProfileEntity } from '@interfaces/Models';
 
-import { IToken } from '@interfaces/Token';
-import profileValidationSchema from '@validators/profileSchema';
+import { IProfileEntity } from '../../../../../interfaces/Models';
+import { IToken } from '../../../../../interfaces/Token';
+import profileValidationSchema from '../../../../../validators/profileSchema';
 
 const profileValidation = async (
   user: IToken,

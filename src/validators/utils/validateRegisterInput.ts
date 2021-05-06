@@ -1,4 +1,4 @@
-import { IRegisterFields } from '@interfaces/User';
+import { IRegisterFields } from '../../interfaces/User';
 import userValidateSchema from '../userSchema';
 
 const isNotEmpty = (field: string) => field.trim() === '';

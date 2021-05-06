@@ -1,9 +1,9 @@
 import { UserInputError } from 'apollo-server-express';
-import { PostEntity } from '@interfaces/Models';
-import { IToken } from '@interfaces/Token';
-import dislikeContent from '@functions/dislikeContent';
-import likeContent from '@functions/likeContent';
-import findProfile from '@resolvers/profiles/services/utils/findProfileUtil';
+import { PostEntity } from '../interfaces/Models';
+import { IToken } from '../interfaces/Token';
+import dislikeContent from '../functions/dislikeContent';
+import likeContent from '../functions/likeContent';
+import findProfile from '../graphql/resolvers/profiles/services/utils/findProfileUtil';
 
 /**
  * Valida a regra de negócio de likes, é responsável por chamar a função de like ou dislike.

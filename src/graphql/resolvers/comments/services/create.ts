@@ -1,13 +1,13 @@
 import { UserInputError } from 'apollo-server-express';
-import ArtistProfile from '@entities/ArtistProfile';
-import Comments from '@entities/Comments';
-import Post from '@entities/Post';
-import Share from '@entities/Share';
-import UserProfile from '@entities/UserProfile';
 
-import { IToken } from '@interfaces/Token';
-import xpValues from '@utils/xpValues';
-import commentValidationSchema from '@validators/commentSchema';
+import ArtistProfile from '../../../../entities/ArtistProfile';
+import Comments from '../../../../entities/Comments';
+import Post from '../../../../entities/Post';
+import Share from '../../../../entities/Share';
+import UserProfile from '../../../../entities/UserProfile';
+import { IToken } from '../../../../interfaces/Token';
+import xpValues from '../../../../utils/xpValues';
+import commentValidationSchema from '../../../../validators/commentSchema';
 
 export const createComment = async (id: string, comment: string, user: IToken) => {
   const post = await Post.findById(id);

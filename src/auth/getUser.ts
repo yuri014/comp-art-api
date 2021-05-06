@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
-
-import { IToken } from '@interfaces/Token';
+import { IToken } from '../interfaces/Token';
 
 const getUser = (token: string) => {
   if (token) {

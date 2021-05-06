@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { IShare } from '@interfaces/Share';
+import { IShare } from '../interfaces/Share';
 
 const ShareSchema = new Schema({
   description: { type: String },

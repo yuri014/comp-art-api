@@ -1,4 +1,4 @@
-import { IUser } from '@interfaces/User';
+import { IUser } from '../interfaces/User';
 import createEmail from '../emails/createEmail';
 import sendEmail from '../emails/sendEmail';
 import confirmationEmailTemplate from '../emails/templates/confirmationEmail';

@@ -1,9 +1,9 @@
 import { IResolvers } from 'apollo-server-express';
-import { IPostInput } from '@interfaces/Post';
-import checkAuth from '@middlewares/checkAuth';
-import Post from '@entities/Post';
-import getToken from '@auth/getToken';
-import { ID } from '@interfaces/General';
+import { IPostInput } from '../../../interfaces/Post';
+import checkAuth from '../../../middlewares/checkAuth';
+import Post from '../../../entities/Post';
+import getToken from '../../../auth/getToken';
+import { ID } from '../../../interfaces/General';
 import likePost from './services/update';
 import createNewPost from './services/create';
 import {

@@ -1,4 +1,4 @@
-import { IProfileEntity } from '@interfaces/Models';
+import { IProfileEntity } from '../interfaces/Models';
 
 /**
  * Calcula o xp necessaŕio para aumentar o level do usuário

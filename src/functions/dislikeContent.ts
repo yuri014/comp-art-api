@@ -1,8 +1,8 @@
 import { UserInputError } from 'apollo-server-express';
-import { IProfileEntity } from '@interfaces/Models';
 
-import { IPost } from '@interfaces/Post';
-import { IShare } from '@interfaces/Share';
+import { IProfileEntity } from '../interfaces/Models';
+import { IPost } from '../interfaces/Post';
+import { IShare } from '../interfaces/Share';
 
 /**
  * Valida se não curtiu o post e apenas remove o like no DB.

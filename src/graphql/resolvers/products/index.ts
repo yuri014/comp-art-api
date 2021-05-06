@@ -1,7 +1,7 @@
 import { IResolvers } from 'apollo-server-express';
 
-import { IProductInput } from '@interfaces/Product';
-import checkAuth from '@middlewares/checkAuth';
+import { IProductInput } from '../../../interfaces/Product';
+import checkAuth from '../../../middlewares/checkAuth';
 import createProductService from './services/create';
 
 const productsResolvers: IResolvers = {

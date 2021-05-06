@@ -1,14 +1,14 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
-import ArtistProfile from '@entities/ArtistProfile';
-import Comments from '@entities/Comments';
 
-import Share from '@entities/Share';
-import UserProfile from '@entities/UserProfile';
-import levelDown from '@functions/levelDown';
-import { IProfileEntity } from '@interfaces/Models';
-import { IToken } from '@interfaces/Token';
-import genericUpdateOptions from '@utils/genericUpdateOptions';
-import xpValues from '@utils/xpValues';
+import ArtistProfile from '../../../../entities/ArtistProfile';
+import Comments from '../../../../entities/Comments';
+import Share from '../../../../entities/Share';
+import UserProfile from '../../../../entities/UserProfile';
+import levelDown from '../../../../functions/levelDown';
+import { IProfileEntity } from '../../../../interfaces/Models';
+import { IToken } from '../../../../interfaces/Token';
+import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
+import xpValues from '../../../../utils/xpValues';
 
 const deleteShareService = async (id: string, user: IToken) => {
   const share = await Share.findById(id).populate('profile');

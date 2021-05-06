@@ -1,9 +1,9 @@
-import getUser from '@auth/getUser';
-import Follower from '@entities/Follower';
-import Following from '@entities/Following';
-import { IFollower, IFollowing } from '@interfaces/Follow';
-import { IProfileEntity } from '@interfaces/Models';
-import { isAlreadyFollowing } from '@middlewares/isAlreadyFollow';
+import getUser from '../../../../../auth/getUser';
+import Follower from '../../../../../entities/Follower';
+import Following from '../../../../../entities/Following';
+import { IFollower, IFollowing } from '../../../../../interfaces/Follow';
+import { IProfileEntity } from '../../../../../interfaces/Models';
+import { isAlreadyFollowing } from '../../../../../middlewares/isAlreadyFollow';
 import findFollows, { IOffset } from '../utils/findFollows';
 import shuffleArray from '../utils/shuffleProfilesArray';
 

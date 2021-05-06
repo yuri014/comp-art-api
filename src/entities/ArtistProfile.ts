@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-import { IArtistProfile } from '@interfaces/Profile';
+import { IArtistProfile } from '../interfaces/Profile';
 
 const ArtistProfileSchema = new Schema({
   name: { type: String, required: true },

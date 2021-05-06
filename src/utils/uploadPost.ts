@@ -1,4 +1,4 @@
-import { IUpload } from '@interfaces/Upload';
+import { IUpload } from '../interfaces/Upload';
 import { uploadAudio, uploadImage } from './upload';
 
 export const uploadBody = async (fileBody: Promise<IUpload>, mediaId: number) => {

@@ -1,11 +1,11 @@
 import { UserInputError } from 'apollo-server-express';
 
-import Comments from '@entities/Comments';
-import ArtistProfile from '@entities/ArtistProfile';
-import UserProfile from '@entities/UserProfile';
-import { IToken } from '@interfaces/Token';
-import xpValues from '@utils/xpValues';
-import levelDown from '@functions/levelDown';
+import Comments from '../../../../entities/Comments';
+import ArtistProfile from '../../../../entities/ArtistProfile';
+import UserProfile from '../../../../entities/UserProfile';
+import { IToken } from '../../../../interfaces/Token';
+import xpValues from '../../../../utils/xpValues';
+import levelDown from '../../../../functions/levelDown';
 
 export const dislikeCommentService = async (likeID: string, user: IToken) => {
   const hasLike = await Comments.findOne({

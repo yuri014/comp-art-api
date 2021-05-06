@@ -1,11 +1,11 @@
 import bcrypt from 'bcryptjs';
 import { UserInputError } from 'apollo-server-express';
-
 import { differenceInDays } from 'date-fns';
-import User from '@entities/User';
-import handleSendConfirmationEmail from '@utils/handleSendConfirmationEmail';
-import { validateLoginInput } from '@validators/utils/validateRegisterInput';
-import generateToken from '@generators/generateToken';
+
+import User from '../../../../entities/User';
+import generateToken from '../../../../generators/generateToken';
+import handleSendConfirmationEmail from '../../../../utils/handleSendConfirmationEmail';
+import { validateLoginInput } from '../../../../validators/utils/validateRegisterInput';
 
 const loginUser = async (email: string, password: string) => {
   const { errors, valid } = validateLoginInput(email, password);

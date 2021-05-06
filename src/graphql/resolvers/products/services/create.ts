@@ -1,10 +1,10 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 
-import Product from '@entities/Product';
-import { IToken } from '@interfaces/Token';
-import { IProductInput } from '@interfaces/Product';
-import { uploadImage } from '@utils/upload';
-import productValidationSchema from '@validators/productSchema';
+import Product from '../../../../entities/Product';
+import { IToken } from '../../../../interfaces/Token';
+import { IProductInput } from '../../../../interfaces/Product';
+import { uploadImage } from '../../../../utils/upload';
+import productValidationSchema from '../../../../validators/productSchema';
 
 const createProductService = async (user: IToken, productInput: IProductInput) => {
   if (!user.isArtist) {

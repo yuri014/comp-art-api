@@ -1,10 +1,10 @@
 import { UserInputError } from 'apollo-server-express';
 
-import ArtistProfile from '@entities/ArtistProfile';
-import Follower from '@entities/Follower';
-import Following from '@entities/Following';
-import UserProfile from '@entities/UserProfile';
-import { isAlreadyFollow, isAlreadyFollowing } from '@middlewares/isAlreadyFollow';
+import ArtistProfile from '../../../../../entities/ArtistProfile';
+import Follower from '../../../../../entities/Follower';
+import Following from '../../../../../entities/Following';
+import UserProfile from '../../../../../entities/UserProfile';
+import { isAlreadyFollow, isAlreadyFollowing } from '../../../../../middlewares/isAlreadyFollow';
 
 const options = {
   upsert: true,

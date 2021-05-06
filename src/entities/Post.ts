@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
-import { IPost } from '@interfaces/Post';
+import { IPost } from '../interfaces/Post';
 
 /**
  * @field

@@ -1,13 +1,13 @@
 /* eslint-disable function-paren-newline */
 import { UserInputError } from 'apollo-server-express';
 
-import getUser from '@auth/getUser';
-import ArtistProfile from '@entities/ArtistProfile';
-import Following from '@entities/Following';
-import Post from '@entities/Post';
-import Share from '@entities/Share';
-import { IArtistProfile, IUserProfile } from '@interfaces/Profile';
-import { IToken } from '@interfaces/Token';
+import getUser from '../../../../auth/getUser';
+import ArtistProfile from '../../../../entities/ArtistProfile';
+import Following from '../../../../entities/Following';
+import Post from '../../../../entities/Post';
+import Share from '../../../../entities/Share';
+import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
+import { IToken } from '../../../../interfaces/Token';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 import shuffleArray from '../../profiles/services/utils/shuffleProfilesArray';
 

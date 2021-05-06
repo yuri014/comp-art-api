@@ -1,13 +1,13 @@
 import { IResolvers, UserInputError } from 'apollo-server-express';
 
-import ArtistProfile from '@entities/ArtistProfile';
-import { ICreateProfile } from '@interfaces/Profile';
-import checkAuth from '@middlewares/checkAuth';
-import UserProfile from '@entities/UserProfile';
-import User from '@entities/User';
-import Following from '@entities/Following';
-import getToken from '@auth/getToken';
-import { ID } from '@interfaces/General';
+import ArtistProfile from '../../../entities/ArtistProfile';
+import { ICreateProfile } from '../../../interfaces/Profile';
+import checkAuth from '../../../middlewares/checkAuth';
+import UserProfile from '../../../entities/UserProfile';
+import User from '../../../entities/User';
+import Following from '../../../entities/Following';
+import getToken from '../../../auth/getToken';
+import { ID } from '../../../interfaces/General';
 import { unfollower, unfollowing } from './services/delete';
 import findProfile from './services/utils/findProfileUtil';
 import {

@@ -1,8 +1,8 @@
 import { Model } from 'mongoose';
 
-import { IArtistProfile, ICreateProfile, IUserProfile } from '@interfaces/Profile';
-import { IToken } from '@interfaces/Token';
-import { uploadImage } from '@utils/upload';
+import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../../interfaces/Profile';
+import { IToken } from '../../../../../interfaces/Token';
+import { uploadImage } from '../../../../../utils/upload';
 import profileValidation from '../utils/profileValidation';
 
 const createProfile = async (

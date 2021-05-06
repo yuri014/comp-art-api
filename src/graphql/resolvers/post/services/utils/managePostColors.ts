@@ -1,4 +1,4 @@
-import getImageColor from '@utils/getImageColor';
+import getImageColor from '../../../../../utils/getImageColor';
 
 const managePostColors = async (thumbnailUrl: string, bodyUrl: string) => {
   const darkThemeColor = '#28282C';

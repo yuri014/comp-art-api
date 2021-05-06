@@ -1,8 +1,9 @@
 import { UserInputError } from 'apollo-server-express';
-import ArtistProfile from '@entities/ArtistProfile';
-import UserProfile from '@entities/UserProfile';
-import { IToken } from '@interfaces/Token';
-import { IUser } from '@interfaces/User';
+
+import ArtistProfile from '../../../../../entities/ArtistProfile';
+import UserProfile from '../../../../../entities/UserProfile';
+import { IToken } from '../../../../../interfaces/Token';
+import { IUser } from '../../../../../interfaces/User';
 
 const findProfile = async (user: IUser | IToken) => {
   const profile = user.isArtist

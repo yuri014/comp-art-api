@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { AuthenticationError } from 'apollo-server-express';
-import { IToken } from '@interfaces/Token';
+import { IToken } from '../interfaces/Token';
 
 const checkAuth = (context: { req: { headers: { authorization: string } } }) => {
   const authHeader = context.req.headers.authorization;

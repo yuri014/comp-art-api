@@ -1,5 +1,5 @@
-import { IArtistProfile } from '@interfaces/Profile';
-import { IProfileEntity } from '@interfaces/Models';
+import { IArtistProfile } from '../../interfaces/Profile';
+import { IProfileEntity } from '../../interfaces/Models';
 import commentsResolvers from './comments';
 import postResolvers from './post';
 import profileResolvers from './profiles';
