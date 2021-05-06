@@ -32,6 +32,12 @@ const createShare = async (user: IToken, input: IShareInput) => {
     throw new UserInputError('Não há perfil');
   }
 
+  const post = await Post.findById(input.postID);
+
+  if (!post) {
+    throw new UserInputError('Precisa de um post');
+  }
+
   const newShare = new Share({
     description: input.description?.trim(),
     post: input.postID,
@@ -42,11 +48,25 @@ const createShare = async (user: IToken, input: IShareInput) => {
 
   await newShare.save();
 
-  await Post.findByIdAndUpdate(input.postID, {
-    $inc: {
-      sharedCount: 1,
+  await Post.findByIdAndUpdate(
+    input.postID,
+    {
+      $inc: {
+        sharedCount: 1,
+      },
     },
-  });
+    { useFindAndModify: false },
+  );
+
+  if (profile._id.equals(post.artist)) {
+    await profile.updateOne({
+      $inc: {
+        postCount: 1,
+      },
+    });
+
+    return false;
+  }
 
   const { shareXP } = xpValues;
 
