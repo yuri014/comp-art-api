@@ -37,7 +37,7 @@
     "typescript": "^4.1.5"
   },
   "dependencies": {
-    "apollo-server-express": "^2.21.1",
+    "apollo-server-express": "^2.23.0",
     "bcryptjs": "^2.4.3",
     "date-fns": "^2.21.1",
     "debug": "^4.3.1",
