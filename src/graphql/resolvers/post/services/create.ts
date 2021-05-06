@@ -9,6 +9,7 @@ import checkAbilityToPost from '@middlewares/checkAbilityToPost';
 import { uploadBody, uploadThumbnail } from '@utils/uploadPost';
 import xpValues from '@utils/xpValues';
 import postValidationSchema from '@validators/postSchema';
+import managePostColors from './utils/managePostColors';
 
 const createNewPost = async (post: IPostInput, user: IToken) => {
   if (!user.isArtist) {
@@ -29,6 +30,8 @@ const createNewPost = async (post: IPostInput, user: IToken) => {
   const body = post.body ? await uploadBody(post.body, post.mediaId) : '';
   const thumbnailUrl = await uploadThumbnail(post.thumbnail);
 
+  const { darkColor, lightColor } = await managePostColors(thumbnailUrl, body);
+
   const newPost = new Post({
     description: post.description?.trim(),
     body,
@@ -37,6 +40,8 @@ const createNewPost = async (post: IPostInput, user: IToken) => {
     artist: profile._id,
     alt: post.alt,
     thumbnail: thumbnailUrl,
+    darkColor,
+    lightColor,
   });
 
   // await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
