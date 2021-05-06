@@ -3,8 +3,8 @@ import bcrypt from 'bcryptjs';
 import { UserInputError } from 'apollo-server-express';
 
 import User from '../../../../entities/User';
-import ConfirmationCode from '../../../../interfaces/ConfirmationCode';
 import { ID } from '../../../../interfaces/General';
+import ConfirmationCode from '../../../../entities/ConfirmationCode';
 
 export const confirmUser = async (code: string, email: string) => {
   try {
