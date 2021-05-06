@@ -23,7 +23,7 @@ const getImageColor = async (path: string, themeColor: string) => {
 
     const newColorAcessibility = checkColorAccessibility(`${newColor}`, themeColor);
 
-    return newColorAcessibility ? newColor : '#1CC5B7';
+    return newColorAcessibility ? newColor : '#6C63FF';
   }
 
   return color;
