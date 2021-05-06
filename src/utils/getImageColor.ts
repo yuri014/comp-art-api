@@ -19,7 +19,11 @@ const getImageColor = async (path: string, themeColor: string) => {
   const hasColorAcessibility = checkColorAccessibility(color, themeColor);
 
   if (!hasColorAcessibility) {
-    return palette.LightVibrant?.hex;
+    const newColor = palette.LightVibrant?.hex;
+
+    const newColorAcessibility = checkColorAccessibility(`${newColor}`, themeColor);
+
+    return newColorAcessibility || '#1CC5B7';
   }
 
   return color;
