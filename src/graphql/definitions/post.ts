@@ -2,6 +2,7 @@ import { gql } from 'apollo-server-express';
 
 export const postDefinitions = gql`
   type PostArtist {
+    _id: ID!
     name: String!
     owner: String!
     avatar: String
@@ -24,6 +25,8 @@ export const postDefinitions = gql`
     mediaId: Int!
     isLiked: Boolean
     alt: String
+    darkColor: String!
+    lightColor: String!
   }
 
   type Share {
