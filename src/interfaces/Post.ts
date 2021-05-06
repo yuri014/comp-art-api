@@ -18,7 +18,8 @@ export interface IPost extends Document, Post {
     onModel: IOnModel;
   }>;
   artist: string | IArtistProfile;
-  color: string;
+  darkColor: string;
+  lightColor: string;
   thumbnail: string;
   likesCount: number;
   sharedCount: number;
