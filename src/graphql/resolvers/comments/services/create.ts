@@ -33,10 +33,12 @@ export const createComment = async (id: string, comment: string, user: IToken) =
     throw new UserInputError('Não há perfil');
   }
 
+  const profileDoc = profile._doc;
+
   await Comments.updateOne(
     {
       post: id,
-      onModel: post?._id ? 'Post' : 'Share',
+      onModel: post?._doc?._id ? 'Post' : 'Share',
     },
     {
       $push: {
@@ -44,7 +46,7 @@ export const createComment = async (id: string, comment: string, user: IToken) =
           $position: 0,
           $each: [
             {
-              author: profile._id,
+              author: profileDoc?._id,
               body: comment.trim(),
               onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',
               createdAt: new Date().toISOString(),
@@ -59,7 +61,7 @@ export const createComment = async (id: string, comment: string, user: IToken) =
     },
   );
 
-  if (post?._id) {
+  if (post?._doc?._id) {
     const { commentXP } = xpValues;
 
     const updatedProfile = await profile.updateOne(

@@ -18,6 +18,12 @@ const createNewPost = async (post: IPostInput, user: IToken) => {
 
   const profile = await checkAbilityToPost(user.username);
 
+  const profileDoc = profile._doc;
+
+  if (!profileDoc) {
+    throw new UserInputError('Não há perfil');
+  }
+
   const errors = postValidationSchema.validate({
     description: post.description,
     alt: post.alt,
@@ -37,7 +43,7 @@ const createNewPost = async (post: IPostInput, user: IToken) => {
     body,
     createdAt: new Date().toISOString(),
     mediaId: post.mediaId,
-    artist: profile._id,
+    artist: profileDoc._id,
     alt: post.alt,
     thumbnail: thumbnailUrl,
     darkColor,

@@ -137,14 +137,16 @@ export const getExplorePostsService = async (offset: number, token: string) => {
   if (user.username) {
     const profile = await findProfile(user);
 
+    const profileDoc = profile._doc;
+
     const posts = await Post.find({
       artist: {
         $not: {
-          $ne: profile._id,
+          $ne: profileDoc?._id,
         },
       },
       likes: {
-        $not: profile._id,
+        $not: profileDoc?._id,
       },
     })
       .skip(offset)

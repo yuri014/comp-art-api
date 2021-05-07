@@ -32,6 +32,8 @@ const createShare = async (user: IToken, input: IShareInput) => {
     throw new UserInputError('Não há perfil');
   }
 
+  const profileDoc = profile._doc;
+
   const post = await Post.findById(input.postID);
 
   if (!post) {
@@ -43,7 +45,7 @@ const createShare = async (user: IToken, input: IShareInput) => {
     post: input.postID,
     createdAt: new Date().toISOString(),
     onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',
-    profile: profile._id,
+    profile: profileDoc?._id,
   });
 
   await newShare.save();
@@ -58,7 +60,7 @@ const createShare = async (user: IToken, input: IShareInput) => {
     { useFindAndModify: false },
   );
 
-  if (profile._id.equals(post.artist)) {
+  if (profileDoc?._id.equals(post.artist)) {
     await profile.updateOne({
       $inc: {
         postCount: 1,
