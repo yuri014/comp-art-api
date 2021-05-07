@@ -2,7 +2,7 @@
   "name": "comp-art-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.ts",
   "scripts": {
     "build": "tsc",
     "start": "yarn build && node dist/server.js",
