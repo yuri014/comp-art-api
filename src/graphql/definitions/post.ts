@@ -12,6 +12,11 @@ export const postDefinitions = gql`
     profile: Profile
   }
 
+  type SavedPosts {
+    _id: ID!
+    posts: [Timeline]
+  }
+
   type Post {
     _id: String!
     description: String
