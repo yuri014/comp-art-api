@@ -40,6 +40,10 @@ const mutations = gql`
     likeComment(id: ID!): Boolean
     dislikeComment(id: ID!): Boolean
 
+    #saved posts
+    addSavedPost(postID: ID!): Boolean
+    removeSavedPost(postID: ID!): Boolean
+
     #product
     createProduct(productInput: ProductInput!): Boolean
   }
