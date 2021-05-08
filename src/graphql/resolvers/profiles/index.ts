@@ -72,8 +72,16 @@ const profileResolvers: IResolvers = {
       }
 
       if (profile._doc.following === 0) {
-        const suggestedUsers = await UserProfile.find().sort({ followers: -1 }).limit(2);
-        const suggestedArtists = await ArtistProfile.find().sort({ followers: -1 }).limit(3);
+        const suggestedUsers = await UserProfile.find({
+          _id: { $nin: [profile._doc._id] },
+        })
+          .sort({ followers: -1 })
+          .limit(2);
+        const suggestedArtists = await ArtistProfile.find({
+          _id: { $nin: [profile._doc._id] },
+        })
+          .sort({ followers: -1 })
+          .limit(3);
 
         return shuffleArray(suggestedArtists, suggestedUsers);
       }
