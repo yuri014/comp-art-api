@@ -19,6 +19,9 @@ const deleteSavedPostService: ISavedPostService = async (isAlreadySave, profileI
         },
       },
     },
+    {
+      useFindAndModify: false,
+    },
   );
 
   return true;
