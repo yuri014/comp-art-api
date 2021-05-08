@@ -30,8 +30,8 @@ export const postDefinitions = gql`
     mediaId: Int!
     isLiked: Boolean
     alt: String
-    darkColor: String!
-    lightColor: String!
+    darkColor: String
+    lightColor: String
   }
 
   type Share {
