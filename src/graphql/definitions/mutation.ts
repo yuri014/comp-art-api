@@ -42,7 +42,7 @@ const mutations = gql`
 
     #saved posts
     addSavedPost(postID: ID!): Boolean
-    removeSavedPost(postID: ID!): Boolean
+    deleteSavedPost(postID: ID!): Boolean
 
     #product
     createProduct(productInput: ProductInput!): Boolean
