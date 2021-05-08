@@ -6,7 +6,7 @@ const rateLimiter = new RateLimiterMongo({
   storeClient: mongoose.connection,
   keyPrefix: 'limiter-middleware',
   points: 10,
-  duration: 2,
+  duration: 1,
 });
 
 const rateLimiterMiddleware = (req: Request, res: Response, next: NextFunction) => {
