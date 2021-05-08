@@ -34,6 +34,8 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     return [];
   }
 
+  const loggedProfile = await findProfile(user);
+
   const newOffset = offset > 0 ? offset / 2 : 0;
 
   const following = await Following.findOne({ username: user.username });
@@ -43,6 +45,10 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
   }
 
   const artists = following.artistFollowing;
+
+  if (user.isArtist) {
+    artists.push(loggedProfile._doc?._id);
+  }
 
   const followingProfiles = shuffleArray(artists, following.userFollowing);
 
