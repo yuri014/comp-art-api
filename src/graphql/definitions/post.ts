@@ -32,6 +32,7 @@ export const postDefinitions = gql`
     alt: String
     darkColor: String
     lightColor: String
+    thumbnail: String
   }
 
   type Share {
