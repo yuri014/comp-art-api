@@ -1,38 +1,14 @@
 import { UserInputError } from 'apollo-server-express';
-import Post from '../../../../entities/Post';
+
 import SavedPost from '../../../../entities/SavedPost';
-import Share from '../../../../entities/Share';
+import { ISavedPostService } from '../../../../interfaces/SavedPost';
 
-import { IToken } from '../../../../interfaces/Token';
-import findProfile from '../../profiles/services/utils/findProfileUtil';
-
-const createSavedPost = async (user: IToken, postID: string) => {
-  const profile = await findProfile(user);
-
-  const profileDoc = profile._doc;
-
-  if (!profileDoc) {
-    throw new UserInputError('Não existe perfil');
-  }
-
-  const share = await Share.findById(postID);
-  const post = await Post.findById(postID);
-
-  const savedPost = post || share;
-
-  if (!savedPost) {
-    throw new UserInputError('Esse post não existe');
-  }
-
-  const isAlreadySave = await SavedPost.findOne({
-    profile: profileDoc._id,
-    posts: {
-      $elemMatch: {
-        post: postID,
-      },
-    },
-  });
-
+const createSavedPost: ISavedPostService = async (
+  isAlreadySave,
+  profileID,
+  savedPost,
+  isArtist,
+) => {
   if (isAlreadySave) {
     throw new UserInputError('Post já está nas sua lista de salvos');
   }
@@ -41,10 +17,10 @@ const createSavedPost = async (user: IToken, postID: string) => {
   const isPost = savedPost.owner as string | undefined;
 
   await SavedPost.findOneAndUpdate(
-    { profile: profileDoc._id, onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile' },
+    { profile: profileID, onModel: isArtist ? 'ArtistProfile' : 'UserProfile' },
     {
-      profile: profileDoc._id,
-      onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',
+      profile: profileID,
+      onModel: isArtist ? 'ArtistProfile' : 'UserProfile',
       $push: {
         posts: {
           $position: 0,
