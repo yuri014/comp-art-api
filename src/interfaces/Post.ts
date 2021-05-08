@@ -5,7 +5,7 @@ import { IOnModel } from './General';
 import { IArtistProfile, IUserProfile } from './Profile';
 
 interface Post {
-  description?: string;
+  description: string;
   mediaId: number;
   alt?: string;
 }
