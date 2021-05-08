@@ -33,6 +33,10 @@ const createNewPost = async (post: IPostInput, user: IToken) => {
     throw new UserInputError(errors.error.message);
   }
 
+  if (post.mediaId === 2 && post.description.length < 2) {
+    throw new UserInputError('Título do áudio é obrigatório');
+  }
+
   const body = post.body ? await uploadBody(post.body, post.mediaId) : '';
   const thumbnailUrl = await uploadThumbnail(post.thumbnail);
 
