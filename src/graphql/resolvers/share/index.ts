@@ -1,4 +1,4 @@
-import { IResolvers } from 'apollo-server-express';
+import { IResolvers, UserInputError } from 'apollo-server-express';
 
 import Share from '../../../entities/Share';
 import { ID } from '../../../interfaces/General';
@@ -9,6 +9,17 @@ import createShare from './services/create';
 import deleteShareService from './services/delete';
 
 const shareResolvers: IResolvers = {
+  Query: {
+    async getWhoSharesPost(_, { postID, offset }: { postID: string; offset: number }) {
+      const shares = await Share.find({ post: postID }).skip(offset).limit(8).populate('profile');
+
+      if (!shares) {
+        throw new UserInputError('Não há compartilhamento para esse post');
+      }
+
+      return shares.map(({ profile }) => profile);
+    },
+  },
   Mutation: {
     async createSharePost(_, { shareInput }: { shareInput: IShareInput }, context) {
       const user = checkAuth(context);
