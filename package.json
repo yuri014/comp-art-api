@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "yarn build && node dist/server.js",
-    "dev": "NODE_ENV=development ts-node-dev --transpile-only --ignore-watch node_modules src/dev-server.ts"
+    "dev": "NODE_ENV=development ts-node-dev --transpile-only --ignore-watch node_modules src/dev-server.ts",
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "yuri014",
@@ -31,6 +32,7 @@
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-security": "^1.4.0",
     "prettier": "^2.2.1",
     "ts-node-dev": "^1.1.6",
     "typescript": "^4.1.5"
