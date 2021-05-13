@@ -8,7 +8,7 @@ import Post from '../../../../entities/Post';
 import Share from '../../../../entities/Share';
 import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
-import handleInjection from '../../../../utils/handleInjection';
+import handleInjectionSink from '../../../../utils/handleInjectionSink';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 import shuffleArray from '../../profiles/services/utils/shuffleProfilesArray';
 
@@ -102,12 +102,12 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
 
   if (likes.length > 0 || shareLikes.length > 0) {
     const sharesView = shares.map((share, index) => {
-      const isLiked = handleInjection(index, likes);
+      const isLiked = handleInjectionSink(index, likes);
       return { ...share._doc, isLiked };
     });
 
     const postsView = posts.map((post, index) => {
-      const isLiked = handleInjection(index, likes);
+      const isLiked = handleInjectionSink(index, likes);
       return { ...post._doc, isLiked };
     });
 
@@ -138,7 +138,7 @@ export const getProfilePostsService = async (token: string, username: string, of
 
     if (likes.length > 0) {
       const postsView = posts.map((post, index) => {
-        const isLiked = handleInjection(index, likes);
+        const isLiked = handleInjectionSink(index, likes);
         return { ...post._doc, isLiked };
       });
       return postsView;
