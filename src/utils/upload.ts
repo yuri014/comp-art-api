@@ -19,7 +19,7 @@ export const uploadImage = async (createReadStream?: () => ReadStream, filename?
       return `/uploads/images/${originalName}`;
     }
   } catch (error) {
-    throw new UserInputError('Limite máximo de upload: 3MB.');
+    throw new UserInputError('Limite máximo de upload: 8MB.');
   }
 
   return '';
@@ -42,7 +42,7 @@ export const uploadAudio = async (createReadStream?: () => ReadStream, filename?
       return `/uploads/audio/${originalName}`;
     }
   } catch (error) {
-    throw new UserInputError('Limite máximo de upload: 3MB.');
+    throw new UserInputError('Limite máximo de upload: 8MB.');
   }
   return '';
 };
