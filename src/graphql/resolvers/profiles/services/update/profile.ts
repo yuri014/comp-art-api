@@ -3,8 +3,8 @@ import { Model } from 'mongoose';
 
 import { IToken } from '../../../../../interfaces/Token';
 import removeFile from '../../../../../utils/removeFile';
-import { uploadImage } from '../../../../../utils/upload';
 import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../../interfaces/Profile';
+import uploadProfileFiles from '../utils/uploadProfileFiles';
 
 const updateProfileService = async (
   user: IToken,
@@ -27,10 +27,7 @@ const updateProfileService = async (
     await removeFile(oldProfile.coverImage);
   }
 
-  const { file: avatarFile } = await avatar;
-  const avatarImageUrl = await uploadImage(avatarFile?.createReadStream, avatarFile?.filename);
-  const { file: coverFile } = await coverImage;
-  const coverImageUrl = await uploadImage(coverFile?.createReadStream, coverFile?.filename);
+  const { avatarImageUrl, coverImageUrl } = await uploadProfileFiles(avatar, coverImage);
 
   const newBio = bio ? bio.trim() : '';
 

@@ -2,8 +2,8 @@ import { Model } from 'mongoose';
 
 import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../../interfaces/Profile';
 import { IToken } from '../../../../../interfaces/Token';
-import { uploadImage } from '../../../../../utils/upload';
 import profileValidation from '../utils/profileValidation';
+import uploadProfileFiles from '../utils/uploadProfileFiles';
 
 const createProfile = async (
   user: IToken,
@@ -18,10 +18,7 @@ const createProfile = async (
 
   await validation(profileExists);
 
-  const { file: avatarFile } = await avatar;
-  const avatarImageUrl = await uploadImage(avatarFile?.createReadStream, avatarFile?.filename);
-  const { file: coverFile } = await coverImage;
-  const coverImageUrl = await uploadImage(coverFile?.createReadStream, coverFile?.filename);
+  const { avatarImageUrl, coverImageUrl } = await uploadProfileFiles(avatar, coverImage);
 
   const newProfile = new Profile({
     name: name.trim(),

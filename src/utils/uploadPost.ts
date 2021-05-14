@@ -1,23 +1,13 @@
-import { FileUpload } from 'graphql-upload';
 import { IUpload } from '../interfaces/Upload';
 import checkMimeType from '../middlewares/checkMimeType';
+import createStream from './createStream';
 import { uploadAudio, uploadImage } from './upload';
-
-const createStream = (file: FileUpload) => {
-  if (!file.createReadStream) {
-    throw new Error();
-  }
-
-  const stream = file.createReadStream();
-
-  return stream;
-};
 
 export const uploadBody = async (fileBody: Promise<IUpload>) => {
   const { file } = await fileBody;
   const audioId = 2;
 
-  const stream = createStream(file as FileUpload);
+  const stream = createStream(file);
   const mimeType = await checkMimeType(stream);
 
   const checkMimes = mimeType.split('/')[0];
@@ -38,7 +28,8 @@ export const uploadThumbnail = async (thumbnail: Promise<IUpload> | undefined) =
   if (thumbnail) {
     const { file: thumbnailFile } = await thumbnail;
 
-    const stream = createStream(thumbnailFile as FileUpload);
+    const stream = createStream(thumbnailFile);
+    await checkMimeType(stream);
     return uploadImage(stream, thumbnailFile.filename);
   }
 

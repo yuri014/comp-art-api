@@ -5,6 +5,8 @@ import { IToken } from '../../../../interfaces/Token';
 import { IProductInput } from '../../../../interfaces/Product';
 import { uploadImage } from '../../../../utils/upload';
 import productValidationSchema from '../../../../validators/productSchema';
+import checkMimeType from '../../../../middlewares/checkMimeType';
+import createStream from '../../../../utils/createStream';
 
 const createProductService = async (user: IToken, productInput: IProductInput) => {
   if (!user.isArtist) {
@@ -22,7 +24,11 @@ const createProductService = async (user: IToken, productInput: IProductInput) =
   const uploadedImages = await images;
 
   const imagesUrl = await Promise.all(
-    uploadedImages.map(({ file }) => uploadImage(file.createReadStream, file.filename)),
+    uploadedImages.map(async ({ file }) => {
+      const stream = createStream(file);
+      await checkMimeType(stream);
+      return uploadImage(stream, file.filename);
+    }),
   );
 
   const newProduct = new Product({
