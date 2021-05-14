@@ -1,15 +1,13 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 
 import ArtistProfile from '../../../../entities/ArtistProfile';
-import Post from '../../../../entities/Post';
 import levelUp from '../../../../functions/levelUp';
 import { IPostInput } from '../../../../interfaces/Post';
 import { IToken } from '../../../../interfaces/Token';
 import checkAbilityToPost from '../../../../middlewares/checkAbilityToPost';
-import { uploadBody, uploadThumbnail } from '../../../../utils/uploadPost';
 import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';
-import managePostColors from './utils/managePostColors';
+import { createMediaPost, createTextPost } from './utils/handlePostCreation';
 
 const createNewPost = async (post: IPostInput, user: IToken) => {
   if (!user.isArtist) {
@@ -33,30 +31,13 @@ const createNewPost = async (post: IPostInput, user: IToken) => {
     throw new UserInputError(errors.error.message);
   }
 
-  if (post.mediaId === 2 && post.description.length < 2) {
-    throw new UserInputError('Título do áudio é obrigatório');
+  if (post.body) {
+    await createMediaPost(post, profileDoc._id);
+  } else {
+    await createTextPost(profileDoc._id, post.description);
   }
 
-  const body = post.body ? await uploadBody(post.body, post.mediaId) : '';
-  const thumbnailUrl = await uploadThumbnail(post.thumbnail);
-
-  const { darkColor, lightColor } = await managePostColors(thumbnailUrl, body);
-
-  const newPost = new Post({
-    description: post.description?.trim(),
-    body,
-    createdAt: new Date().toISOString(),
-    mediaId: post.mediaId,
-    artist: profileDoc._id,
-    alt: post.alt,
-    thumbnail: thumbnailUrl,
-    darkColor,
-    lightColor,
-  });
-
   // await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
-
-  await newPost.save();
 
   const { postXP } = xpValues;
 
