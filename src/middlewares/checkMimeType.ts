@@ -2,7 +2,10 @@ import { UserInputError } from 'apollo-server-express';
 import FileType from 'file-type';
 import { ReadStream } from 'node:fs';
 
-const checkMimeType = async (stream: ReadStream) => {
+/**
+ * @returns {Promise<string>} O formato do arquivo. Ex: "image".
+ */
+const checkMimeType = async (stream: ReadStream): Promise<string> => {
   const validTypes = ['png', 'jpg', 'jpeg', 'webp', 'mp3', 'wav'];
   const mimeType = await FileType.fromStream(stream);
 
