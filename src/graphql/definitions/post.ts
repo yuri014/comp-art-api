@@ -53,7 +53,6 @@ export const postInputDefinitions = gql`
   input CreatePostInput {
     description: String!
     body: Upload
-    mediaId: Int!
     alt: String
     thumbnail: Upload
   }
