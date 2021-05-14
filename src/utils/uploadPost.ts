@@ -24,12 +24,12 @@ export const uploadBody = async (fileBody: Promise<IUpload>) => {
   const mediaId = checkMimes === 'image' ? 1 : 2;
 
   if (mediaId === audioId) {
-    const body = await uploadImage(stream, file.filename);
+    const body = await uploadAudio(stream, file.filename);
 
     return { body, mediaId };
   }
 
-  const body = await uploadAudio(stream, file.filename);
+  const body = await uploadImage(stream, file.filename);
 
   return { body, mediaId };
 };

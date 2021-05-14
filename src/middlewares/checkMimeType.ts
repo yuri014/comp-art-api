@@ -7,7 +7,7 @@ const checkMimeType = async (stream: ReadStream) => {
   const mimeType = await FileType.fromStream(stream);
 
   if (!mimeType) {
-    throw new Error();
+    throw new UserInputError('Formato não suportado');
   }
 
   const isValidType = validTypes.includes(mimeType.ext);

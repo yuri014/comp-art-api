@@ -27,6 +27,7 @@ export const createTextPost = async (profileID: string, description?: string) =>
 
 export const createMediaPost = async (post: IPostInput, profileID: string) => {
   const { body, mediaId } = await uploadBody(post.body);
+
   const thumbnailUrl = await uploadThumbnail(post.thumbnail);
 
   const { darkColor, lightColor } = await managePostColors(thumbnailUrl, body);
@@ -44,7 +45,7 @@ export const createMediaPost = async (post: IPostInput, profileID: string) => {
     mediaId,
     artist: profileID,
     alt: post.alt,
-    thumbnail: thumbnailUrl,
+    thumbnail: thumbnailUrl || '',
     darkColor,
     lightColor,
   });
