@@ -16,7 +16,7 @@ const checkMimeType = async (stream: ReadStream) => {
     throw new UserInputError('Formato não suportado');
   }
 
-  return mimeType.mime;
+  return mimeType.mime.split('/')[0];
 };
 
 export default checkMimeType;
