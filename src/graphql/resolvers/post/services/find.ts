@@ -11,6 +11,7 @@ import { IToken } from '../../../../interfaces/Token';
 import handleInjectionSink from '../../../../utils/handleInjectionSink';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 import shuffleArray from '../../profiles/services/utils/shuffleProfilesArray';
+import handleImageDimension from './utils/handleImageDimension';
 
 export const getPostService = async (id: string, token: string) => {
   const user = getUser(token);
@@ -108,7 +109,10 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
 
     const postsView = posts.map((post, index) => {
       const isLiked = !!handleInjectionSink(index, likes);
-      return { ...post._doc, isLiked };
+
+      const imageId = 1;
+      const imageHeight = post.mediaId === imageId ? handleImageDimension(post.body) : '';
+      return { ...post._doc, isLiked, imageHeight };
     });
 
     const timeline = shuffleArray(postsView, sharesView);
