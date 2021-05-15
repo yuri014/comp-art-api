@@ -4,9 +4,9 @@ const managePostColors = async (thumbnailUrl: string, bodyUrl: string) => {
   const darkThemeColor = '#28282C';
   const lightThemeColor = '#ffffff';
 
-  const getDarkAndLightColor = async (color: string) => {
-    const darkColor = await getImageColor(`${process.env.HOST}/${color}`, darkThemeColor);
-    const lightColor = await getImageColor(`${process.env.HOST}/${color}`, lightThemeColor);
+  const getDarkAndLightColor = async (image: string) => {
+    const darkColor = await getImageColor(`${process.env.HOST}${image}`, darkThemeColor);
+    const lightColor = await getImageColor(`${process.env.HOST}${image}`, lightThemeColor);
 
     return { darkColor, lightColor };
   };
