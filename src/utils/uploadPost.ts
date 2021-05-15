@@ -3,12 +3,13 @@ import checkMime from '../middlewares/checkMime';
 import { uploadAudio, uploadImage } from './upload';
 
 export const uploadBody = async (fileBody: Promise<IUpload>) => {
-  const { file } = await fileBody;
+  const imageId = 1;
   const audioId = 2;
 
+  const { file } = await fileBody;
   const { stream, fileFormat } = await checkMime(file);
 
-  const mediaId = fileFormat === 'image' ? 1 : 2;
+  const mediaId = fileFormat === 'image' ? imageId : audioId;
 
   if (mediaId === audioId) {
     const body = await uploadAudio(stream, file.filename);
