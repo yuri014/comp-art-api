@@ -1,16 +1,17 @@
 import { IUpload } from '../../../../../interfaces/Upload';
-import checkMimeType from '../../../../../middlewares/checkMimeType';
-import createStream from '../../../../../utils/createStream';
+import checkMime from '../../../../../middlewares/checkMime';
 import { uploadImage } from '../../../../../utils/upload';
 
 const uploadProfileFiles = async (avatar: Promise<IUpload>, coverImage: Promise<IUpload>) => {
   const { file: avatarFile } = await avatar;
-  const avatarStream = createStream(avatarFile);
-  await checkMimeType(avatarStream);
+  const { stream: avatarStream, checkFileFormat: checkAvatarFileFormat } = await checkMime(
+    avatarFile,
+  );
+  checkAvatarFileFormat('image');
 
   const { file: coverFile } = await coverImage;
-  const coverStream = createStream(coverFile);
-  await checkMimeType(coverStream);
+  const { stream: coverStream, checkFileFormat: checkCoverFileFormat } = await checkMime(coverFile);
+  checkCoverFileFormat('image');
 
   const avatarImageUrl = await uploadImage(avatarStream, avatarFile?.filename);
   const coverImageUrl = await uploadImage(coverStream, coverFile?.filename);

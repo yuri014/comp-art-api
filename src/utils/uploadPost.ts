@@ -1,17 +1,14 @@
 import { IUpload } from '../interfaces/Upload';
-import checkMimeType from '../middlewares/checkMimeType';
-import createStream from './createStream';
+import checkMime from '../middlewares/checkMime';
 import { uploadAudio, uploadImage } from './upload';
 
 export const uploadBody = async (fileBody: Promise<IUpload>) => {
   const { file } = await fileBody;
   const audioId = 2;
 
-  const stream = createStream(file);
-  const mimeType = await checkMimeType(stream);
+  const { stream, fileFormat } = await checkMime(file);
 
-  const checkMimes = mimeType.split('/')[0];
-  const mediaId = checkMimes === 'image' ? 1 : 2;
+  const mediaId = fileFormat === 'image' ? 1 : 2;
 
   if (mediaId === audioId) {
     const body = await uploadAudio(stream, file.filename);
@@ -28,8 +25,10 @@ export const uploadThumbnail = async (thumbnail: Promise<IUpload> | undefined) =
   if (thumbnail) {
     const { file: thumbnailFile } = await thumbnail;
 
-    const stream = createStream(thumbnailFile);
-    await checkMimeType(stream);
+    const { stream, checkFileFormat } = await checkMime(thumbnailFile);
+
+    checkFileFormat('image');
+
     return uploadImage(stream, thumbnailFile.filename);
   }
 
