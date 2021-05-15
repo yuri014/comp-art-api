@@ -1,13 +1,19 @@
-import createStream, { IFileUpload } from '../../utils/createStream';
+import { ReadStream } from 'node:fs';
+
 import checkFileFormat from './checkFileFormat';
 import checkMimeType from './checkMimeType';
 
+export interface IFileUpload {
+  filename?: string | undefined;
+  mimetype?: string | undefined;
+  encoding?: string | undefined;
+  createReadStream?: (() => ReadStream) | undefined;
+}
+
 const checkMime = async (file: IFileUpload) => {
-  const stream = createStream(file);
-  const fileFormat = await checkMimeType(stream);
+  const fileFormat = await checkMimeType(file.createReadStream);
 
   return {
-    stream,
     fileFormat,
     checkFileFormat: (format: 'image' | 'audio') => checkFileFormat(fileFormat, format),
   };

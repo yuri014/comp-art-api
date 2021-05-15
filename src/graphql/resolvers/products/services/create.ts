@@ -24,11 +24,11 @@ const createProductService = async (user: IToken, productInput: IProductInput) =
 
   const imagesUrl = await Promise.all(
     uploadedImages.map(async ({ file }) => {
-      const { stream, checkFileFormat } = await checkMime(file);
+      const { checkFileFormat } = await checkMime(file);
 
       checkFileFormat('image');
 
-      return uploadImage(stream, file.filename);
+      return uploadImage(file.createReadStream, file.filename);
     }),
   );
 

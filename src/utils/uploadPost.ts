@@ -7,17 +7,17 @@ export const uploadBody = async (fileBody: Promise<IUpload>) => {
   const audioId = 2;
 
   const { file } = await fileBody;
-  const { stream, fileFormat } = await checkMime(file);
+  const { fileFormat } = await checkMime(file);
 
   const mediaId = fileFormat === 'image' ? imageId : audioId;
 
   if (mediaId === audioId) {
-    const body = await uploadAudio(stream, file.filename);
+    const body = await uploadAudio(file.createReadStream, file.filename);
 
     return { body, mediaId };
   }
 
-  const body = await uploadImage(stream, file.filename);
+  const body = await uploadImage(file.createReadStream, file.filename);
 
   return { body, mediaId };
 };
@@ -26,11 +26,11 @@ export const uploadThumbnail = async (thumbnail: Promise<IUpload> | undefined) =
   if (thumbnail) {
     const { file: thumbnailFile } = await thumbnail;
 
-    const { stream, checkFileFormat } = await checkMime(thumbnailFile);
+    const { checkFileFormat } = await checkMime(thumbnailFile);
 
     checkFileFormat('image');
 
-    return uploadImage(stream, thumbnailFile.filename);
+    return uploadImage(thumbnailFile.createReadStream, thumbnailFile.filename);
   }
 
   return '';

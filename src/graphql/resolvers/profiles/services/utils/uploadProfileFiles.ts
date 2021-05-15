@@ -4,17 +4,15 @@ import { uploadImage } from '../../../../../utils/upload';
 
 const uploadProfileFiles = async (avatar: Promise<IUpload>, coverImage: Promise<IUpload>) => {
   const { file: avatarFile } = await avatar;
-  const { stream: avatarStream, checkFileFormat: checkAvatarFileFormat } = await checkMime(
-    avatarFile,
-  );
+  const { checkFileFormat: checkAvatarFileFormat } = await checkMime(avatarFile);
   checkAvatarFileFormat('image');
 
   const { file: coverFile } = await coverImage;
-  const { stream: coverStream, checkFileFormat: checkCoverFileFormat } = await checkMime(coverFile);
+  const { checkFileFormat: checkCoverFileFormat } = await checkMime(coverFile);
   checkCoverFileFormat('image');
 
-  const avatarImageUrl = await uploadImage(avatarStream, avatarFile?.filename);
-  const coverImageUrl = await uploadImage(coverStream, coverFile?.filename);
+  const avatarImageUrl = await uploadImage(avatarFile.createReadStream, avatarFile?.filename);
+  const coverImageUrl = await uploadImage(coverFile.createReadStream, coverFile?.filename);
 
   return { avatarImageUrl, coverImageUrl };
 };
