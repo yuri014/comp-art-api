@@ -9,6 +9,7 @@ import Share from '../../../../entities/Share';
 import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import handleInjectionSink from '../../../../utils/handleInjectionSink';
+import mediaIDs from '../../../../utils/mediaIDs';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 import shuffleArray from '../../profiles/services/utils/shuffleProfilesArray';
 import handleImageDimension from './utils/handleImageDimension';
@@ -102,6 +103,8 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
   );
 
   if (likes.length > 0 || shareLikes.length > 0) {
+    const { imageID } = mediaIDs;
+
     const sharesView = shares.map((share, index) => {
       const isLiked = !!handleInjectionSink(index, likes);
       return { ...share._doc, isLiked };
@@ -110,8 +113,7 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     const postsView = posts.map((post, index) => {
       const isLiked = !!handleInjectionSink(index, likes);
 
-      const imageId = 1;
-      const imageHeight = post.mediaId === imageId ? handleImageDimension(post.body) : '';
+      const imageHeight = post.mediaId === imageID ? handleImageDimension(post.body) : '';
       return { ...post._doc, isLiked, imageHeight };
     });
 
