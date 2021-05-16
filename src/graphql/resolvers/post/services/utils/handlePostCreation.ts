@@ -34,7 +34,7 @@ export const createMediaPost = async (post: IPostInput, profileID: string) => {
 
   const { darkColor, lightColor } = await managePostColors(thumbnailUrl, body);
 
-  if (mediaId === audioID && post.description.length < 2) {
+  if (mediaId === audioID && post.title.length < 2) {
     throw new UserInputError('Título do áudio é obrigatório');
   }
 

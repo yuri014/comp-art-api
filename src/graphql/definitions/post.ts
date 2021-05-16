@@ -34,6 +34,7 @@ export const postDefinitions = gql`
     lightColor: String
     thumbnail: String
     imageHeight: String
+    title: String
   }
 
   type Share {
@@ -57,6 +58,7 @@ export const postInputDefinitions = gql`
     body: Upload
     alt: String
     thumbnail: Upload
+    title: String
   }
 
   input SharePost {
