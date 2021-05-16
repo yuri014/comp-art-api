@@ -42,6 +42,7 @@ export const createMediaPost = async (post: IPostInput, profileID: string) => {
     description: post.description?.trim(),
     body,
     createdAt: new Date().toISOString(),
+    title: post.title ? post.title.trim() : '',
     mediaId,
     artist: profileID,
     alt: post.alt,
