@@ -19,15 +19,18 @@ const updateProfileService = async (
 
   const { avatar, bio, coverImage, name, hashtags, links } = data;
 
-  if (oldProfile.avatar !== '') {
+  if (avatar && oldProfile.avatar !== '') {
     await removeFile(oldProfile.avatar);
   }
 
-  if (oldProfile.coverImage !== '') {
+  if (coverImage && oldProfile.coverImage !== '') {
     await removeFile(oldProfile.coverImage);
   }
 
-  const { avatarImageUrl, coverImageUrl } = await uploadProfileFiles(avatar, coverImage);
+  const { getAvatarUrl, getCoverImageUrl } = await uploadProfileFiles(avatar, coverImage);
+
+  const avatarUrl = avatar ? await getAvatarUrl() : oldProfile.avatar;
+  const coverImageUrl = coverImage ? await getCoverImageUrl() : oldProfile.coverImage;
 
   const newBio = bio ? bio.trim() : '';
 
@@ -36,8 +39,8 @@ const updateProfileService = async (
     bio: newBio,
     hashtags,
     links,
-    avatar: avatarImageUrl || oldProfile.avatar,
-    coverImage: coverImageUrl || oldProfile.coverImage,
+    avatar: avatarUrl,
+    coverImage: coverImageUrl,
   });
 
   return true;

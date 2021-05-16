@@ -18,11 +18,14 @@ const createProfile = async (
 
   await validation(profileExists);
 
-  const { avatarImageUrl, coverImageUrl } = await uploadProfileFiles(avatar, coverImage);
+  const { getAvatarUrl, getCoverImageUrl } = await uploadProfileFiles(avatar, coverImage);
+
+  const avatarUrl = avatar ? await getAvatarUrl() : '';
+  const coverImageUrl = coverImage ? await getCoverImageUrl() : '';
 
   const newProfile = new Profile({
     name: name.trim(),
-    avatar: avatarImageUrl,
+    avatar: avatarUrl,
     bio: bio.trim(),
     coverImage: coverImageUrl,
     createdAt: new Date().toISOString(),
