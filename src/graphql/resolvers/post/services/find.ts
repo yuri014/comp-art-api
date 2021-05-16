@@ -10,10 +10,9 @@ import { IPost } from '../../../../interfaces/Post';
 import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import handleInjectionSink from '../../../../utils/handleInjectionSink';
-import mediaIDs from '../../../../utils/mediaIDs';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 import shuffleArray from '../../profiles/services/utils/shuffleProfilesArray';
-import handleImageDimension from './utils/handleImageDimension';
+import getImageHeight from './utils/getImageHeight';
 
 export const getPostService = async (id: string, token: string) => {
   const user = getUser(token);
@@ -104,21 +103,18 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
   );
 
   if (likes.length > 0 || shareLikes.length > 0) {
-    const { imageID } = mediaIDs;
-
     const sharesView = shares.map((share, index) => {
       const isLiked = !!handleInjectionSink(index, likes);
       const sharePost = share.post as IPost;
 
-      // eslint-disable-next-line prettier/prettier
-      const imageHeight = sharePost.mediaId === imageID ? handleImageDimension(sharePost.body as string) : '';
+      const imageHeight = getImageHeight(sharePost);
       return { ...share._doc, isLiked, imageHeight };
     });
 
     const postsView = posts.map((post, index) => {
       const isLiked = !!handleInjectionSink(index, likes);
 
-      const imageHeight = post.mediaId === imageID ? handleImageDimension(post.body) : '';
+      const imageHeight = getImageHeight(post);
       return { ...post._doc, isLiked, imageHeight };
     });
 
