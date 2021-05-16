@@ -6,8 +6,9 @@ const getImageHeight = (post: IPost) => {
   const { imageID } = mediaIDs;
 
   if (post.mediaId === imageID) {
-    handleImageDimension(post.body as string);
+    return handleImageDimension(post.body as string);
   }
+
   return '';
 };
 
