@@ -6,6 +6,7 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 import Following from '../../../../entities/Following';
 import Post from '../../../../entities/Post';
 import Share from '../../../../entities/Share';
+import { IPost } from '../../../../interfaces/Post';
 import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import handleInjectionSink from '../../../../utils/handleInjectionSink';
@@ -107,7 +108,11 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
 
     const sharesView = shares.map((share, index) => {
       const isLiked = !!handleInjectionSink(index, likes);
-      return { ...share._doc, isLiked };
+      const sharePost = share.post as IPost;
+
+      // eslint-disable-next-line prettier/prettier
+      const imageHeight = sharePost.mediaId === imageID ? handleImageDimension(sharePost.body as string) : '';
+      return { ...share._doc, isLiked, imageHeight };
     });
 
     const postsView = posts.map((post, index) => {

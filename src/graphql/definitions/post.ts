@@ -47,6 +47,7 @@ export const postDefinitions = gql`
     profile: Profile!
     createdAt: String!
     isLiked: Boolean
+    imageHeight: String
   }
 `;
 
