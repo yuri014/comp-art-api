@@ -29,6 +29,7 @@ export const profileDefinitions = gql`
     sharedPostCount: Int
     postCount: Int
     phone: String
+    createdAt: String
   }
 `;
 
