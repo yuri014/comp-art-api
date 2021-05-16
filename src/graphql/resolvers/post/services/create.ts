@@ -25,6 +25,7 @@ const createNewPost = async (post: IPostInput, user: IToken) => {
   const errors = postValidationSchema.validate({
     description: post.description,
     alt: post.alt,
+    title: post.title,
   });
 
   if (errors.error) {
