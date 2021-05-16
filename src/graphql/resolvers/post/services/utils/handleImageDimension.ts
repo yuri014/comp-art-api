@@ -12,8 +12,12 @@ const handleImageDimension = (uploadPath: string) => {
     throw new UserInputError('Arquivo precisa ser uma image.');
   }
 
-  if (imageHeight > 768) {
-    return '768px';
+  if (imageHeight > 600) {
+    return '600px';
+  }
+
+  if (imageHeight < 300) {
+    return '300px';
   }
 
   return `${imageHeight}px`;
