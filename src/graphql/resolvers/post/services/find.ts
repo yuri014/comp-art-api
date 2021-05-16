@@ -146,7 +146,8 @@ export const getProfilePostsService = async (token: string, username: string, of
     if (likes.length > 0) {
       const postsView = posts.map((post, index) => {
         const isLiked = !!handleInjectionSink(index, likes);
-        return { ...post._doc, isLiked };
+        const imageHeight = getImageHeight(post);
+        return { ...post._doc, isLiked, imageHeight };
       });
       return postsView;
     }
