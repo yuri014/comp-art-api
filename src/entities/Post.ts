@@ -15,6 +15,7 @@ const PostSchema = new Schema({
   description: { type: String },
   body: { type: String, required: true },
   mediaId: { type: Number, required: true, default: 1 },
+  title: { type: String, default: '' },
   likes: [
     {
       profile: { type: Schema.Types.ObjectId, refPath: 'likes.onModel' },

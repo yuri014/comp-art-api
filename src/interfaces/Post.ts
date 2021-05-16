@@ -7,6 +7,7 @@ import { IArtistProfile, IUserProfile } from './Profile';
 interface Post {
   description: string;
   alt?: string;
+  title?: string;
 }
 
 export interface IPost extends Document, Post {
