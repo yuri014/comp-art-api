@@ -23,7 +23,7 @@ export const validateLoginInput = (email: string, password: string) => {
   }
 
   return {
-    error: 'teste',
+    error: '',
     valid: true,
   };
 };
