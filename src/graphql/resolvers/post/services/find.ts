@@ -53,7 +53,7 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
     artists.push(loggedProfile._doc?._id);
   }
 
-  const followingProfiles = shuffleArray(artists, following.userFollowing);
+  const followingProfiles = shuffleArray(following.artistFollowing, following.userFollowing);
 
   const posts = await Post.find({
     artist: {
