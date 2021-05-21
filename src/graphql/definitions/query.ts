@@ -24,7 +24,7 @@ const queries = gql`
     #posts
     getPost(id: ID!): Post
     getPosts(offset: Int!): [Timeline]
-    getProfilePosts(offset: Int!, username: String!): [Post]
+    getProfilePosts(offset: Int!, username: String!): [Timeline]
     getExplorePosts(offset: Int!): [Post]
     searchPost(query: String!, offset: Int!): [Post]
 
