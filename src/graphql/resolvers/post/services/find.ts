@@ -5,10 +5,8 @@ import ArtistProfile from '../../../../entities/ArtistProfile';
 import Following from '../../../../entities/Following';
 import Post from '../../../../entities/Post';
 import { IToken } from '../../../../interfaces/Token';
-import handleInjectionSink from '../../../../utils/handleInjectionSink';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 import shuffleArray from '../../profiles/services/utils/shuffleProfilesArray';
-import getImageHeight from './utils/getImageHeight';
 import getTimeline from './utils/getTimeline';
 
 export const getPostService = async (id: string, token: string) => {
@@ -75,30 +73,20 @@ export const getProfilePostsService = async (token: string, username: string, of
   const profile = await ArtistProfile.findOne({ owner: username });
 
   if (profile) {
-    const posts = await Post.find({
-      artist: profile._id,
-    })
-      .skip(offset)
-      .limit(3)
-      .sort({ createdAt: -1 })
-      .populate('likes.profile')
-      .populate('artist')
-      .where('likes')
-      .slice([0, 3]);
+    const timeline = await getTimeline(
+      offset,
+      {
+        postQuery: {
+          artist: profile._id,
+        },
+        shareQuery: {
+          profile: profile._id,
+        },
+      },
+      user.username,
+    );
 
-    // @ts-ignore
-    const likes = posts.map(post => post.likes.find(like => like.profile.owner === user.username));
-
-    if (likes.length > 0) {
-      const postsView = posts.map((post, index) => {
-        const isLiked = !!handleInjectionSink(index, likes);
-        const imageHeight = getImageHeight(post);
-        return { ...post._doc, isLiked, imageHeight };
-      });
-      return postsView;
-    }
-
-    return posts;
+    return timeline;
   }
   return [];
 };
