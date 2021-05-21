@@ -167,16 +167,14 @@ export const getExplorePostsService = async (offset: number, token: string) => {
 
     const posts = await Post.find({
       artist: {
-        $not: {
-          $ne: profileDoc?._id,
-        },
+        $ne: profileDoc?._id,
       },
       likes: {
-        $not: profileDoc?._id,
+        $ne: profileDoc?._id,
       },
     })
       .skip(offset)
-      .limit(3)
+      .limit(6)
       .sort({ createdAt: -1 })
       .populate('artist')
       .populate('likes.profile')
@@ -188,7 +186,7 @@ export const getExplorePostsService = async (offset: number, token: string) => {
 
   const posts = await Post.find()
     .skip(offset)
-    .limit(3)
+    .limit(6)
     .sort({ createdAt: -1 })
     .populate('artist')
     .populate('likes.profile')
