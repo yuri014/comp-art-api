@@ -29,14 +29,13 @@ const deleteShareService = async (id: string, user: IToken) => {
     throw new Error(error);
   }
 
-  const updateProfile = async () => {
+  const updateProfile = () => {
     if (user.isArtist) {
-      const artist = await ArtistProfile.findOne({ owner: user.username });
-
-      return artist?.updateOne(
+      return ArtistProfile.findOneAndUpdate(
+        { owner: user.username },
         {
           $inc: {
-            postCount: artist.postCount > 0 ? -1 : 0,
+            postCount: -1,
           },
         },
         genericUpdateOptions,
@@ -55,6 +54,10 @@ const deleteShareService = async (id: string, user: IToken) => {
   };
 
   const updatedProfile = await updateProfile();
+
+  if (!updatedProfile) {
+    throw new Error();
+  }
 
   await Comments.deleteMany({ post: id });
 
