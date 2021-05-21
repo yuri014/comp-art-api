@@ -104,7 +104,7 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
 
   if (likes.length > 0 || shareLikes.length > 0) {
     const sharesView = shares.map((share, index) => {
-      const isLiked = !!handleInjectionSink(index, likes);
+      const isLiked = !!handleInjectionSink(index, shareLikes);
       const sharePost = share.post as IPost;
 
       const imageHeight = getImageHeight(sharePost);
