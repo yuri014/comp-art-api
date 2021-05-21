@@ -1,18 +1,15 @@
-/* eslint-disable function-paren-newline */
 import { UserInputError } from 'apollo-server-express';
 
 import getUser from '../../../../auth/getUser';
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Following from '../../../../entities/Following';
 import Post from '../../../../entities/Post';
-import Share from '../../../../entities/Share';
-import { IPost } from '../../../../interfaces/Post';
-import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import handleInjectionSink from '../../../../utils/handleInjectionSink';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 import shuffleArray from '../../profiles/services/utils/shuffleProfilesArray';
 import getImageHeight from './utils/getImageHeight';
+import getTimeline from './utils/getTimeline';
 
 export const getPostService = async (id: string, token: string) => {
   const user = getUser(token);
@@ -39,8 +36,6 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
 
   const loggedProfile = await findProfile(user);
 
-  const newOffset = offset > 0 ? offset / 2 : 0;
-
   const following = await Following.findOne({ username: user.username });
 
   if (!following) {
@@ -55,73 +50,24 @@ export const getTimelinePosts = async (offset: number, user: IToken) => {
 
   const followingProfiles = shuffleArray(following.artistFollowing, following.userFollowing);
 
-  const posts = await Post.find({
-    artist: {
-      $in: artists.map(artist => artist._id),
-    },
-  })
-    .skip(newOffset)
-    .limit(3)
-    .sort({ createdAt: -1 })
-    .populate('artist')
-    .populate('likes.profile')
-    .where('likes')
-    .slice([0, 3]);
-
-  const shares = await Share.find({
-    profile: {
-      $in: followingProfiles as Array<string>,
-    },
-  })
-    .skip(newOffset)
-    .limit(3)
-    .sort({ createdAt: -1 })
-    .populate('post')
-    .populate('profile')
-    .populate({
-      path: 'post',
-      populate: {
-        path: 'artist',
+  const timeline = await getTimeline(
+    offset,
+    {
+      postQuery: {
+        artist: {
+          $in: artists.map(artist => artist._id),
+        },
       },
-    })
-    .populate('likes.profile')
-    .where('likes')
-    .slice([0, 3]);
-
-  const likes = posts.map(post =>
-    post.likes.find(like => {
-      const profile = like.profile as IArtistProfile;
-      return profile.owner === user.username;
-    }),
+      shareQuery: {
+        profile: {
+          $in: followingProfiles as Array<string>,
+        },
+      },
+    },
+    user.username,
   );
 
-  const shareLikes = shares.map(share =>
-    share.likes.find(like => {
-      const profile = like.profile as IUserProfile;
-      return profile.owner === user.username;
-    }),
-  );
-
-  if (likes.length > 0 || shareLikes.length > 0) {
-    const sharesView = shares.map((share, index) => {
-      const isLiked = !!handleInjectionSink(index, shareLikes);
-      const sharePost = share.post as IPost;
-
-      const imageHeight = getImageHeight(sharePost);
-      return { ...share._doc, isLiked, imageHeight };
-    });
-
-    const postsView = posts.map((post, index) => {
-      const isLiked = !!handleInjectionSink(index, likes);
-
-      const imageHeight = getImageHeight(post);
-      return { ...post._doc, isLiked, imageHeight };
-    });
-
-    const timeline = shuffleArray(postsView, sharesView);
-    return timeline;
-  }
-  return shuffleArray(posts, shares);
+  return timeline;
 };
 
 export const getProfilePostsService = async (token: string, username: string, offset: number) => {
