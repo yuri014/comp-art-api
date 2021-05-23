@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, PubSub } from 'apollo-server-express';
 import { graphqlUploadExpress } from 'graphql-upload';
+import { createServer } from 'http';
 
 import typeDefs from './graphql/definitions';
 import resolvers from './graphql/resolvers';
@@ -10,11 +11,16 @@ require('dotenv').config({
   path: process.env.NODE_ENV === 'development' ? '.env.development' : '.env',
 });
 
-const server = new ApolloServer({
+const pubsub = new PubSub();
+
+export const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ req }),
+  context: ({ req, res }) => ({ req, res, pubsub }),
   uploads: false,
+  subscriptions: {
+    path: '/subscriptions',
+  },
 });
 
 const app = express();
@@ -42,4 +48,6 @@ app.use(express.urlencoded({ extended: true }));
 
 export const PORT = process.env.PORT || 3333;
 
-export default app;
+export const httpServer = createServer(app);
+
+server.installSubscriptionHandlers(httpServer);
