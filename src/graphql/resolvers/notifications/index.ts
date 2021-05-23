@@ -1,11 +1,16 @@
-import { IResolvers, PubSub } from 'apollo-server-express';
-
-const NOTIFICATION = 'NOTIFICATION';
+import { IResolvers, withFilter } from 'apollo-server-express';
+import checkAuth from '../../../middlewares/checkAuth';
 
 const notificationsResolvers: IResolvers = {
   Subscription: {
     notification: {
-      subscribe: (_, __, { pubsub }: { pubsub: PubSub }) => pubsub.asyncIterator(NOTIFICATION),
+      subscribe: withFilter(
+        (_, __, context) => context.pubsub.asyncIterator('NOTIFICATION'),
+        (payload, _, context) => {
+          const user = checkAuth(context.connection.context);
+          return payload.notification.username === user.username;
+        },
+      ),
     },
   },
 };
