@@ -8,6 +8,7 @@ import {
   userDefinitions,
 } from './profileAndUser';
 import queries from './query';
+import subscriptions from './subscriptions';
 
 const typeDefs = [
   interactionsDefinitions,
@@ -20,6 +21,7 @@ const typeDefs = [
   postInputDefinitions,
   queries,
   mutations,
+  subscriptions,
 ];
 
 export default typeDefs;
