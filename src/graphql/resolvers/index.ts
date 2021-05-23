@@ -7,6 +7,7 @@ import usersResolvers from './users';
 import shareResolvers from './share';
 import productsResolvers from './products';
 import savedPostsResolvers from './savedPosts';
+import notificationsResolvers from './notifications';
 
 const resolvers = {
   Timeline: {
@@ -34,6 +35,9 @@ const resolvers = {
     ...shareResolvers.Mutation,
     ...productsResolvers.Mutation,
     ...savedPostsResolvers.Mutation,
+  },
+  Subscription: {
+    ...notificationsResolvers.Subscription,
   },
 };
 
