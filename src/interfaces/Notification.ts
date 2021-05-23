@@ -7,7 +7,6 @@ interface INotification {
     title: string;
     body: string;
     read: boolean;
-    send: boolean;
     createdAt: string;
     link: string;
   }>;

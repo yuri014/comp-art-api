@@ -8,7 +8,6 @@ const NotificationSchema = new Schema({
       title: String,
       body: String,
       read: Boolean,
-      send: Boolean,
       createdAt: String,
       link: String,
     },
