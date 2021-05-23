@@ -8,6 +8,8 @@ interface INotification {
     body: string;
     read: boolean;
     send: boolean;
+    createdAt: string;
+    link: string;
   }>;
 }
 
