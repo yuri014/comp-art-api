@@ -1,7 +1,12 @@
 import debug from 'debug';
 import mongoose from 'mongoose';
 
-import app, { PORT } from './app';
+import { httpServer, server, PORT } from './app';
+
+const logs = [
+  () => debug.log(`server ready at http://localhost:${PORT}${server.graphqlPath}`),
+  () => debug.log(`Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`),
+];
 
 mongoose
   .connect(process.env.CLUSTER_URL as string, {
@@ -9,4 +14,4 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true,
   })
-  .then(() => app.listen(PORT, () => debug.log(`Server running at: ${PORT}`)));
+  .then(() => httpServer.listen(PORT, () => logs.map(log => log())));
