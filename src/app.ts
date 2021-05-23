@@ -49,5 +49,3 @@ app.use(express.urlencoded({ extended: true }));
 export const PORT = process.env.PORT || 3333;
 
 export const httpServer = createServer(app);
-
-server.installSubscriptionHandlers(httpServer);

@@ -8,6 +8,8 @@ const logs = [
   () => debug.log(`Subscriptions ready at: ws://localhost:${PORT}${server.subscriptionsPath}`),
 ];
 
+server.installSubscriptionHandlers(httpServer);
+
 mongoose
   .connect(process.env.CLUSTER_URL as string, {
     useNewUrlParser: true,
