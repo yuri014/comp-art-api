@@ -4,8 +4,9 @@ const subscriptions = gql`
   type Notification {
     title: String
     body: String
+    createdAt: String
+    link: String
     read: Boolean
-    send: Boolean
   }
 
   type Subscription {
