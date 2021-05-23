@@ -4,8 +4,8 @@ import mongoose from 'mongoose';
 import { httpServer, server, PORT } from './app';
 
 const logs = [
-  () => debug.log(`server ready at http://localhost:${PORT}${server.graphqlPath}`),
-  () => debug.log(`Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`),
+  () => debug.log(`Server ready at: http://localhost:${PORT}${server.graphqlPath}`),
+  () => debug.log(`Subscriptions ready at: ws://localhost:${PORT}${server.subscriptionsPath}`),
 ];
 
 mongoose
