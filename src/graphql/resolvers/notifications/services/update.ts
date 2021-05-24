@@ -7,6 +7,7 @@ type NotificationOptions = {
   title: string;
   body: string;
   link: string;
+  avatar: string;
   username: string;
 };
 

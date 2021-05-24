@@ -19,16 +19,6 @@ const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
 
   const { owner } = artist?.artist as IArtistProfile;
 
-  await createNotification(
-    {
-      body: 'teste',
-      link: 'teste-link',
-      title: 'titulo',
-      username: owner,
-    },
-    pubsub,
-  );
-
   const { likeXP } = xpValues;
 
   if (user.isArtist) {
@@ -46,6 +36,17 @@ const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
       throw Error();
     }
 
+    await createNotification(
+      {
+        body: 'teste',
+        link: 'teste-link',
+        title: 'titulo',
+        username: owner,
+        avatar: updatedProfile.avatar,
+      },
+      pubsub,
+    );
+
     return levelUp(updatedProfile);
   }
 
@@ -62,6 +63,17 @@ const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
   if (!updatedProfile) {
     throw Error();
   }
+
+  await createNotification(
+    {
+      body: 'teste',
+      link: 'teste-link',
+      title: 'titulo',
+      username: owner,
+      avatar: updatedProfile.avatar,
+    },
+    pubsub,
+  );
 
   return levelUp(updatedProfile);
 };
