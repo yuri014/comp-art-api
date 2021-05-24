@@ -5,7 +5,7 @@ interface INotification extends Document {
   user: string | IUser;
   notifications: Array<{
     _id: string;
-    title: string;
+    from: string;
     body: string;
     read: boolean;
     createdAt: string;

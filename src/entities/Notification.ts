@@ -6,7 +6,7 @@ const NotificationSchema = new Schema({
   notifications: [
     {
       _id: { type: Schema.Types.ObjectId, auto: true },
-      title: String,
+      from: String,
       body: String,
       read: { type: Boolean, default: false },
       createdAt: String,
