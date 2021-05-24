@@ -26,6 +26,7 @@ const resolvers = {
     ...postResolvers.Query,
     ...commentsResolvers.Query,
     ...shareResolvers.Query,
+    ...notificationsResolvers.Query,
   },
   Mutation: {
     ...usersResolvers.Mutation,
