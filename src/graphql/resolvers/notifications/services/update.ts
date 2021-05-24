@@ -31,6 +31,7 @@ const createNotification = async (options: NotificationOptions, pubsub: PubSub) 
               read: false,
               createdAt: new Date().toISOString(),
               link: options.link,
+              avatar: options.avatar,
             },
           ],
         },
@@ -44,7 +45,7 @@ const createNotification = async (options: NotificationOptions, pubsub: PubSub) 
     },
   );
 
-  const { _id, body, createdAt, link, read, title } = notification.notifications[0];
+  const { _id, body, createdAt, link, read, title, avatar } = notification.notifications[0];
 
   pubsub.publish('NOTIFICATION', {
     notification: {
@@ -54,6 +55,7 @@ const createNotification = async (options: NotificationOptions, pubsub: PubSub) 
       link,
       read,
       title,
+      avatar,
       username: 'yuri014',
     },
   });

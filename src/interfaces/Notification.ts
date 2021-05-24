@@ -10,6 +10,7 @@ interface INotification extends Document {
     read: boolean;
     createdAt: string;
     link: string;
+    avatar: string;
   }>;
 }
 
