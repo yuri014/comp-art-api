@@ -1,9 +1,10 @@
-import { IProfileEntity } from './Models';
+import { Document } from 'mongoose';
+import { IUser } from './User';
 
-interface INotification {
-  profile: string | IProfileEntity;
-  onModel: 'ArtistProfile' | 'UserProfile';
+interface INotification extends Document {
+  user: string | IUser;
   notifications: Array<{
+    _id: string;
     title: string;
     body: string;
     read: boolean;
