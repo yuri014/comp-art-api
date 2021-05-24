@@ -40,7 +40,7 @@ const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
       {
         body: 'teste',
         link: 'teste-link',
-        title: 'titulo',
+        from: user.username,
         username: owner,
         avatar: updatedProfile.avatar,
       },
@@ -68,7 +68,7 @@ const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
     {
       body: 'teste',
       link: 'teste-link',
-      title: 'titulo',
+      from: user.username,
       username: owner,
       avatar: updatedProfile.avatar,
     },

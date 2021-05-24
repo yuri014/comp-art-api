@@ -4,7 +4,7 @@ import User from '../../../../entities/User';
 import Notification from '../../../../entities/Notification';
 
 type NotificationOptions = {
-  title: string;
+  from: string;
   body: string;
   link: string;
   avatar: string;
@@ -26,7 +26,7 @@ const createNotification = async (options: NotificationOptions, pubsub: PubSub) 
           $position: 0,
           $each: [
             {
-              title: options.title,
+              from: options.from,
               body: options.body,
               read: false,
               createdAt: new Date().toISOString(),
@@ -45,7 +45,7 @@ const createNotification = async (options: NotificationOptions, pubsub: PubSub) 
     },
   );
 
-  const { _id, body, createdAt, link, read, title, avatar } = notification.notifications[0];
+  const { _id, body, createdAt, link, read, from, avatar } = notification.notifications[0];
 
   pubsub.publish('NOTIFICATION', {
     notification: {
@@ -54,9 +54,9 @@ const createNotification = async (options: NotificationOptions, pubsub: PubSub) 
       createdAt,
       link,
       read,
-      title,
+      from,
       avatar,
-      username: 'yuri014',
+      username: options.username,
     },
   });
 };
