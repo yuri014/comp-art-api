@@ -1,4 +1,4 @@
-import { IResolvers } from 'apollo-server-express';
+import { IResolvers, PubSub } from 'apollo-server-express';
 import { IPostInput } from '../../../interfaces/Post';
 import checkAuth from '../../../middlewares/checkAuth';
 import Post from '../../../entities/Post';
@@ -63,8 +63,9 @@ const postResolvers: IResolvers = {
 
     async like(_, { id }: ID, context) {
       const user = checkAuth(context);
+      const pubsub = context.pubsub as PubSub;
 
-      return likePost(id, user);
+      return likePost(id, user, pubsub);
     },
 
     async dislike(_, { id }: ID, context) {
