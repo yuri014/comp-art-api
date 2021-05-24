@@ -32,6 +32,9 @@ const queries = gql`
     getComments(postID: ID!, offset: Int!): [Comments]
     getLikes(postID: ID!, offset: Int!): [Profile]
     getWhoSharesPost(postID: ID!, offset: Int!): [Profile]
+
+    #notifications
+    getNotifications(offset: Int!): [Notification]
   }
 `;
 
