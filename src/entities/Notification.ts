@@ -11,6 +11,7 @@ const NotificationSchema = new Schema({
       read: { type: Boolean, default: false },
       createdAt: String,
       link: String,
+      avatar: String,
     },
   ],
 });
