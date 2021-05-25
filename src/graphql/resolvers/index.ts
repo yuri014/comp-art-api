@@ -36,6 +36,7 @@ const resolvers = {
     ...shareResolvers.Mutation,
     ...productsResolvers.Mutation,
     ...savedPostsResolvers.Mutation,
+    ...notificationsResolvers.Mutation,
   },
   Subscription: {
     ...notificationsResolvers.Subscription,

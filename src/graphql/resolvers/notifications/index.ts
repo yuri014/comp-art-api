@@ -1,8 +1,8 @@
-import { IResolvers, UserInputError, withFilter } from 'apollo-server-express';
-import Notification from '../../../entities/Notification';
+import { IResolvers, withFilter } from 'apollo-server-express';
 
 import checkAuth from '../../../middlewares/checkAuth';
 import findNotifications from './services/find';
+import updateReadNotification from './services/update';
 
 const notificationsResolvers: IResolvers = {
   Query: {
@@ -14,23 +14,9 @@ const notificationsResolvers: IResolvers = {
   },
   Mutation: {
     async readNotifications(_, { notificationID }: { notificationID: string }, context) {
-      checkAuth(context);
+      const user = checkAuth(context);
 
-      try {
-        await Notification.findOneAndUpdate(
-          {
-            'notifications._id': notificationID,
-          },
-          {
-            $set: { 'notifications.$[el].read': true },
-          },
-          { useFindAndModify: false, arrayFilters: [{ 'el._id': notificationID }] },
-        );
-      } catch (error) {
-        throw new UserInputError('Não existe essa notificação');
-      }
-
-      return true;
+      return updateReadNotification(user, notificationID);
     },
   },
   Subscription: {
