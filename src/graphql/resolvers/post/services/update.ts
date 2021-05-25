@@ -1,11 +1,12 @@
 import { PubSub } from 'apollo-server-express';
+import { Model } from 'mongoose';
 
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Post from '../../../../entities/Post';
 import UserProfile from '../../../../entities/UserProfile';
 import levelUp from '../../../../functions/levelUp';
 import { IPost } from '../../../../interfaces/Post';
-import { IArtistProfile } from '../../../../interfaces/Profile';
+import { IArtistProfile, IUserProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
 import likeHandler from '../../../../utils/likeHandle';
@@ -21,8 +22,9 @@ const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
 
   const { likeXP } = xpValues;
 
-  if (user.isArtist) {
-    const updatedProfile = await ArtistProfile.findOneAndUpdate(
+  const uploadProfile = async (Profile: Model<IArtistProfile> | Model<IUserProfile>) => {
+    // @ts-ignore
+    const updatedProfile = await Profile.findOneAndUpdate(
       { owner: user.username },
       {
         $inc: {
@@ -36,38 +38,15 @@ const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
       throw Error();
     }
 
-    await createNotification(
-      {
-        body: 'teste',
-        link: 'teste-link',
-        from: user.username,
-        username: owner,
-        avatar: updatedProfile.avatar,
-      },
-      pubsub,
-    );
+    return updatedProfile;
+  };
 
-    return levelUp(updatedProfile);
-  }
-
-  const updatedProfile = await UserProfile.findOneAndUpdate(
-    { owner: user.username },
-    {
-      $inc: {
-        xp: likeXP,
-      },
-    },
-    genericUpdateOptions,
-  );
-
-  if (!updatedProfile) {
-    throw Error();
-  }
+  const updatedProfile = await uploadProfile(user.isArtist ? ArtistProfile : UserProfile);
 
   await createNotification(
     {
-      body: 'teste',
-      link: 'teste-link',
+      body: 'curtiu sua publicação',
+      link: `/post/${id}`,
       from: user.username,
       username: owner,
       avatar: updatedProfile.avatar,
