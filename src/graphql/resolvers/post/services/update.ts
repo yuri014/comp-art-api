@@ -11,7 +11,7 @@ import { IToken } from '../../../../interfaces/Token';
 import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
 import likeHandler from '../../../../utils/likeHandle';
 import xpValues from '../../../../utils/xpValues';
-import createNotification from '../../notifications/services/update';
+import createNotification from '../../notifications/services/create';
 
 const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
   await likeHandler(id, user, Post, 'like');
