@@ -9,6 +9,13 @@ import productsResolvers from './products';
 import savedPostsResolvers from './savedPosts';
 import notificationsResolvers from './notifications';
 
+const postsMutations = {
+  ...postResolvers.Mutation,
+  ...commentsResolvers.Mutation,
+  ...shareResolvers.Mutation,
+  ...savedPostsResolvers.Mutation,
+};
+
 const resolvers = {
   Timeline: {
     __resolveType(obj: { artist: IArtistProfile; profile: IProfileEntity }) {
@@ -31,12 +38,9 @@ const resolvers = {
   Mutation: {
     ...usersResolvers.Mutation,
     ...profileResolvers.Mutation,
-    ...postResolvers.Mutation,
-    ...commentsResolvers.Mutation,
-    ...shareResolvers.Mutation,
     ...productsResolvers.Mutation,
-    ...savedPostsResolvers.Mutation,
     ...notificationsResolvers.Mutation,
+    ...postsMutations,
   },
   Subscription: {
     ...notificationsResolvers.Subscription,
