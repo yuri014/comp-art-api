@@ -48,7 +48,7 @@ const mutations = gql`
     createProduct(productInput: ProductInput!): Boolean
 
     #notifications
-    readNotifications(notificationID: ID!): Boolean
+    readNotification(notificationID: ID!): Boolean
   }
 `;
 

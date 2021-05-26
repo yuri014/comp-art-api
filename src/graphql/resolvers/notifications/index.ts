@@ -13,7 +13,7 @@ const notificationsResolvers: IResolvers = {
     },
   },
   Mutation: {
-    async readNotifications(_, { notificationID }: { notificationID: string }, context) {
+    async readNotification(_, { notificationID }: { notificationID: string }, context) {
       const user = checkAuth(context);
 
       return updateReadNotification(user, notificationID);
