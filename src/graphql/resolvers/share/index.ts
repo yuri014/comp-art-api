@@ -1,4 +1,4 @@
-import { IResolvers, UserInputError } from 'apollo-server-express';
+import { IResolvers, PubSub, UserInputError } from 'apollo-server-express';
 
 import Share from '../../../entities/Share';
 import { ID } from '../../../interfaces/General';
@@ -24,7 +24,9 @@ const shareResolvers: IResolvers = {
     async createSharePost(_, { shareInput }: { shareInput: IShareInput }, context) {
       const user = checkAuth(context);
 
-      return createShare(user, shareInput);
+      const pubsub = context.pubsub as PubSub;
+
+      return createShare(user, shareInput, pubsub);
     },
     async deleteShare(_, { id }: ID, context) {
       const user = checkAuth(context);

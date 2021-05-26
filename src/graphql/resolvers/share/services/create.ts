@@ -1,4 +1,4 @@
-import { UserInputError } from 'apollo-server-express';
+import { PubSub, UserInputError } from 'apollo-server-express';
 
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Post from '../../../../entities/Post';
@@ -10,8 +10,9 @@ import { IShareInput } from '../../../../interfaces/Share';
 import { IToken } from '../../../../interfaces/Token';
 import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';
+import createNotification from '../../notifications/services/create';
 
-const createShare = async (user: IToken, input: IShareInput) => {
+const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => {
   const errors = postValidationSchema.validate({
     description: input.description?.trim(),
   });
@@ -34,11 +35,13 @@ const createShare = async (user: IToken, input: IShareInput) => {
 
   const profileDoc = profile._doc;
 
-  const post = await Post.findById(input.postID);
+  const post = await Post.findById(input.postID).populate('artist');
 
   if (!post) {
     throw new UserInputError('Precisa de um post');
   }
+
+  const postOwner = post.artist as IArtistProfile;
 
   const newShare = new Share({
     description: input.description?.trim(),
@@ -60,7 +63,7 @@ const createShare = async (user: IToken, input: IShareInput) => {
     { useFindAndModify: false },
   );
 
-  if (profileDoc?._id.equals(post.artist)) {
+  if (profileDoc?._id.equals(postOwner._id)) {
     await profile.updateOne({
       $inc: {
         postCount: 1,
@@ -82,7 +85,6 @@ const createShare = async (user: IToken, input: IShareInput) => {
           postsRemainingToUnblock: -1,
         },
       });
-      // @ts-ignore
     } else if (artist.postsRemainingToUnblock > 1) {
       await profile.updateOne({
         $inc: {
@@ -98,7 +100,18 @@ const createShare = async (user: IToken, input: IShareInput) => {
           xp: shareXP,
         },
       },
-      { new: true },
+      { new: true, useFindAndModify: false },
+    );
+
+    await createNotification(
+      {
+        body: 'compartilhou sua publicação',
+        link: `/share/${newShare._id}`,
+        from: user.username,
+        username: postOwner.owner,
+        avatar: updatedArtist.avatar,
+      },
+      pubsub,
     );
 
     return levelUp(updatedArtist);
@@ -112,6 +125,17 @@ const createShare = async (user: IToken, input: IShareInput) => {
       },
     },
     { new: true },
+  );
+
+  await createNotification(
+    {
+      body: 'compartilhou sua publicação',
+      link: `/share/${newShare._id}`,
+      from: user.username,
+      username: postOwner.owner,
+      avatar: updatedProfile.avatar,
+    },
+    pubsub,
   );
 
   return levelUp(updatedProfile);
