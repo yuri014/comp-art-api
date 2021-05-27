@@ -11,7 +11,6 @@ const ShareSchema = new Schema({
     },
   ],
   likesCount: { type: Number, default: 0 },
-  sharedCount: { type: Number, default: 0 },
   commentsCount: { type: Number, default: 0 },
   createdAt: String,
   profile: { type: Schema.Types.ObjectId, refPath: 'onModel' },
