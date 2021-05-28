@@ -6,13 +6,7 @@ import getToken from '../../../auth/getToken';
 import { ID } from '../../../interfaces/General';
 import likePost from './services/update';
 import createNewPost from './services/create';
-import {
-  getPostService,
-  getProfilePostsService,
-  getTimelinePosts,
-  getExplorePostsService,
-  getPostLikes,
-} from './services/find';
+import FindPost from './services/find';
 import { deletePostService, dislikePost } from './services/delete';
 
 const postResolvers: IResolvers = {
@@ -20,25 +14,25 @@ const postResolvers: IResolvers = {
     async getPost(_, { id }: ID, context) {
       const token = getToken(context);
 
-      return getPostService(id, token);
+      return FindPost.getPostService(id, token);
     },
     async getPosts(_, { offset }: { offset: number }, context) {
       const user = checkAuth(context);
 
-      return getTimelinePosts(offset, user);
+      return FindPost.getTimelinePosts(offset, user);
     },
     async getProfilePosts(_, { offset, username }: { offset: number; username: string }, context) {
       const token = getToken(context);
 
-      return getProfilePostsService(token, username, offset);
+      return FindPost.getProfilePostsService(token, username, offset);
     },
     async getExplorePosts(_, { offset }: { offset: number }, context) {
       const token = getToken(context);
 
-      return getExplorePostsService(offset, token);
+      return FindPost.getExplorePostsService(offset, token);
     },
     async getLikes(_, { postID, offset }: { postID: string; offset: number }) {
-      return getPostLikes(postID, offset);
+      return FindPost.getPostLikes(postID, offset);
     },
 
     async searchPost(_, { query, offset }: { query: string; offset: number }) {
