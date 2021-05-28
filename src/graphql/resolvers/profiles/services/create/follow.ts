@@ -1,11 +1,12 @@
-import { UserInputError } from 'apollo-server-express';
+import { PubSub, UserInputError } from 'apollo-server-express';
 
 import User from '../../../../../entities/User';
 import { IToken } from '../../../../../interfaces/Token';
+import createNotification from '../../../notifications/services/create';
 import { follower, following } from '../update/follow';
 import findProfile from '../utils/findProfileUtil';
 
-const followService = async (userWhoFollows: IToken, username: string) => {
+const followService = async (userWhoFollows: IToken, username: string, pubsub: PubSub) => {
   const followedUser = await User.findOne({ username });
 
   if (!followedUser) {
@@ -27,6 +28,17 @@ const followService = async (userWhoFollows: IToken, username: string) => {
   await follower(userWhoFollows.isArtist, authProfile._doc._id, followedUser.username);
 
   await following(followedUser.isArtist, profileWhoIsFollowed._doc._id, userWhoFollows.username);
+
+  await createNotification(
+    {
+      avatar: authProfile.avatar,
+      body: 'começou a te seguir!',
+      from: userWhoFollows.username,
+      link: `/profile/${userWhoFollows.username}`,
+      username: followedUser.username,
+    },
+    pubsub,
+  );
 
   return true;
 };

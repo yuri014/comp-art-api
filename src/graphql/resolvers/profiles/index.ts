@@ -1,4 +1,4 @@
-import { IResolvers, UserInputError } from 'apollo-server-express';
+import { IResolvers, PubSub, UserInputError } from 'apollo-server-express';
 
 import ArtistProfile from '../../../entities/ArtistProfile';
 import { ICreateProfile } from '../../../interfaces/Profile';
@@ -151,8 +151,9 @@ const profileResolvers: IResolvers = {
 
     async follow(_, { username }: IUsername, context) {
       const userWhoFollows = checkAuth(context);
+      const pubsub = context.pubsub as PubSub;
 
-      return followService(userWhoFollows, username);
+      return followService(userWhoFollows, username, pubsub);
     },
 
     async unfollow(_, { username }: IUsername, context) {
