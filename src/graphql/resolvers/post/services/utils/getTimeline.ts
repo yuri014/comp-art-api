@@ -9,10 +9,12 @@ import handleInjectionSink from '../../../../../utils/handleInjectionSink';
 import shuffleArray from '../../../profiles/services/utils/shuffleProfilesArray';
 import getImageHeight from './getImageHeight';
 
+type ILikes = Array<{
+  profile: IArtistProfile | IUserProfile | string;
+}>;
+
 type GenericPostType = Array<{
-  likes: Array<{
-    profile: IArtistProfile | IUserProfile | string;
-  }>;
+  likes: ILikes;
 }>;
 
 const getLikes = (posts: GenericPostType, username: string) => {
@@ -26,6 +28,13 @@ const getLikes = (posts: GenericPostType, username: string) => {
   });
 
   return likes;
+};
+
+const handlePostView = (likes: ILikes, index: number, post: IPost) => {
+  const isLiked = !!handleInjectionSink(index, likes);
+  const imageHeight = getImageHeight(post);
+
+  return { isLiked, imageHeight };
 };
 
 type GetTimeline = (
@@ -72,17 +81,15 @@ const getTimeline: GetTimeline = async (offset, queries, username) => {
 
   if (likes.length > 0 || shareLikes.length > 0) {
     const sharesView = shares.map((share, index) => {
-      const isLiked = !!handleInjectionSink(index, shareLikes);
       const sharePost = share.post as IPost;
+      const { imageHeight, isLiked } = handlePostView(likes as ILikes, index, sharePost);
 
-      const imageHeight = getImageHeight(sharePost);
       return { ...share._doc, isLiked, imageHeight };
     });
 
     const postsView = posts.map((post, index) => {
-      const isLiked = !!handleInjectionSink(index, likes);
+      const { imageHeight, isLiked } = handlePostView(likes as ILikes, index, post);
 
-      const imageHeight = getImageHeight(post);
       return { ...post._doc, isLiked, imageHeight };
     });
 
