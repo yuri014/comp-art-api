@@ -3,8 +3,7 @@ import { model, Schema } from 'mongoose';
 import ISavedPost from '../interfaces/SavedPost';
 
 const SavedPost = new Schema({
-  profile: { type: Schema.Types.ObjectId, refPath: 'onModel', required: true },
-  onModel: { type: String, enum: ['ArtistProfile', 'UserProfile'], required: true },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   posts: [
     {
       post: { type: Schema.Types.ObjectId, refPath: 'posts.onModel', required: true },
