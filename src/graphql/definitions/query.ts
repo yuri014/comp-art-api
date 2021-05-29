@@ -34,6 +34,9 @@ const queries = gql`
     getLikes(postID: ID!, offset: Int!): [Profile]
     getWhoSharesPost(postID: ID!, offset: Int!): [Profile]
 
+    #saved posts
+    getSavedPosts(offset: Int!): [Timeline]
+
     #notifications
     getNotifications(offset: Int!): [Notification]
   }
