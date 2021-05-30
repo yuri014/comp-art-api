@@ -35,6 +35,7 @@ export const postDefinitions = gql`
     thumbnail: String
     imageHeight: String
     title: String
+    isSaved: Boolean
   }
 
   type Share {
@@ -49,6 +50,7 @@ export const postDefinitions = gql`
     createdAt: String!
     isLiked: Boolean
     imageHeight: String
+    isSaved: Boolean
   }
 `;
 
