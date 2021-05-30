@@ -16,7 +16,7 @@ interface ISavedPost extends Document {
 export type ISavedPostService = (
   user: IToken,
   isAlreadySave: ISavedPost | null,
-  savedPost: IShare | IPost | null,
+  savedPost: IShare | IPost,
 ) => Promise<boolean>;
 
 export default ISavedPost;
