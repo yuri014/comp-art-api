@@ -53,23 +53,16 @@ const getTimeline: GetTimeline = async (offset, queries, user) => {
   if (likes.length > 0 || shareLikes.length > 0) {
     const sharesView = shares.map(async (share, index) => {
       const sharePost = share.post as IPost;
-      const { imageHeight, isLiked, isSaved } = await handlePostView(
-        likes as ILikes,
-        index,
-        sharePost,
-        user.id,
-      );
+      const { imageHeight, isSaved, getIsLiked } = await handlePostView(sharePost, user.id);
+
+      const isLiked = getIsLiked(shareLikes as ILikes, index);
 
       return { ...share._doc, isLiked, imageHeight, isSaved };
     });
 
     const postsView = posts.map(async (post, index) => {
-      const { imageHeight, isLiked, isSaved } = await handlePostView(
-        likes as ILikes,
-        index,
-        post,
-        user.id,
-      );
+      const { imageHeight, isSaved, getIsLiked } = await handlePostView(post, user.id);
+      const isLiked = getIsLiked(likes as ILikes, index);
 
       return { ...post._doc, isLiked, imageHeight, isSaved };
     });

@@ -25,8 +25,7 @@ export const getLikes = (posts: GenericPostType, username: string) => {
   return likes;
 };
 
-export const handlePostView = async (likes: ILikes, index: number, post: IPost, userID: string) => {
-  const isLiked = !!handleInjectionSink(index, likes);
+export const handlePostView = async (post: IPost, userID: string) => {
   const imageHeight = getImageHeight(post);
 
   const savedPost = await SavedPost.findOne({
@@ -38,5 +37,12 @@ export const handlePostView = async (likes: ILikes, index: number, post: IPost, 
     },
   });
 
-  return { isLiked, imageHeight, isSaved: !!savedPost };
+  return {
+    isSaved: !!savedPost,
+    imageHeight,
+    getIsLiked: (likes: ILikes, index: number) => {
+      const isLiked = !!handleInjectionSink(index, likes);
+      return isLiked;
+    },
+  };
 };
