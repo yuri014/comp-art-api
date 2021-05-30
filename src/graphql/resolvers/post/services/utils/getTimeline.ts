@@ -1,52 +1,12 @@
 import { FilterQuery } from 'mongoose';
 
 import Post from '../../../../../entities/Post';
-import SavedPost from '../../../../../entities/SavedPost';
 import Share from '../../../../../entities/Share';
 import { IPost } from '../../../../../interfaces/Post';
-import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile';
 import { IShare } from '../../../../../interfaces/Share';
 import { IToken } from '../../../../../interfaces/Token';
-import handleInjectionSink from '../../../../../utils/handleInjectionSink';
 import shuffleArray from '../../../profiles/services/utils/shuffleProfilesArray';
-import getImageHeight from './getImageHeight';
-
-type ILikes = Array<{
-  profile: IArtistProfile | IUserProfile | string;
-}>;
-
-type GenericPostType = Array<{
-  likes: ILikes;
-}>;
-
-const getLikes = (posts: GenericPostType, username: string) => {
-  const likes = posts.map(post => {
-    const postLikes = post.likes;
-
-    return postLikes.find(like => {
-      const profile = like.profile as IUserProfile;
-      return profile.owner === username;
-    });
-  });
-
-  return likes;
-};
-
-const handlePostView = async (likes: ILikes, index: number, post: IPost, userID: string) => {
-  const isLiked = !!handleInjectionSink(index, likes);
-  const imageHeight = getImageHeight(post);
-
-  const savedPost = await SavedPost.findOne({
-    user: userID,
-    posts: {
-      $elemMatch: {
-        post: post._id,
-      },
-    },
-  });
-
-  return { isLiked, imageHeight, isSaved: !!savedPost };
-};
+import { getLikes, handlePostView, ILikes } from './postUtils';
 
 type GetTimeline = (
   offset: number,
