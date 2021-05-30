@@ -8,8 +8,7 @@ const createSavedPost: ISavedPostService = async (user, isAlreadySave, savedPost
     throw new UserInputError('Post já está nas sua lista de salvos');
   }
 
-  // @ts-ignore
-  const isPost = savedPost.owner as string | undefined;
+  const isPost = !!savedPost.get('artist');
 
   await SavedPost.findOneAndUpdate(
     { user: user.id },
