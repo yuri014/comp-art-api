@@ -19,8 +19,7 @@ export const unfollower = async (
   );
 
   if (isArtist) {
-    // @ts-ignore
-    if (artistFollower && artistFollower.artistFollowers.lenght === 0) {
+    if (artistFollower && artistFollower.artistFollowers.length === 0) {
       throw new UserInputError('Não é seguido');
     }
 
@@ -43,7 +42,7 @@ export const unfollower = async (
   }
 
   // @ts-ignore
-  if (userFollower.userFollowers.lenght) {
+  if (userFollower.userFollowers.length) {
     throw new UserInputError('Não é seguido');
   }
 
@@ -81,7 +80,7 @@ export const unfollowing = async (
 
   if (isArtist) {
     // @ts-ignore
-    if (artistFollowing.artistFollowing.lenght === 0) {
+    if (artistFollowing.artistFollowing.length === 0) {
       throw new UserInputError('Já é seguido');
     }
 
@@ -106,7 +105,7 @@ export const unfollowing = async (
   }
 
   // @ts-ignore
-  if (userFollowing.userFollowing.lenght) {
+  if (userFollowing.userFollowing.length) {
     throw new UserInputError('Não é seguido');
   }
 
