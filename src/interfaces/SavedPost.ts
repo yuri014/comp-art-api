@@ -6,7 +6,7 @@ import { IToken } from './Token';
 import { IUser } from './User';
 
 interface ISavedPost extends Document {
-  profile: string | IUser;
+  user: string | IUser;
   posts: Array<{
     post: string;
     onModel: 'Share' | 'Post';
