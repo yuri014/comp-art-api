@@ -36,7 +36,7 @@ const postResolvers: IResolvers = {
     },
 
     async searchPost(_, { query, offset }: { query: string; offset: number }) {
-      const profiles = await Post.find({ $text: { $search: query } })
+      const posts = await Post.find({ $text: { $search: query } })
         .skip(offset)
         .limit(10)
         .sort({ createdAt: -1 })
@@ -45,7 +45,7 @@ const postResolvers: IResolvers = {
         .where('likes')
         .slice([0, 3]);
 
-      return profiles;
+      return posts;
     },
   },
   Mutation: {
