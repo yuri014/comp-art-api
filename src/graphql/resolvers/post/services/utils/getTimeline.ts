@@ -1,6 +1,7 @@
 import { FilterQuery } from 'mongoose';
 
 import Post from '../../../../../entities/Post';
+import SavedPost from '../../../../../entities/SavedPost';
 import Share from '../../../../../entities/Share';
 import { IPost } from '../../../../../interfaces/Post';
 import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile';
@@ -31,11 +32,20 @@ const getLikes = (posts: GenericPostType, username: string) => {
   return likes;
 };
 
-const handlePostView = (likes: ILikes, index: number, post: IPost) => {
+const handlePostView = async (likes: ILikes, index: number, post: IPost, userID: string) => {
   const isLiked = !!handleInjectionSink(index, likes);
   const imageHeight = getImageHeight(post);
 
-  return { isLiked, imageHeight };
+  const savedPost = await SavedPost.findOne({
+    user: userID,
+    posts: {
+      $elemMatch: {
+        post: post._id,
+      },
+    },
+  });
+
+  return { isLiked, imageHeight, isSaved: !!savedPost };
 };
 
 type GetTimeline = (
@@ -81,17 +91,27 @@ const getTimeline: GetTimeline = async (offset, queries, user) => {
   const shareLikes = getLikes(shares, user.username);
 
   if (likes.length > 0 || shareLikes.length > 0) {
-    const sharesView = shares.map((share, index) => {
+    const sharesView = shares.map(async (share, index) => {
       const sharePost = share.post as IPost;
-      const { imageHeight, isLiked } = handlePostView(likes as ILikes, index, sharePost);
+      const { imageHeight, isLiked, isSaved } = await handlePostView(
+        likes as ILikes,
+        index,
+        sharePost,
+        user.id,
+      );
 
-      return { ...share._doc, isLiked, imageHeight };
+      return { ...share._doc, isLiked, imageHeight, isSaved };
     });
 
-    const postsView = posts.map((post, index) => {
-      const { imageHeight, isLiked } = handlePostView(likes as ILikes, index, post);
+    const postsView = posts.map(async (post, index) => {
+      const { imageHeight, isLiked, isSaved } = await handlePostView(
+        likes as ILikes,
+        index,
+        post,
+        user.id,
+      );
 
-      return { ...post._doc, isLiked, imageHeight };
+      return { ...post._doc, isLiked, imageHeight, isSaved };
     });
 
     const timeline = shuffleArray(postsView, sharesView);
