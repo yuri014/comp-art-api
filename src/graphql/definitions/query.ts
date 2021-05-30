@@ -27,7 +27,6 @@ const queries = gql`
     getProfilePosts(offset: Int!, username: String!): [Timeline]
     getExplorePosts(offset: Int!): [Post]
     searchPost(query: String!, offset: Int!): [Post]
-    getPostByTag(tag: String!, offset: Int!): [Timeline]
 
     #post interactions
     getComments(postID: ID!, offset: Int!): [Comments]
