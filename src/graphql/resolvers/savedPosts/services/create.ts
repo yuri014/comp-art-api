@@ -3,12 +3,7 @@ import { UserInputError } from 'apollo-server-express';
 import SavedPost from '../../../../entities/SavedPost';
 import { ISavedPostService } from '../../../../interfaces/SavedPost';
 
-const createSavedPost: ISavedPostService = async (
-  isAlreadySave,
-  profileID,
-  savedPost,
-  isArtist,
-) => {
+const createSavedPost: ISavedPostService = async (user, isAlreadySave, savedPost) => {
   if (isAlreadySave) {
     throw new UserInputError('Post já está nas sua lista de salvos');
   }
@@ -17,10 +12,9 @@ const createSavedPost: ISavedPostService = async (
   const isPost = savedPost.owner as string | undefined;
 
   await SavedPost.findOneAndUpdate(
-    { profile: profileID, onModel: isArtist ? 'ArtistProfile' : 'UserProfile' },
+    { user: user.id },
     {
-      profile: profileID,
-      onModel: isArtist ? 'ArtistProfile' : 'UserProfile',
+      user: user.id,
       $push: {
         posts: {
           $position: 0,

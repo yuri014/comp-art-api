@@ -5,17 +5,8 @@ import SavedPost from '../../../../../entities/SavedPost';
 import Share from '../../../../../entities/Share';
 import { ISavedPostService } from '../../../../../interfaces/SavedPost';
 import { IToken } from '../../../../../interfaces/Token';
-import findProfile from '../../../profiles/services/utils/findProfileUtil';
 
 const savedPostCompose = async (user: IToken, postID: string) => {
-  const profile = await findProfile(user);
-
-  const profileDoc = profile._doc;
-
-  if (!profileDoc) {
-    throw new UserInputError('Não existe perfil');
-  }
-
   const share = await Share.findById(postID);
   const post = await Post.findById(postID);
 
@@ -26,7 +17,7 @@ const savedPostCompose = async (user: IToken, postID: string) => {
   }
 
   const isAlreadySave = await SavedPost.findOne({
-    profile: profileDoc._id,
+    user: user.id,
     posts: {
       $elemMatch: {
         post: postID,
@@ -34,8 +25,7 @@ const savedPostCompose = async (user: IToken, postID: string) => {
     },
   });
 
-  return (callback: ISavedPostService) =>
-    callback(isAlreadySave, profileDoc._id, savedPost, user.isArtist);
+  return (callback: ISavedPostService) => callback(user, isAlreadySave, savedPost);
 };
 
 export default savedPostCompose;

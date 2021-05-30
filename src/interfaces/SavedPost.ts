@@ -1,13 +1,12 @@
 import { Document } from 'mongoose';
 
-import { IOnModel } from './General';
 import { IPost } from './Post';
-import { IProfile } from './Profile';
 import { IShare } from './Share';
+import { IToken } from './Token';
+import { IUser } from './User';
 
 interface ISavedPost extends Document {
-  profile: string | IProfile;
-  onModel: IOnModel;
+  profile: string | IUser;
   posts: Array<{
     post: string;
     onModel: 'Share' | 'Post';
@@ -15,10 +14,9 @@ interface ISavedPost extends Document {
 }
 
 export type ISavedPostService = (
+  user: IToken,
   isAlreadySave: ISavedPost | null,
-  profileID: string,
   savedPost: IShare | IPost | null,
-  isArtist?: boolean,
 ) => Promise<boolean>;
 
 export default ISavedPost;
