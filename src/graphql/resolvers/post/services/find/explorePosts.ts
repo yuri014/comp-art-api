@@ -6,7 +6,7 @@ import findProfile from '../../../profiles/services/utils/findProfileUtil';
 const getExplorePostsService = async (offset: number, token: string) => {
   const user = getUser(token) as IToken;
 
-  if (user.username) {
+  if (user) {
     const profile = await findProfile(user);
 
     const profileDoc = profile._doc;
