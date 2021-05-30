@@ -41,7 +41,7 @@ const getTimelinePosts = async (offset: number, user: IToken) => {
         },
       },
     },
-    user.username,
+    user,
   );
 
   return timeline;

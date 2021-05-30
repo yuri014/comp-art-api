@@ -17,7 +17,7 @@ const getProfilePostsService = async (token: string, username: string, offset: n
           profile: profile._id,
         },
       },
-      user.username,
+      user,
     );
 
     return timeline;

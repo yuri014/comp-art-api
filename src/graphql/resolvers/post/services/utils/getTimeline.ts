@@ -5,6 +5,7 @@ import Share from '../../../../../entities/Share';
 import { IPost } from '../../../../../interfaces/Post';
 import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile';
 import { IShare } from '../../../../../interfaces/Share';
+import { IToken } from '../../../../../interfaces/Token';
 import handleInjectionSink from '../../../../../utils/handleInjectionSink';
 import shuffleArray from '../../../profiles/services/utils/shuffleProfilesArray';
 import getImageHeight from './getImageHeight';
@@ -43,10 +44,10 @@ type GetTimeline = (
     postQuery: FilterQuery<IPost>;
     shareQuery: FilterQuery<IShare>;
   },
-  username: string,
+  user: IToken,
 ) => Promise<unknown[]>;
 
-const getTimeline: GetTimeline = async (offset, queries, username) => {
+const getTimeline: GetTimeline = async (offset, queries, user) => {
   const newOffset = offset > 0 ? offset / 2 : 0;
   const { postQuery, shareQuery } = queries;
 
@@ -75,9 +76,9 @@ const getTimeline: GetTimeline = async (offset, queries, username) => {
     .where('likes')
     .slice([0, 3]);
 
-  const likes = getLikes(posts, username);
+  const likes = getLikes(posts, user.username);
 
-  const shareLikes = getLikes(shares, username);
+  const shareLikes = getLikes(shares, user.username);
 
   if (likes.length > 0 || shareLikes.length > 0) {
     const sharesView = shares.map((share, index) => {
