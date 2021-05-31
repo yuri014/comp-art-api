@@ -17,4 +17,6 @@ const ShareSchema = new Schema({
   onModel: { type: String, enum: ['ArtistProfile', 'UserProfile'] },
 });
 
+ShareSchema.index({ description: 'text' });
+
 export default mongoose.model<IShare>('Share', ShareSchema);
