@@ -14,7 +14,7 @@ type GetTimeline = (
     postQuery: FilterQuery<IPost>;
     shareQuery: FilterQuery<IShare>;
   },
-  user: IToken,
+  user?: IToken,
 ) => Promise<unknown[]>;
 
 const getTimeline: GetTimeline = async (offset, queries, user) => {
@@ -46,29 +46,31 @@ const getTimeline: GetTimeline = async (offset, queries, user) => {
     .where('likes')
     .slice([0, 3]);
 
-  const likes = getLikes(posts, user.username);
+  if (user) {
+    const likes = getLikes(posts, user.username);
 
-  const shareLikes = getLikes(shares, user.username);
+    const shareLikes = getLikes(shares, user.username);
 
-  if (likes.length > 0 || shareLikes.length > 0) {
-    const sharesView = shares.map(async (share, index) => {
-      const sharePost = share.post as IPost;
-      const { imageHeight, isSaved, getIsLiked } = await handlePostView(sharePost, user.id);
+    if (likes.length > 0 || shareLikes.length > 0) {
+      const sharesView = shares.map(async (share, index) => {
+        const sharePost = share.post as IPost;
+        const { imageHeight, isSaved, getIsLiked } = await handlePostView(sharePost, user.id);
 
-      const isLiked = getIsLiked(shareLikes as ILikes, index);
+        const isLiked = getIsLiked(shareLikes as ILikes, index);
 
-      return { ...share._doc, isLiked, imageHeight, isSaved };
-    });
+        return { ...share._doc, isLiked, imageHeight, isSaved };
+      });
 
-    const postsView = posts.map(async (post, index) => {
-      const { imageHeight, isSaved, getIsLiked } = await handlePostView(post, user.id);
-      const isLiked = getIsLiked(likes as ILikes, index);
+      const postsView = posts.map(async (post, index) => {
+        const { imageHeight, isSaved, getIsLiked } = await handlePostView(post, user.id);
+        const isLiked = getIsLiked(likes as ILikes, index);
 
-      return { ...post._doc, isLiked, imageHeight, isSaved };
-    });
+        return { ...post._doc, isLiked, imageHeight, isSaved };
+      });
 
-    const timeline = shuffleArray(postsView, sharesView);
-    return timeline;
+      const timeline = shuffleArray(postsView, sharesView);
+      return timeline;
+    }
   }
 
   return shuffleArray(posts, shares);

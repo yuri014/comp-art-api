@@ -25,7 +25,7 @@ export const getLikes = (posts: GenericPostType, username: string) => {
   return likes;
 };
 
-export const handlePostView = async (post: IPost, userID: string) => {
+export const handlePostView = async (post: IPost, userID?: string) => {
   const imageHeight = getImageHeight(post);
 
   const savedPost = await SavedPost.findOne({

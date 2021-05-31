@@ -3,6 +3,7 @@ import Follower from '../../../../../entities/Follower';
 import Following from '../../../../../entities/Following';
 import { IFollower, IFollowing } from '../../../../../interfaces/Follow';
 import { IProfileEntity } from '../../../../../interfaces/Models';
+import { IToken } from '../../../../../interfaces/Token';
 import { isAlreadyFollowing } from '../../../../../middlewares/isAlreadyFollow';
 import findFollows, { IOffset } from '../utils/findFollows';
 import shuffleArray from '../utils/shuffleProfilesArray';
@@ -31,12 +32,14 @@ export const getFollowingService = async (params: IOffset, token: string) => {
   const artists = follows.artistFollowing || [];
   const users = follows.userFollowing || [];
 
-  if (user.username) {
+  if (user) {
+    const authUser = user as IToken;
+
     const artistsWithAuth = await Promise.all(
-      artists.map(artist => isFollowingLoggedUser(artist, user.username)),
+      artists.map(artist => isFollowingLoggedUser(artist, authUser.username)),
     );
     const usersWithAuth = await Promise.all(
-      users.map(_user => isFollowingLoggedUser(_user, user.username)),
+      users.map(_user => isFollowingLoggedUser(_user, authUser.username)),
     );
 
     return shuffleArray(artistsWithAuth, usersWithAuth);
@@ -54,12 +57,14 @@ export const getFollowersService = async (params: IOffset, token: string) => {
   const artists = followers.artistFollowers || [];
   const users = followers.userFollowers || [];
 
-  if (user.username) {
+  if (user) {
+    const authUser = user as IToken;
+
     const artistsWithAuth = await Promise.all(
-      artists.map(artist => isFollowingLoggedUser(artist, user.username)),
+      artists.map(artist => isFollowingLoggedUser(artist, authUser.username)),
     );
     const usersWithAuth = await Promise.all(
-      users.map(_user => isFollowingLoggedUser(_user, user.username)),
+      users.map(_user => isFollowingLoggedUser(_user, authUser.username)),
     );
 
     return shuffleArray(artistsWithAuth, usersWithAuth);
