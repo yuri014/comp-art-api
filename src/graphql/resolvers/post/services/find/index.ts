@@ -3,6 +3,7 @@ import getTimelinePosts from './timeline';
 import getPostLikes from './likes';
 import getProfilePostsService from './profilePosts';
 import getPostService from './post';
+import searchPostService from './search';
 
 const FindPosts = {
   getExplorePostsService,
@@ -10,6 +11,7 @@ const FindPosts = {
   getPostLikes,
   getProfilePostsService,
   getPostService,
+  searchPostService,
 };
 
 export default FindPosts;

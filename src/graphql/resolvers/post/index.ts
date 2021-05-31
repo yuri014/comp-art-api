@@ -1,7 +1,6 @@
 import { IResolvers, PubSub } from 'apollo-server-express';
 import { IPostInput } from '../../../interfaces/Post';
 import checkAuth from '../../../middlewares/checkAuth';
-import Post from '../../../entities/Post';
 import getToken from '../../../auth/getToken';
 import { ID } from '../../../interfaces/General';
 import likePost from './services/update';
@@ -35,17 +34,10 @@ const postResolvers: IResolvers = {
       return FindPost.getPostLikes(postID, offset);
     },
 
-    async searchPost(_, { query, offset }: { query: string; offset: number }) {
-      const posts = await Post.find({ $text: { $search: query } })
-        .skip(offset)
-        .limit(10)
-        .sort({ createdAt: -1 })
-        .populate('artist')
-        .populate('likes.profile')
-        .where('likes')
-        .slice([0, 3]);
+    async searchPost(_, { query, offset }: { query: string; offset: number }, context) {
+      const token = getToken(context);
 
-      return posts;
+      return FindPost.searchPostService(offset, query, token);
     },
   },
   Mutation: {
