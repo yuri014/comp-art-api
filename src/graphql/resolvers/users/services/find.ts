@@ -47,9 +47,10 @@ const loginUser = async (email: string, password: string) => {
   const token = generateToken(user, '7d');
 
   return {
-    ...user._doc,
     id: user._id,
     token,
+    username: user.username,
+    isArtist: user.isArtist,
   };
 };
 

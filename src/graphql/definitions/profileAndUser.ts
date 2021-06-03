@@ -37,9 +37,8 @@ export const userDefinitions = gql`
   type User {
     id: ID!
     username: String!
-    email: String!
-    password: String!
     token: String
+    isArtist: Boolean
     createdAt: String!
     updatedAt: String
   }
