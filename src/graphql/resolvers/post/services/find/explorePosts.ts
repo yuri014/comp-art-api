@@ -23,9 +23,9 @@ const getExplorePostsService = async (offset: number, token: string) => {
       .limit(6)
       .sort({ createdAt: -1 })
       .populate('artist')
-      .populate('likes.profile')
       .where('likes')
-      .slice([0, 3]);
+      .slice([0, 3])
+      .populate('likes.profile');
 
     return posts;
   }
@@ -35,9 +35,9 @@ const getExplorePostsService = async (offset: number, token: string) => {
     .limit(6)
     .sort({ createdAt: -1 })
     .populate('artist')
-    .populate('likes.profile')
     .where('likes')
-    .slice([0, 3]);
+    .slice([0, 3])
+    .populate('likes.profile');
 
   return posts;
 };

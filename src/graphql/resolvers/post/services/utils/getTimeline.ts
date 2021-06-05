@@ -26,9 +26,9 @@ const getTimeline: GetTimeline = async (offset, queries, user) => {
     .limit(3)
     .sort({ createdAt: -1 })
     .populate('artist')
-    .populate('likes.profile')
     .where('likes')
-    .slice([0, 3]);
+    .slice([0, 3])
+    .populate('likes.profile');
 
   const shares = await Share.find(shareQuery)
     .skip(newOffset)
@@ -42,9 +42,9 @@ const getTimeline: GetTimeline = async (offset, queries, user) => {
         path: 'artist',
       },
     })
-    .populate('likes.profile')
     .where('likes')
-    .slice([0, 3]);
+    .slice([0, 3])
+    .populate('likes.profile');
 
   if (user) {
     const likes = getLikes(posts, user.username);

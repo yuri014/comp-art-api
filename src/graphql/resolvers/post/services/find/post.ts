@@ -9,9 +9,9 @@ const getPostService = async (id: string, token: string) => {
   const user = getUser(token);
   const post = await Post.findById(id)
     .populate('artist')
-    .populate('likes.profile')
     .where('likes')
-    .slice([0, 3]);
+    .slice([0, 3])
+    .populate('likes.profile');
 
   if (!post) {
     return {};
