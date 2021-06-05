@@ -1,28 +1,35 @@
+import Post from '../../../../../entities/Post';
 import SavedPost from '../../../../../entities/SavedPost';
+import Share from '../../../../../entities/Share';
 import { IPost } from '../../../../../interfaces/Post';
 import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile';
-import handleInjectionSink from '../../../../../utils/handleInjectionSink';
 import getImageHeight from './getImageHeight';
 
 export type ILikes = Array<{
   profile: IArtistProfile | IUserProfile | string;
 }>;
 
-type GenericPostType = Array<{
-  likes: ILikes;
-}>;
+type IGetIsLiked = {
+  postID: string;
+  profileID: string;
+  isShare: boolean;
+};
 
-export const getUserLikes = (posts: GenericPostType, username: string) => {
-  const likes = posts.map(post => {
-    const postLikes = post.likes;
+const getIsLiked = async ({ isShare, postID, profileID }: IGetIsLiked) => {
+  if (isShare) {
+    const isLiked = await Share.findOne({
+      _id: postID,
+      likes: { $elemMatch: { profile: profileID } },
+    }).lean();
 
-    return postLikes.find(like => {
-      const profile = like.profile as IUserProfile;
-      return profile.owner === username;
-    });
-  });
+    return !!isLiked;
+  }
 
-  return likes;
+  const isLiked = await Post.findOne({
+    _id: postID,
+    likes: { $elemMatch: { profile: profileID } },
+  }).lean();
+  return !!isLiked;
 };
 
 export const handlePostView = async (post: IPost, userID?: string) => {
@@ -40,9 +47,6 @@ export const handlePostView = async (post: IPost, userID?: string) => {
   return {
     isSaved: !!savedPost,
     imageHeight,
-    getIsLiked: (likes: ILikes, index: number) => {
-      const isLiked = !!handleInjectionSink(index, likes);
-      return isLiked;
-    },
+    getIsLiked,
   };
 };
