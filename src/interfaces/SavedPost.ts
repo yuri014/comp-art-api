@@ -6,7 +6,7 @@ import { IToken } from './Token';
 import { IUser } from './User';
 
 interface ISavedPost extends Document {
-  _doc: ISavedPost;
+  _doc?: ISavedPost;
   user: string | IUser;
   posts: Array<{
     post: string | IPost;

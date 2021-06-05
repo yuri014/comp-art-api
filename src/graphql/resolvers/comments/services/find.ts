@@ -4,7 +4,8 @@ const findComments = async (postID: string, offset: number) => {
   const comments = await Comments.findOne({ post: postID })
     .where('comments')
     .slice([offset, offset + 3])
-    .populate('comments.author');
+    .populate('comments.author')
+    .lean();
 
   if (!comments) {
     throw new Error();

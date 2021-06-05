@@ -20,8 +20,8 @@ const createUser = async (input: IRegisterFields) => {
     throw new UserInputError(errors.error.message);
   }
 
-  const usernameExists = await User.findOne({ username: user.username });
-  const emailExists = await User.findOne({ email: user.email });
+  const usernameExists = await User.findOne({ username: user.username }).lean();
+  const emailExists = await User.findOne({ email: user.email }).lean();
 
   if (usernameExists || emailExists) {
     throw new UserInputError(usernameExists ? 'Username já existe' : 'Email já existe');

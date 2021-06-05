@@ -14,7 +14,7 @@ const isFollowingLoggedUser = async (profile: IProfileEntity, username: string) 
     username,
     // @ts-ignore
     $or: [{ artistFollowers: profile._id }, { userFollowers: profile._id }],
-  });
+  }).lean();
 
   if (isFollowing) {
     return { ...profile?._doc, followsYou: true };

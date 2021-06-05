@@ -5,7 +5,7 @@ import getTimeline from '../utils/getTimeline';
 
 const getProfilePostsService = async (token: string, username: string, offset: number) => {
   const user = getUser(token);
-  const profile = await ArtistProfile.findOne({ owner: username });
+  const profile = await ArtistProfile.findOne({ owner: username }).lean();
 
   if (!profile) {
     return [];

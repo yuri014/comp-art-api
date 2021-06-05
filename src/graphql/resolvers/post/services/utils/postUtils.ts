@@ -42,7 +42,7 @@ export const handlePostView = async (post: IPost, userID?: string) => {
         post: post._id,
       },
     },
-  });
+  }).lean();
 
   return {
     isSaved: !!savedPost,

@@ -8,7 +8,7 @@ import findProfile from '../utils/findProfileUtil';
 import shuffleArray from '../utils/shuffleProfilesArray';
 
 export const getProfileService = async (username: string) => {
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username }).lean();
 
   if (!user) {
     throw new UserInputError('Usuário não encontrado');

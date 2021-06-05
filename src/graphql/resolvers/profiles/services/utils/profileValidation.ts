@@ -1,4 +1,5 @@
 import { UserInputError } from 'apollo-server-express';
+import { LeanDocument } from 'mongoose';
 
 import { IProfileEntity } from '../../../../../interfaces/Models';
 import { IToken } from '../../../../../interfaces/Token';
@@ -31,7 +32,7 @@ const profileValidation = async (
     });
   }
 
-  return async (profileExists: IProfileEntity | null) => {
+  return async (profileExists: null | LeanDocument<IProfileEntity>) => {
     if (profileExists) {
       throw new UserInputError('Usuário já é dono de um perfil', {
         errors: 'Usuário já é dono de um perfil',

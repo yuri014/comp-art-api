@@ -88,7 +88,8 @@ const profileResolvers: IResolvers = {
 
       const following = await Following.findOne({ username: user.username })
         .populate('userFollowing', 'owner')
-        .populate('artistFollowing', 'owner');
+        .populate('artistFollowing', 'owner')
+        .lean();
 
       if (!following) {
         throw new Error();

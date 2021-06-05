@@ -11,7 +11,7 @@ export const dislikeCommentService = async (likeID: string, user: IToken) => {
   const hasLike = await Comments.findOne({
     'comments.likes._id': likeID,
     'comments.likes.author': user.username,
-  });
+  }).lean();
 
   if (!hasLike) {
     throw new UserInputError('Não curtiu esse post');

@@ -26,7 +26,7 @@ const usersResolvers: IResolvers = {
     },
 
     async sendForgotPasswordEmail(_, { email }: { email: string }) {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).lean();
 
       if (user) {
         const token = generateToken(user, '10m');
@@ -56,7 +56,7 @@ const usersResolvers: IResolvers = {
     },
 
     async resendConfirmationCode(_, { email }: { email: string }) {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).lean();
 
       if (!user) {
         throw new UserInputError('Não há usuário com esse email');

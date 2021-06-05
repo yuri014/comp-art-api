@@ -13,7 +13,7 @@ const getTimelinePosts = async (offset: number, user: IToken) => {
 
   const loggedProfile = await findProfile(user);
 
-  const following = await Following.findOne({ username: user.username });
+  const following = await Following.findOne({ username: user.username }).lean();
 
   if (!following) {
     throw new UserInputError('Não está seguindo nenhum usuário');

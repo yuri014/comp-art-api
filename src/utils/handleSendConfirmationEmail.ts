@@ -1,10 +1,12 @@
+import { LeanDocument } from 'mongoose';
+
 import { IUser } from '../interfaces/User';
 import createEmail from '../emails/createEmail';
 import sendEmail from '../emails/sendEmail';
 import confirmationEmailTemplate from '../emails/templates/confirmationEmail';
 import ConfirmationCode from '../entities/ConfirmationCode';
 
-const handleSendConfirmationEmail = async (user: IUser) => {
+const handleSendConfirmationEmail = async (user: IUser | LeanDocument<IUser>) => {
   const confirmationCode = await ConfirmationCode.findOne({ user: user?._id });
 
   const randomCode = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);

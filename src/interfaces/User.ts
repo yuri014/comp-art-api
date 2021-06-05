@@ -8,8 +8,8 @@ interface User {
 }
 
 export interface IUser extends Document, User {
-  _doc: IUser;
-  _id?: string;
+  _doc?: IUser;
+  _id: string;
   confirmed: boolean;
   createdAt: Date;
   updatedAt: Date;
