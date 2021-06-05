@@ -6,6 +6,7 @@ import { IPost } from '../../../../../interfaces/Post';
 import { IShare } from '../../../../../interfaces/Share';
 import { IToken } from '../../../../../interfaces/Token';
 import shuffleArray from '../../../profiles/services/utils/shuffleProfilesArray';
+import getImageHeight from './getImageHeight';
 import { getUserLikes, handlePostView, ILikes } from './postUtils';
 
 type GetTimeline = (
@@ -48,32 +49,43 @@ const getTimeline: GetTimeline = async (offset, queries, user) => {
 
   if (user) {
     const likes = getUserLikes(posts, user.username);
-
     const shareLikes = getUserLikes(shares, user.username);
 
-    if (likes.length > 0 || shareLikes.length > 0) {
-      const sharesView = shares.map(async (share, index) => {
-        const sharePost = share.post as IPost;
-        const { imageHeight, isSaved, getIsLiked } = await handlePostView(sharePost, user.id);
+    const sharesView = shares.map(async (share, index) => {
+      const sharePost = share.post as IPost;
+      const { imageHeight, isSaved, getIsLiked } = await handlePostView(sharePost, user.id);
 
-        const isLiked = getIsLiked(shareLikes as ILikes, index);
+      const isLiked = getIsLiked(shareLikes as ILikes, index);
 
-        return { ...share._doc, isLiked, imageHeight, isSaved };
-      });
+      return { ...share._doc, isLiked, imageHeight, isSaved };
+    });
 
-      const postsView = posts.map(async (post, index) => {
-        const { imageHeight, isSaved, getIsLiked } = await handlePostView(post, user.id);
-        const isLiked = getIsLiked(likes as ILikes, index);
+    const postsView = posts.map(async (post, index) => {
+      const { imageHeight, isSaved, getIsLiked } = await handlePostView(post, user.id);
+      const isLiked = getIsLiked(likes as ILikes, index);
 
-        return { ...post._doc, isLiked, imageHeight, isSaved };
-      });
+      return { ...post._doc, isLiked, imageHeight, isSaved };
+    });
 
-      const timeline = shuffleArray(postsView, sharesView);
-      return timeline;
-    }
+    const timeline = shuffleArray(postsView, sharesView);
+    return timeline;
   }
 
-  return shuffleArray(posts, shares);
+  const sharesView = shares.map(async share => {
+    const sharePost = share.post as IPost;
+    const imageHeight = getImageHeight(sharePost);
+
+    return { ...share._doc, imageHeight };
+  });
+
+  const postsView = posts.map(async post => {
+    const imageHeight = getImageHeight(post);
+
+    return { ...post._doc, imageHeight };
+  });
+
+  const timeline = shuffleArray(postsView, sharesView);
+  return timeline;
 };
 
 export default getTimeline;
