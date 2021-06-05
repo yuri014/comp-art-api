@@ -1,7 +1,7 @@
 import getUser from '../../../../../auth/getUser';
 import Post from '../../../../../entities/Post';
-import { IProfileEntity } from '../../../../../interfaces/Models';
 import { IToken } from '../../../../../interfaces/Token';
+import findProfile from '../../../profiles/services/utils/findProfileUtil';
 import getImageHeight from '../utils/getImageHeight';
 import { handlePostView } from '../utils/postUtils';
 
@@ -20,13 +20,10 @@ const getPostService = async (id: string, token: string) => {
   if (user) {
     const authUser = user as IToken;
 
-    const isLiked = post.likes.find(like => {
-      const profile = like.profile as IProfileEntity;
+    const profile = await findProfile(authUser);
 
-      return profile.owner === authUser.username;
-    });
-
-    const { isSaved, imageHeight } = await handlePostView(post, authUser.id);
+    const { isSaved, imageHeight, getIsLiked } = await handlePostView(post, authUser.id);
+    const isLiked = await getIsLiked({ isShare: false, postID: id, profileID: profile._doc?._id });
 
     return { ...post._doc, isLiked: !!isLiked, isSaved, imageHeight };
   }

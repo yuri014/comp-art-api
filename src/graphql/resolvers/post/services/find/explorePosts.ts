@@ -2,6 +2,8 @@ import getUser from '../../../../../auth/getUser';
 import Post from '../../../../../entities/Post';
 import { IToken } from '../../../../../interfaces/Token';
 import findProfile from '../../../profiles/services/utils/findProfileUtil';
+import getImageHeight from '../utils/getImageHeight';
+import { handlePostView } from '../utils/postUtils';
 
 const getExplorePostsService = async (offset: number, token: string) => {
   const user = getUser(token) as IToken;
@@ -27,7 +29,13 @@ const getExplorePostsService = async (offset: number, token: string) => {
       .slice([0, 3])
       .populate('likes.profile');
 
-    return posts;
+    const postView = posts.map(async post => {
+      const { imageHeight, isSaved } = await handlePostView(post, user.id);
+
+      return { ...post._doc, imageHeight, isSaved };
+    });
+
+    return postView;
   }
 
   const posts = await Post.find()
@@ -39,7 +47,13 @@ const getExplorePostsService = async (offset: number, token: string) => {
     .slice([0, 3])
     .populate('likes.profile');
 
-  return posts;
+  const postView = posts.map(post => {
+    const imageHeight = getImageHeight(post);
+
+    return { ...post._doc, imageHeight };
+  });
+
+  return postView;
 };
 
 export default getExplorePostsService;
