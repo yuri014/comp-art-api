@@ -12,7 +12,7 @@ type GenericPostType = Array<{
   likes: ILikes;
 }>;
 
-export const getLikes = (posts: GenericPostType, username: string) => {
+export const getUserLikes = (posts: GenericPostType, username: string) => {
   const likes = posts.map(post => {
     const postLikes = post.likes;
 
