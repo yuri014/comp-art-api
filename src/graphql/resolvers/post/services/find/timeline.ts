@@ -41,6 +41,7 @@ const getTimelinePosts = async (offset: number, user: IToken) => {
         },
       },
     },
+    loggedProfile._doc?._id,
     user,
   );
 

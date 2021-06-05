@@ -1,5 +1,6 @@
 import getUser from '../../../../../auth/getUser';
 import { IToken } from '../../../../../interfaces/Token';
+import findProfile from '../../../profiles/services/utils/findProfileUtil';
 import getTimeline from '../utils/getTimeline';
 
 const searchPostService = async (offset: number, query: string, token: string) => {
@@ -7,6 +8,7 @@ const searchPostService = async (offset: number, query: string, token: string) =
 
   if (user) {
     const authUser = user as IToken;
+    const loggedProfile = await findProfile(authUser);
 
     const timeline = await getTimeline(
       offset,
@@ -14,6 +16,7 @@ const searchPostService = async (offset: number, query: string, token: string) =
         postQuery: { $text: { $search: query } },
         shareQuery: { $text: { $search: query } },
       },
+      loggedProfile._doc?._id,
       authUser,
     );
 
