@@ -1,10 +1,10 @@
 import { IResolvers } from 'apollo-server-express';
-import SavedPost from '../../../entities/SavedPost';
 
 import checkAuth from '../../../middlewares/checkAuth';
 import savedPostCompose from './services/composers/composeSavedPostServices';
 import createSavedPost from './services/create';
 import deleteSavedPostService from './services/delete';
+import getSavedPostsService from './services/find';
 
 type PostID = { postID: string };
 
@@ -13,33 +13,7 @@ const savedPostsResolvers: IResolvers = {
     async getSavedPosts(_, { offset }: { offset: number }, context) {
       const user = checkAuth(context);
 
-      const savedPosts = await SavedPost.findOne({ user: user.id })
-        .skip(offset)
-        .limit(10)
-        .populate('posts.post')
-        .populate({
-          path: 'posts.post',
-          populate: {
-            path: 'artist',
-          },
-        })
-        .populate({
-          path: 'posts.post',
-          populate: {
-            path: 'profile',
-          },
-        })
-        .populate({
-          path: 'posts.post',
-          populate: {
-            path: 'likes.profile',
-          },
-        })
-        .where('posts.post.likes')
-        .slice([0, 1]);
-
-      const posts = savedPosts?.posts.map(({ post }) => post);
-      return posts;
+      return getSavedPostsService(user, offset);
     },
   },
   Mutation: {
