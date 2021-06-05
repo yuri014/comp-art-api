@@ -6,7 +6,7 @@ import { IPost } from '../../../../../interfaces/Post';
 import { IShare } from '../../../../../interfaces/Share';
 import { IToken } from '../../../../../interfaces/Token';
 import shuffleArray from '../../../profiles/services/utils/shuffleProfilesArray';
-import { getLikes, handlePostView, ILikes } from './postUtils';
+import { getUserLikes, handlePostView, ILikes } from './postUtils';
 
 type GetTimeline = (
   offset: number,
@@ -47,9 +47,9 @@ const getTimeline: GetTimeline = async (offset, queries, user) => {
     .populate('likes.profile');
 
   if (user) {
-    const likes = getLikes(posts, user.username);
+    const likes = getUserLikes(posts, user.username);
 
-    const shareLikes = getLikes(shares, user.username);
+    const shareLikes = getUserLikes(shares, user.username);
 
     if (likes.length > 0 || shareLikes.length > 0) {
       const sharesView = shares.map(async (share, index) => {
