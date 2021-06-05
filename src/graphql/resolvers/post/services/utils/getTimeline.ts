@@ -7,7 +7,7 @@ import { IShare } from '../../../../../interfaces/Share';
 import { IToken } from '../../../../../interfaces/Token';
 import shuffleArray from '../../../profiles/services/utils/shuffleProfilesArray';
 import getImageHeight from './getImageHeight';
-import { getUserLikes, handlePostView, ILikes } from './postUtils';
+import { handlePostView } from './postUtils';
 
 type GetTimeline = (
   offset: number,
@@ -15,10 +15,11 @@ type GetTimeline = (
     postQuery: FilterQuery<IPost>;
     shareQuery: FilterQuery<IShare>;
   },
+  profileID?: string,
   user?: IToken,
 ) => Promise<unknown[]>;
 
-const getTimeline: GetTimeline = async (offset, queries, user) => {
+const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
   const newOffset = offset > 0 ? offset / 2 : 0;
   const { postQuery, shareQuery } = queries;
 
@@ -47,22 +48,19 @@ const getTimeline: GetTimeline = async (offset, queries, user) => {
     .slice([0, 3])
     .populate('likes.profile');
 
-  if (user) {
-    const likes = getUserLikes(posts, user.username);
-    const shareLikes = getUserLikes(shares, user.username);
-
-    const sharesView = shares.map(async (share, index) => {
+  if (user && profileID) {
+    const sharesView = shares.map(async share => {
       const sharePost = share.post as IPost;
       const { imageHeight, isSaved, getIsLiked } = await handlePostView(sharePost, user.id);
 
-      const isLiked = getIsLiked(shareLikes as ILikes, index);
+      const isLiked = await getIsLiked({ isShare: true, postID: share._id, profileID });
 
       return { ...share._doc, isLiked, imageHeight, isSaved };
     });
 
-    const postsView = posts.map(async (post, index) => {
+    const postsView = posts.map(async post => {
       const { imageHeight, isSaved, getIsLiked } = await handlePostView(post, user.id);
-      const isLiked = getIsLiked(likes as ILikes, index);
+      const isLiked = await getIsLiked({ isShare: false, postID: post._id, profileID });
 
       return { ...post._doc, isLiked, imageHeight, isSaved };
     });
