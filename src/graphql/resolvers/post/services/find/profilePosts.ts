@@ -18,13 +18,13 @@ const getProfilePostsService = async (token: string, username: string, offset: n
       offset,
       {
         postQuery: {
-          artist: profile._doc?._id,
+          artist: profile._id,
         },
         shareQuery: {
-          profile: profile._doc?._id,
+          profile: profile._id,
         },
       },
-      profile._doc?._id,
+      profile._id,
       authUser,
     );
 
@@ -33,10 +33,10 @@ const getProfilePostsService = async (token: string, username: string, offset: n
 
   const timeline = await getTimeline(offset, {
     postQuery: {
-      artist: profile._doc?._id,
+      artist: profile?._id,
     },
     shareQuery: {
-      profile: profile._doc?._id,
+      profile: profile?._id,
     },
   });
 
