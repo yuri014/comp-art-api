@@ -9,7 +9,7 @@ interface ISavedPost extends Document {
   _doc?: ISavedPost;
   user: string | IUser;
   posts: Array<{
-    post: string | IPost;
+    post: string | IPost | IShare;
     onModel: 'Share' | 'Post';
   }>;
 }
