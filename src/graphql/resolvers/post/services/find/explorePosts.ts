@@ -29,11 +29,13 @@ const getExplorePostsService = async (offset: number, token: string) => {
       .slice([0, 3])
       .populate('likes.profile');
 
-    const postView = posts.map(async post => {
-      const { imageHeight, isSaved } = await handlePostView(post, user.id);
+    const postView = await Promise.all(
+      posts.map(async post => {
+        const { imageHeight, isSaved } = await handlePostView(post, user.id);
 
-      return { ...post._doc, imageHeight, isSaved };
-    });
+        return { ...post._doc, imageHeight, isSaved };
+      }),
+    );
 
     return postView;
   }

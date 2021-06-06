@@ -49,38 +49,46 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
     .populate('likes.profile');
 
   if (user && profileID) {
-    const sharesView = shares.map(async share => {
-      const sharePost = share.post as IPost;
-      const { imageHeight, isSaved, getIsLiked } = await handlePostView(sharePost, user.id);
+    const sharesView = await Promise.all(
+      shares.map(async share => {
+        const sharePost = share.post as IPost;
+        const { imageHeight, isSaved, getIsLiked } = await handlePostView(sharePost, user.id);
 
-      const isLiked = await getIsLiked({ isShare: true, postID: share._id, profileID });
+        const isLiked = await getIsLiked({ isShare: true, postID: share._id, profileID });
 
-      return { ...share._doc, isLiked, imageHeight, isSaved };
-    });
+        return { ...share._doc, isLiked, imageHeight, isSaved };
+      }),
+    );
 
-    const postsView = posts.map(async post => {
-      const { imageHeight, isSaved, getIsLiked } = await handlePostView(post, user.id);
-      const isLiked = await getIsLiked({ isShare: false, postID: post._id, profileID });
+    const postsView = await Promise.all(
+      posts.map(async post => {
+        const { imageHeight, isSaved, getIsLiked } = await handlePostView(post, user.id);
+        const isLiked = await getIsLiked({ isShare: false, postID: post._id, profileID });
 
-      return { ...post._doc, isLiked, imageHeight, isSaved };
-    });
+        return { ...post._doc, isLiked, imageHeight, isSaved };
+      }),
+    );
 
     const timeline = shuffleArray(postsView, sharesView);
     return timeline;
   }
 
-  const sharesView = shares.map(async share => {
-    const sharePost = share.post as IPost;
-    const imageHeight = getImageHeight(sharePost);
+  const sharesView = await Promise.all(
+    shares.map(async share => {
+      const sharePost = share.post as IPost;
+      const imageHeight = getImageHeight(sharePost);
 
-    return { ...share._doc, imageHeight };
-  });
+      return { ...share._doc, imageHeight };
+    }),
+  );
 
-  const postsView = posts.map(async post => {
-    const imageHeight = getImageHeight(post);
+  const postsView = await Promise.all(
+    posts.map(async post => {
+      const imageHeight = getImageHeight(post);
 
-    return { ...post._doc, imageHeight };
-  });
+      return { ...post._doc, imageHeight };
+    }),
+  );
 
   const timeline = shuffleArray(postsView, sharesView);
   return timeline;
