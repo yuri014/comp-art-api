@@ -15,7 +15,7 @@ type IGetIsLiked = {
   isShare: boolean;
 };
 
-const getIsLiked = async ({ isShare, postID, profileID }: IGetIsLiked) => {
+export const getIsLiked = async ({ isShare, postID, profileID }: IGetIsLiked) => {
   if (isShare) {
     const isLiked = await Share.findOne({
       _id: postID,
