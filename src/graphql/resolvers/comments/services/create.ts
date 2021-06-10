@@ -61,6 +61,8 @@ export const createComment = async (id: string, comment: string, user: IToken) =
     },
   );
 
+  await post?.updateOne({ $inc: { commentsCount: 1 } });
+
   if (post?._doc?._id) {
     const { commentXP } = xpValues;
 
