@@ -17,7 +17,10 @@ const updateProfileService = async (
     throw new UserInputError('Não há perfil');
   }
 
-  const { avatar, bio, coverImage, name, hashtags, links } = data;
+  const { avatar: avatarPromise, bio, coverImage: coverImagePromise, name, hashtags, links } = data;
+
+  const avatar = await avatarPromise;
+  const coverImage = await coverImagePromise;
 
   if (avatar && oldProfile.avatar !== '') {
     await removeFile(oldProfile.avatar);
@@ -27,7 +30,10 @@ const updateProfileService = async (
     await removeFile(oldProfile.coverImage);
   }
 
-  const { getAvatarUrl, getCoverImageUrl } = await uploadProfileFiles(avatar, coverImage);
+  const { getAvatarUrl, getCoverImageUrl } = await uploadProfileFiles(
+    avatarPromise,
+    coverImagePromise,
+  );
 
   const avatarUrl = avatar ? await getAvatarUrl() : oldProfile.avatar;
   const coverImageUrl = coverImage ? await getCoverImageUrl() : oldProfile.coverImage;
