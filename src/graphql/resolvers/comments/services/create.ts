@@ -66,14 +66,31 @@ export const createComment = async (id: string, comment: string, user: IToken) =
   if (post?._doc?._id) {
     const { commentXP } = xpValues;
 
-    const updatedProfile = await profile.updateOne(
-      {
-        $inc: {
-          xp: commentXP,
+    const updateProfile = () => {
+      if (user.isArtist) {
+        return ArtistProfile.findByIdAndUpdate(
+          profile._doc?._id,
+          {
+            $inc: {
+              xp: commentXP,
+            },
+          },
+          { useFindAndModify: false, new: true },
+        );
+      }
+
+      return UserProfile.findByIdAndUpdate(
+        profile._doc?._id,
+        {
+          $inc: {
+            xp: commentXP,
+          },
         },
-      },
-      { useFindAndModify: false, new: true },
-    );
+        { useFindAndModify: false, new: true },
+      );
+    };
+
+    const updatedProfile = await updateProfile();
 
     return updatedProfile;
   }
@@ -102,10 +119,10 @@ export const createLikeComment = async (id: string, user: IToken) => {
     onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',
   };
 
-  const comment = await Comments.updateOne(
+  const comment = await Comments.findOneAndUpdate(
     query,
     { $push: { 'comments.$.likes': update } },
-    { useFindAndModify: false },
+    { useFindAndModify: false, new: true },
   );
 
   if (!comment) {

@@ -8,6 +8,7 @@ import levelUp from '../../../../functions/levelUp';
 import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IShareInput } from '../../../../interfaces/Share';
 import { IToken } from '../../../../interfaces/Token';
+import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
 import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';
 import createNotification from '../../notifications/services/create';
@@ -64,11 +65,14 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
   );
 
   if (profileDoc?._id.equals(postOwner._id)) {
-    await profile.updateOne({
-      $inc: {
-        postCount: 1,
+    await profile.updateOne(
+      {
+        $inc: {
+          postCount: 1,
+        },
       },
-    });
+      { useFindAndModify: false },
+    );
 
     return false;
   }
@@ -79,29 +83,40 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
     const artist = profile as IArtistProfile;
 
     if (artist.postsRemainingToUnblock === 1) {
-      await profile.updateOne({
-        isBlockedToPost: false,
-        $inc: {
-          postsRemainingToUnblock: -1,
+      await profile.updateOne(
+        {
+          isBlockedToPost: false,
+          $inc: {
+            postsRemainingToUnblock: -1,
+          },
         },
-      });
+        { useFindAndModify: false },
+      );
     } else if (artist.postsRemainingToUnblock > 1) {
-      await profile.updateOne({
-        $inc: {
-          postsRemainingToUnblock: -1,
+      await profile.updateOne(
+        {
+          $inc: {
+            postsRemainingToUnblock: -1,
+          },
         },
-      });
+        { useFindAndModify: false },
+      );
     }
 
-    const updatedArtist = await artist.updateOne(
+    const updatedArtist = await ArtistProfile.findByIdAndUpdate(
+      profile._doc?._id,
       {
         $inc: {
           postCount: 1,
           xp: shareXP,
         },
       },
-      { new: true, useFindAndModify: false },
+      genericUpdateOptions,
     );
+
+    if (!updatedArtist) {
+      throw new Error('Não encontrou perfil ao compartilhar');
+    }
 
     await createNotification(
       {
@@ -109,7 +124,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
         link: `/share/${newShare._id}`,
         from: user.username,
         username: postOwner.owner,
-        avatar: updatedArtist.avatar,
+        avatar: profile._doc?.avatar as string,
       },
       pubsub,
     );
@@ -117,15 +132,20 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
     return levelUp(updatedArtist);
   }
 
-  const updatedProfile = await profile.updateOne(
+  const updatedProfile = await UserProfile.findByIdAndUpdate(
+    profile._doc?._id,
     {
       $inc: {
         sharedPostCount: 1,
         xp: shareXP,
       },
     },
-    { new: true },
+    genericUpdateOptions,
   );
+
+  if (!updatedProfile) {
+    throw new Error('Não encontrou perfil ao compartilhar');
+  }
 
   await createNotification(
     {
@@ -133,7 +153,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
       link: `/share/${newShare._id}`,
       from: user.username,
       username: postOwner.owner,
-      avatar: updatedProfile.avatar,
+      avatar: profile._doc?.avatar as string,
     },
     pubsub,
   );
