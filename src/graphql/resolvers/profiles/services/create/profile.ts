@@ -10,7 +10,10 @@ const createProfile = async (
   Profile: Model<IArtistProfile> | Model<IUserProfile>,
   data: ICreateProfile,
 ) => {
-  const { avatar, bio, coverImage, name, hashtags, links } = data;
+  const { avatar: avatarPromise, bio, coverImage: coverImagePromise, name, hashtags, links } = data;
+
+  const avatar = await avatarPromise;
+  const coverImage = await coverImagePromise;
 
   const validation = await profileValidation(user, name, bio, hashtags);
 

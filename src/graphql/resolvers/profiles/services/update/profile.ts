@@ -30,10 +30,7 @@ const updateProfileService = async (
     await removeFile(oldProfile.coverImage);
   }
 
-  const { getAvatarUrl, getCoverImageUrl } = await uploadProfileFiles(
-    avatarPromise,
-    coverImagePromise,
-  );
+  const { getAvatarUrl, getCoverImageUrl } = await uploadProfileFiles(avatar, coverImage);
 
   const avatarUrl = avatar ? await getAvatarUrl() : oldProfile.avatar;
   const coverImageUrl = coverImage ? await getCoverImageUrl() : oldProfile.coverImage;
