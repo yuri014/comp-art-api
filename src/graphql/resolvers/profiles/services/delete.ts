@@ -42,7 +42,7 @@ export const unfollower = async (
   }
 
   // @ts-ignore
-  if (userFollower.userFollowers.length) {
+  if (userFollower.userFollowers.length === 0) {
     throw new UserInputError('Não é seguido');
   }
 
@@ -105,8 +105,8 @@ export const unfollowing = async (
   }
 
   // @ts-ignore
-  if (userFollowing.userFollowing.length) {
-    throw new UserInputError('Não é seguido');
+  if (userFollowing.userFollowing.length === 0) {
+    throw new UserInputError('Não é seguido 300');
   }
 
   await UserProfile.findOneAndUpdate(
