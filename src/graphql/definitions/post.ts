@@ -44,7 +44,6 @@ export const postDefinitions = gql`
     post: Post!
     likes: [PostLikes]
     likesCount: Int!
-    sharedCount: Int!
     commentsCount: Int!
     profile: Profile!
     createdAt: String!
