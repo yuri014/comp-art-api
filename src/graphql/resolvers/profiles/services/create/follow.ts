@@ -31,7 +31,7 @@ const followService = async (userWhoFollows: IToken, username: string, pubsub: P
 
   await createNotification(
     {
-      avatar: authProfile.avatar,
+      avatar: authProfile._doc.avatar,
       body: 'começou a te seguir!',
       from: userWhoFollows.username,
       link: `/profile/${userWhoFollows.username}`,
