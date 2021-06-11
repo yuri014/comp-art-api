@@ -32,7 +32,7 @@ const createNewPost = async (post: IPostInput, user: IToken) => {
     throw new UserInputError(errors.error.message);
   }
 
-  if (post.body) {
+  if (await post.body) {
     await createMediaPost(post, profileDoc._id);
   } else {
     await createTextPost(profileDoc._id, post.description);
