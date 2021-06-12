@@ -6,29 +6,31 @@ import UserProfile from '../../../../entities/UserProfile';
 import { IToken } from '../../../../interfaces/Token';
 import xpValues from '../../../../utils/xpValues';
 import levelDown from '../../../../functions/levelDown';
+import findProfile from '../../profiles/services/utils/findProfileUtil';
 
-export const dislikeCommentService = async (likeID: string, user: IToken) => {
-  const hasLike = await Comments.findOne({
-    'comments.likes._id': likeID,
-    'comments.likes.author': user.username,
-  }).lean();
+export const dislikeCommentService = async (idComment: string, user: IToken) => {
+  const profile = await findProfile(user);
+
+  const query = {
+    comments: {
+      $elemMatch: { _id: idComment, likes: { $elemMatch: { author: profile._doc?._id } } },
+    },
+  };
+
+  const hasLike = await Comments.findOne(query).lean();
 
   if (!hasLike) {
-    throw new UserInputError('Não curtiu esse post');
+    throw new UserInputError('Não curtiu esse comentário');
   }
 
   try {
     await Comments.updateOne(
-      {
-        'comments.likes._id': likeID,
-        'comments.likes.author': user.username,
-      },
+      query,
       {
         $pull: {
           // @ts-ignore
           'comments.$.likes': {
-            _id: likeID,
-            author: user.username,
+            author: profile._doc?._id,
           },
         },
       },
@@ -52,7 +54,7 @@ export const deleteCommentService = async (commentId: string, user: IToken) => {
 
   const comment = await Comments.findOne({
     'comments._id': commentId,
-    'comments.author': profile._id,
+    'comments.author': profile._doc?._id,
   });
 
   if (!comment) {
@@ -64,7 +66,7 @@ export const deleteCommentService = async (commentId: string, user: IToken) => {
       $pull: {
         comments: {
           _id: commentId,
-          author: profile._id,
+          author: profile._doc?._id,
         },
       },
     },
