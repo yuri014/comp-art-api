@@ -93,6 +93,10 @@ export const createComment = async (id: string, comment: string, user: IToken) =
 
     const updatedProfile = await updateProfile();
 
+    if (!updatedProfile) {
+      throw new Error();
+    }
+
     return updatedProfile;
   }
 

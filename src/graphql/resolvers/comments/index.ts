@@ -19,7 +19,11 @@ const commentsResolvers: IResolvers = {
 
       const updatedProfile = await createComment(postID, comment, user);
 
-      return levelUp(updatedProfile);
+      if (typeof updatedProfile !== 'boolean') {
+        return levelUp(updatedProfile);
+      }
+
+      return false;
     },
 
     async deleteComment(_, { id }: ID, context) {
