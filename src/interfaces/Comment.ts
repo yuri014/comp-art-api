@@ -8,9 +8,9 @@ export interface Comment extends Document {
   _doc?: Comment;
   post: string | IPost;
   onModel: 'Share' | 'Post';
-  likesCount: number;
   comments: Array<{
     author: string | IProfileEntity;
+    likesCount: number;
     onModel: IOnModel;
     body: string;
     createdAt: string;
