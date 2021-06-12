@@ -5,7 +5,7 @@ import { RateLimiterMongo } from 'rate-limiter-flexible';
 const rateLimiter = new RateLimiterMongo({
   storeClient: mongoose.connection,
   keyPrefix: 'limiter-middleware',
-  points: 10,
+  points: 20,
   duration: 1,
 });
 
