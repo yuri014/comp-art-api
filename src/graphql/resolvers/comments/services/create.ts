@@ -8,6 +8,7 @@ import UserProfile from '../../../../entities/UserProfile';
 import { IToken } from '../../../../interfaces/Token';
 import xpValues from '../../../../utils/xpValues';
 import commentValidationSchema from '../../../../validators/commentSchema';
+import findProfile from '../../profiles/services/utils/findProfileUtil';
 
 export const createComment = async (id: string, comment: string, user: IToken) => {
   const post = await Post.findById(id);
@@ -100,22 +101,23 @@ export const createComment = async (id: string, comment: string, user: IToken) =
 
 export const createLikeComment = async (id: string, user: IToken) => {
   const query = {
-    'comments._id': id,
+    comments: { $elemMatch: { _id: id } },
   };
 
+  const profile = await findProfile(user);
+
   const hasLike = await Comments.findOne({
-    'comments._id': id,
-    'comments.likes.author': user.username,
-  })
-    .select({ comments: { $elemMatch: { _id: id, 'likes.author': user.username } } })
-    .lean();
+    comments: {
+      $elemMatch: { _id: id, likes: { $elemMatch: { author: profile._doc?._id } } },
+    },
+  }).lean();
 
   if (hasLike && hasLike.comments.length > 0) {
     throw new UserInputError('Já curtiu esse comentário');
   }
 
   const update = {
-    author: user.username,
+    author: profile._doc?._id,
     onModel: user.isArtist ? 'ArtistProfile' : 'UserProfile',
   };
 
