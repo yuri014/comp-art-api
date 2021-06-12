@@ -8,9 +8,11 @@ const interactionsDefinitions = gql`
   }
 
   type Comments {
+    _id: ID!
     author: Profile!
     body: String!
     createdAt: String!
+    likesCount: Int
   }
 
   type Comment {
