@@ -33,6 +33,7 @@ export const dislikeCommentService = async (idComment: string, user: IToken) => 
             author: profile._doc?._id,
           },
         },
+        $inc: { 'comments.$.likesCount': -1 },
       },
       { useFindAndModify: false },
     );

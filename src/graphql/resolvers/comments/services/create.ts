@@ -127,8 +127,8 @@ export const createLikeComment = async (id: string, user: IToken) => {
 
   const comment = await Comments.findOneAndUpdate(
     query,
-    { $push: { 'comments.$.likes': update } },
-    { useFindAndModify: false, new: true },
+    { $push: { 'comments.$.likes': update }, $inc: { 'comments.$.likesCount': 1 } },
+    { useFindAndModify: false, new: true, upsert: true },
   );
 
   if (!comment) {
