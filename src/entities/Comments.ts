@@ -5,6 +5,7 @@ import { Comment } from '../interfaces/Comment';
 const CommentSchema = new Schema({
   post: { type: Schema.Types.ObjectId, refPath: 'onModel', required: true },
   onModel: { type: String, required: true, enum: ['Post', 'Share'] },
+  likesCount: Number,
   comments: [
     {
       author: { type: Schema.Types.ObjectId, required: true, refPath: 'comments.onModel' },
