@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { ApolloServer, PubSub } from 'apollo-server-express';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { createServer } from 'http';
+import cors from 'cors';
 
 import typeDefs from './graphql/definitions';
 import resolvers from './graphql/resolvers';
@@ -32,6 +33,7 @@ export const server = new ApolloServer({
 });
 
 const app = express();
+app.use(cors({ origin: process.env.FRONT_END_HOST }));
 app.use(rateLimiterMiddleware);
 
 app.use(express.static('public'));
