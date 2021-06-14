@@ -4,7 +4,7 @@ import Following from '../../../../../entities/Following';
 import { IFollower, IFollowing } from '../../../../../interfaces/Follow';
 import { IToken } from '../../../../../interfaces/Token';
 import { isAlreadyFollowing } from '../../../../../middlewares/isAlreadyFollow';
-import followersWithAuth from '../utils/findFollowersWithAtuht';
+import followersWithAuth from '../utils/findFollowersWithAuth';
 import findFollows, { IOffset } from '../utils/findFollows';
 import shuffleArray from '../utils/shuffleProfilesArray';
 

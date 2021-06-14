@@ -3,7 +3,7 @@ import getUser from '../../../../auth/getUser';
 import Share from '../../../../entities/Share';
 import { IProfileEntity } from '../../../../interfaces/Models';
 import { IToken } from '../../../../interfaces/Token';
-import { isFollowingLoggedUser } from '../../profiles/services/utils/findFollowersWithAtuht';
+import { isFollowingLoggedUser } from '../../profiles/services/utils/findFollowersWithAuth';
 
 interface FindWhoSharesPost {
   token: string;

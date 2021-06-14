@@ -5,7 +5,7 @@ import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile'
 import { IToken } from '../../../../../interfaces/Token';
 import shuffleArray from './shuffleProfilesArray';
 
-const isFollowingLoggedUser = async (profile: IProfileEntity, username: string) => {
+export const isFollowingLoggedUser = async (profile: IProfileEntity, username: string) => {
   const followsYou = await Follower.findOne({
     username,
     $or: [{ artistFollowers: profile._id }, { userFollowers: profile._id }],
