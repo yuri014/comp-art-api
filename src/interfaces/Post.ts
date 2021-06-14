@@ -32,3 +32,9 @@ export interface IPostInput extends Post {
   body: Promise<IUpload>;
   thumbnail?: Promise<IUpload>;
 }
+
+export interface IFindPostInteractions {
+  token: string;
+  postID: string;
+  offset: number;
+}

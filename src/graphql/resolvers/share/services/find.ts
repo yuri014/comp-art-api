@@ -2,16 +2,11 @@ import { UserInputError } from 'apollo-server-express';
 import getUser from '../../../../auth/getUser';
 import Share from '../../../../entities/Share';
 import { IProfileEntity } from '../../../../interfaces/Models';
+import { IFindPostInteractions } from '../../../../interfaces/Post';
 import { IToken } from '../../../../interfaces/Token';
 import { isFollowingLoggedUser } from '../../profiles/services/utils/findFollowersWithAuth';
 
-interface FindWhoSharesPost {
-  token: string;
-  postID: string;
-  offset: number;
-}
-
-const findWhoSharesPost = async ({ token, postID, offset }: FindWhoSharesPost) => {
+const findWhoSharesPost = async ({ token, postID, offset }: IFindPostInteractions) => {
   const shares = await Share.find({ post: postID }).skip(offset).limit(6).populate('profile');
 
   if (!shares) {
