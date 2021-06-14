@@ -30,6 +30,8 @@ export const profileDefinitions = gql`
     postCount: Int
     phone: String
     createdAt: String
+    isFollowing: Boolean
+    followsYou: Boolean
   }
 `;
 

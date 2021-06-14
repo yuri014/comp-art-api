@@ -3,10 +3,6 @@ import { gql } from 'apollo-server-express';
 const queries = gql`
   scalar Upload
 
-  extend type Profile {
-    followsYou: Boolean
-  }
-
   union Timeline = Post | Share
 
   type Query {
