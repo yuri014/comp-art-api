@@ -30,8 +30,10 @@ const postResolvers: IResolvers = {
 
       return FindPost.getExplorePostsService(offset, token);
     },
-    async getLikes(_, { postID, offset }: { postID: string; offset: number }) {
-      return FindPost.getPostLikes(postID, offset);
+    async getLikes(_, { postID, offset }: { postID: string; offset: number }, context) {
+      const token = getToken(context);
+
+      return FindPost.getPostLikes({ postID, offset, token });
     },
 
     async searchPost(_, { query, offset }: { query: string; offset: number }, context) {
