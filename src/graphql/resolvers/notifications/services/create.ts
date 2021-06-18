@@ -34,7 +34,7 @@ const createNotification = async (options: NotificationOptions, pubsub: PubSub) 
               avatar: options.avatar,
             },
           ],
-          $slice: 30,
+          $slice: 30, // Usando isso porque sou pobre.
         },
       },
     },
