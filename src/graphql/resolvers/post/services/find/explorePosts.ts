@@ -17,9 +17,7 @@ const getExplorePostsService = async (offset: number, token: string) => {
       artist: {
         $ne: profileDoc?._id,
       },
-      likes: {
-        $ne: profileDoc?._id,
-      },
+      'likes.profile': { $ne: profileDoc?._id },
     })
       .skip(offset)
       .limit(6)
