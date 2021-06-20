@@ -2,16 +2,24 @@ import { UserInputError } from 'apollo-server-express';
 import getUser from '../../../../../auth/getUser';
 
 import Post from '../../../../../entities/Post';
+import Share from '../../../../../entities/Share';
 import { IProfileEntity } from '../../../../../interfaces/Models';
 import { IFindPostInteractions } from '../../../../../interfaces/Post';
 import { IToken } from '../../../../../interfaces/Token';
 import { isFollowingLoggedUser } from '../../../profiles/services/utils/findFollowersWithAuth';
 
 const getPostLikes = async ({ offset, postID, token }: IFindPostInteractions) => {
-  const post = await Post.findById(postID)
+  const artistPost = await Post.findById(postID)
     .where('likes')
-    .slice([offset, offset + 8])
+    .slice([offset, offset + 1])
     .populate('likes.profile');
+
+  const share = await Share.findById(postID)
+    .where('likes')
+    .slice([offset, offset + 1])
+    .populate('likes.profile');
+
+  const post = artistPost || share;
 
   if (!post) {
     throw new UserInputError('Não há post');
@@ -21,11 +29,12 @@ const getPostLikes = async ({ offset, postID, token }: IFindPostInteractions) =>
 
   if (user) {
     const authUser = user as IToken;
-
-    return post.likes.map(({ profile }) => {
+    const profiles = post.likes.map(({ profile }) => {
       const profileEntity = profile as IProfileEntity;
       return isFollowingLoggedUser(profileEntity, authUser.username);
     });
+
+    return profiles;
   }
 
   return post.likes.map(({ profile }) => profile);
