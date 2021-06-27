@@ -5,9 +5,9 @@ import Share from '../../../../../entities/Share';
 import { IPost } from '../../../../../interfaces/Post';
 import { IShare } from '../../../../../interfaces/Share';
 import { IToken } from '../../../../../interfaces/Token';
-import shuffleArray from '../../../profiles/services/utils/shuffleProfilesArray';
 import getImageHeight from './getImageHeight';
 import { handlePostView } from './postUtils';
+import sortTimelineArray from './sortTimelineArray';
 
 type GetTimeline = (
   offset: number,
@@ -56,6 +56,10 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
 
         const isLiked = await getIsLiked({ isShare: true, postID: share._id, profileID });
 
+        if (!share._doc) {
+          throw new Error();
+        }
+
         return { ...share._doc, isLiked, imageHeight, isSaved };
       }),
     );
@@ -65,11 +69,15 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
         const { imageHeight, isSaved, getIsLiked } = await handlePostView(post, user.id);
         const isLiked = await getIsLiked({ isShare: false, postID: post._id, profileID });
 
+        if (!post._doc) {
+          throw new Error();
+        }
+
         return { ...post._doc, isLiked, imageHeight, isSaved };
       }),
     );
 
-    const timeline = shuffleArray(postsView, sharesView);
+    const timeline = sortTimelineArray(postsView, sharesView);
     return timeline;
   }
 
@@ -77,6 +85,10 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
     shares.map(async share => {
       const sharePost = share.post as IPost;
       const imageHeight = getImageHeight(sharePost);
+
+      if (!share._doc) {
+        throw new Error();
+      }
 
       return { ...share._doc, imageHeight };
     }),
@@ -86,11 +98,15 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
     posts.map(async post => {
       const imageHeight = getImageHeight(post);
 
+      if (!post._doc) {
+        throw new Error();
+      }
+
       return { ...post._doc, imageHeight };
     }),
   );
 
-  const timeline = shuffleArray(postsView, sharesView);
+  const timeline = sortTimelineArray(postsView, sharesView);
   return timeline;
 };
 
