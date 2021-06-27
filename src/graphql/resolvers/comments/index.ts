@@ -4,8 +4,8 @@ import checkAuth from '../../../middlewares/checkAuth';
 import levelUp from '../../../functions/levelUp';
 import { ID } from '../../../interfaces/General';
 import findComments from './services/find';
-import { createComment, createLikeComment } from './services/create';
-import { deleteCommentService, dislikeCommentService } from './services/delete';
+import { createComment } from './services/create';
+import { deleteCommentService } from './services/delete';
 
 const commentsResolvers: IResolvers = {
   Query: {
@@ -30,18 +30,6 @@ const commentsResolvers: IResolvers = {
       const user = checkAuth(context);
 
       return deleteCommentService(id, user);
-    },
-
-    async likeComment(_, { id }: ID, context) {
-      const user = checkAuth(context);
-
-      return createLikeComment(id, user);
-    },
-
-    async dislikeComment(_, { id }: ID, context) {
-      const user = checkAuth(context);
-
-      return dislikeCommentService(id, user);
     },
   },
 };

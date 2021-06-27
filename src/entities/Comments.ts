@@ -10,14 +10,7 @@ const CommentSchema = new Schema({
       author: { type: Schema.Types.ObjectId, required: true, refPath: 'comments.onModel' },
       onModel: { type: String, required: true, enum: ['ArtistProfile', 'UserProfile'] },
       body: { type: String, required: true },
-      likesCount: { type: Number, default: 0 },
       createdAt: String,
-      likes: [
-        {
-          author: { type: Schema.Types.ObjectId, refPath: 'comments.likes.onModel' },
-          onModel: { type: String, required: true, enum: ['ArtistProfile', 'UserProfile'] },
-        },
-      ],
     },
   ],
 });

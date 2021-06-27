@@ -12,7 +12,6 @@ const interactionsDefinitions = gql`
     author: Profile!
     body: String!
     createdAt: String!
-    likesCount: Int
   }
 
   type Comment {

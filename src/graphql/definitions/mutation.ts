@@ -37,8 +37,6 @@ const mutations = gql`
     #comment
     comment(postID: ID!, comment: String!): Boolean
     deleteComment(id: ID!): Boolean
-    likeComment(id: ID!): Boolean
-    dislikeComment(id: ID!): Boolean
 
     #saved posts
     addSavedPost(postID: ID!): Boolean
