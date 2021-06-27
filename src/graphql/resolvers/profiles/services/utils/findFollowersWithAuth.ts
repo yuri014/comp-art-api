@@ -3,7 +3,7 @@ import Following from '../../../../../entities/Following';
 import { IProfileEntity } from '../../../../../interfaces/Models';
 import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile';
 import { IToken } from '../../../../../interfaces/Token';
-import shuffleArray from './shuffleProfilesArray';
+import shuffleProfileArray from './shuffleProfilesArray';
 
 export const isFollowingLoggedUser = async (profile: IProfileEntity, username: string) => {
   const followsYou = await Follower.findOne({
@@ -33,7 +33,7 @@ const followersWithAuth = async (
     users.map(_user => isFollowingLoggedUser(_user, authUser.username)),
   );
 
-  return shuffleArray(artistsWithAuth, usersWithAuth);
+  return shuffleProfileArray(artistsWithAuth, usersWithAuth);
 };
 
 export default followersWithAuth;

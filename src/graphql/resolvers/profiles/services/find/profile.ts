@@ -5,7 +5,7 @@ import { IToken } from '../../../../../interfaces/Token';
 import ArtistProfile from '../../../../../entities/ArtistProfile';
 import UserProfile from '../../../../../entities/UserProfile';
 import findProfile from '../utils/findProfileUtil';
-import shuffleArray from '../utils/shuffleProfilesArray';
+import shuffleProfileArray from '../utils/shuffleProfilesArray';
 
 export const getProfileService = async (username: string) => {
   const user = await User.findOne({ username }).lean();
@@ -55,7 +55,7 @@ export const searchProfilesService = async (query: string, offset: number, limit
       .skip(offset > 0 ? Math.round(offset / 2) : offset)
       .limit(limit);
 
-    return shuffleArray(artistsProfiles, usersProfiles);
+    return shuffleProfileArray(artistsProfiles, usersProfiles);
   }
 
   return [];

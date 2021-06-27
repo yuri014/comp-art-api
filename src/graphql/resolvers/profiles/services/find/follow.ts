@@ -6,7 +6,7 @@ import { IToken } from '../../../../../interfaces/Token';
 import { isAlreadyFollowing } from '../../../../../middlewares/isAlreadyFollow';
 import followersWithAuth from '../utils/findFollowersWithAuth';
 import findFollows, { IOffset } from '../utils/findFollows';
-import shuffleArray from '../utils/shuffleProfilesArray';
+import shuffleProfileArray from '../utils/shuffleProfilesArray';
 
 export const getFollowingService = async (params: IOffset, token: string) => {
   const followsResult = await findFollows(Following, params, ['artistFollowing', 'userFollowing']);
@@ -24,7 +24,7 @@ export const getFollowingService = async (params: IOffset, token: string) => {
     return followersWithAuth(authUser, artists, users);
   }
 
-  return shuffleArray(artists, users);
+  return shuffleProfileArray(artists, users);
 };
 
 export const getFollowersService = async (params: IOffset, token: string) => {
@@ -42,7 +42,7 @@ export const getFollowersService = async (params: IOffset, token: string) => {
     return followersWithAuth(authUser, artists, users);
   }
 
-  return shuffleArray(artists, users);
+  return shuffleProfileArray(artists, users);
 };
 
 export const isFollowing = async (id: string, loggedUsername: string) => {

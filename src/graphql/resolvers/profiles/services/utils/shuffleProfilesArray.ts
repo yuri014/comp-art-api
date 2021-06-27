@@ -1,4 +1,4 @@
-const shuffleArray = (artists: Array<unknown>, users: Array<unknown>) => {
+const shuffleProfileArray = (artists: Array<unknown>, users: Array<unknown>) => {
   const profiles = artists.concat(users as []);
 
   const shuffledProfiles = profiles.sort(() => Math.random() - 0.5);
@@ -6,4 +6,4 @@ const shuffleArray = (artists: Array<unknown>, users: Array<unknown>) => {
   return shuffledProfiles;
 };
 
-export default shuffleArray;
+export default shuffleProfileArray;

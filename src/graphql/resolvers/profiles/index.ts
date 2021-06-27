@@ -21,7 +21,7 @@ import createProfile from './services/create/profile';
 import followService from './services/create/follow';
 import updateProfileService from './services/update/profile';
 import profileValidation from './services/utils/profileValidation';
-import shuffleArray from './services/utils/shuffleProfilesArray';
+import shuffleProfileArray from './services/utils/shuffleProfilesArray';
 
 type IUsername = {
   username: string;
@@ -83,7 +83,7 @@ const profileResolvers: IResolvers = {
           .sort({ followers: -1 })
           .limit(3);
 
-        return shuffleArray(suggestedArtists, suggestedUsers);
+        return shuffleProfileArray(suggestedArtists, suggestedUsers);
       }
 
       const following = await Following.findOne({ username: user.username })
@@ -111,7 +111,7 @@ const profileResolvers: IResolvers = {
         .sort({ followers: -1 })
         .limit(3);
 
-      return shuffleArray(suggestedArtists, suggestedUsers);
+      return shuffleProfileArray(suggestedArtists, suggestedUsers);
     },
   },
   Mutation: {

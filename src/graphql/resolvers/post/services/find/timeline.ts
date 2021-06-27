@@ -3,7 +3,7 @@ import { UserInputError } from 'apollo-server-express';
 import Following from '../../../../../entities/Following';
 import { IToken } from '../../../../../interfaces/Token';
 import findProfile from '../../../profiles/services/utils/findProfileUtil';
-import shuffleArray from '../../../profiles/services/utils/shuffleProfilesArray';
+import shuffleProfileArray from '../../../profiles/services/utils/shuffleProfilesArray';
 import getTimeline from '../utils/getTimeline';
 
 const getTimelinePosts = async (offset: number, user: IToken) => {
@@ -25,7 +25,7 @@ const getTimelinePosts = async (offset: number, user: IToken) => {
     artists.push(loggedProfile._doc?._id);
   }
 
-  const followingProfiles = shuffleArray(following.artistFollowing, following.userFollowing);
+  const followingProfiles = shuffleProfileArray(following.artistFollowing, following.userFollowing);
 
   const timeline = await getTimeline(
     offset,
