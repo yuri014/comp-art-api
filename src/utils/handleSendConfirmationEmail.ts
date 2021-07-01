@@ -26,12 +26,13 @@ const handleSendConfirmationEmail = async (user: IUser | LeanDocument<IUser>) =>
 
     await sendEmail(message);
   } else {
-    const newConfirmationCode = new ConfirmationCode({
-      user: user?._id,
-      code: randomCode,
-    });
-
-    await newConfirmationCode.save();
+    await ConfirmationCode.findOneAndUpdate(
+      {
+        user: user?._id,
+      },
+      { code: randomCode },
+      { upsert: true, useFindAndModify: false },
+    );
 
     const confirmationEmail = confirmationEmailTemplate(user.username, randomCode.toString());
 
