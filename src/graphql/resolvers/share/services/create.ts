@@ -129,7 +129,10 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
       pubsub,
     );
 
-    return levelUp(updatedArtist);
+    return {
+      levelUp: levelUp(updatedArtist),
+      isFreeToPost: !updatedArtist.isBlockedToPost,
+    };
   }
 
   const updatedProfile = await UserProfile.findByIdAndUpdate(
@@ -158,7 +161,10 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
     pubsub,
   );
 
-  return levelUp(updatedProfile);
+  return {
+    levelUp: levelUp(updatedProfile),
+    isFreeToPost: false,
+  };
 };
 
 export default createShare;
