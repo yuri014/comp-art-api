@@ -10,6 +10,7 @@ import createEmail from '../../../emails/createEmail';
 import sendEmail from '../../../emails/sendEmail';
 import handleSendConfirmationEmail from '../../../utils/handleSendConfirmationEmail';
 import generateToken from '../../../generators/generateToken';
+import ConfirmationCode from '../../../entities/ConfirmationCode';
 
 const usersResolvers: IResolvers = {
   Mutation: {
@@ -56,10 +57,35 @@ const usersResolvers: IResolvers = {
     },
 
     async resendConfirmationCode(_, { email }: { email: string }) {
-      const user = await User.findOne({ email }).lean();
+      const user = await User.findOneAndUpdate(
+        { email },
+        {
+          $inc: {
+            strikes: 1,
+          },
+        },
+        {
+          useFindAndModify: false,
+          new: true,
+        },
+      );
 
       if (!user) {
         throw new UserInputError('Não há usuário com esse email');
+      }
+
+      if (user.confirmed) {
+        throw new UserInputError('Seu email já foi confirmado!');
+      }
+
+      if (user.strikes >= 3) {
+        user.delete();
+
+        await ConfirmationCode.findOneAndRemove({ user: user._id });
+
+        throw new UserInputError(
+          'Talvez seu e-mail esteja errado, excluímos seu usuário para que refaça seu cadastro.',
+        );
       }
 
       await handleSendConfirmationEmail(user);
