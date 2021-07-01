@@ -6,6 +6,7 @@ import User from '../../../../entities/User';
 import generateToken from '../../../../generators/generateToken';
 import handleSendConfirmationEmail from '../../../../utils/handleSendConfirmationEmail';
 import { validateLoginInput } from '../../../../validators/utils/validateRegisterInput';
+import ConfirmationCode from '../../../../entities/ConfirmationCode';
 
 const loginUser = async (email: string, password: string) => {
   const { error, valid } = validateLoginInput(email, password);
@@ -29,7 +30,9 @@ const loginUser = async (email: string, password: string) => {
     const daysBetweenDates = differenceInDays(now, userCreatedAt);
 
     if (daysBetweenDates >= limitDaysForConfirm) {
-      user.delete();
+      user.deleteOne();
+      await ConfirmationCode.findOneAndRemove({ user: user._id });
+
       throw new UserInputError('Usuário excluído, refaça seu cadastro');
     }
 
