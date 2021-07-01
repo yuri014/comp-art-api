@@ -74,7 +74,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
       { useFindAndModify: false },
     );
 
-    return false;
+    return { levelUp: false, isFreeToPost: false };
   }
 
   const { shareXP } = xpValues;
