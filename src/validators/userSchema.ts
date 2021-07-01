@@ -12,17 +12,21 @@ const userValidateSchema = Joi.object({
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
     .required()
+    .max(255)
     .messages({
+      'string.max': 'Email deve ter no máximo 255 caracteres',
       'string.email': 'Email deve ser um campo válido',
     }),
 
   password: Joi.string()
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+    .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
     .required()
+    .max(64)
     .messages({
       'string.base': 'Senha deve ser um texto',
       'string.pattern.base':
-        'Senha deve conter uma letra maiuscúla, uma letra minúscula, um número,e um caracter especial e mínimo de 8 caracteres',
+        'Senha deve conter no mínimo 8 caracteres uma letra, um número e um caracter especial',
+      'string.max': 'Senha deve ter no máximo de 64 caracteres',
       'string.required': 'Senha é obrigatório',
     }),
 
