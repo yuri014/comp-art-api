@@ -13,6 +13,7 @@ export interface IUser extends Document, User {
   confirmed: boolean;
   createdAt: Date;
   updatedAt: Date;
+  strikes: number;
 }
 
 export interface IRegisterFields extends User {

@@ -8,6 +8,7 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   confirmed: { type: Boolean, default: false },
   isArtist: { type: Boolean, required: true },
+  strikes: { type: Number, default: 0 },
   createdAt: String,
   updatedAt: String,
 });
