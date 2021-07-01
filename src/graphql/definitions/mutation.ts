@@ -27,7 +27,7 @@ const mutations = gql`
     dislike(id: ID!): Boolean
 
     #share
-    createSharePost(shareInput: SharePost!): Boolean
+    createSharePost(shareInput: SharePost!): ShareResponse
     deleteShare(id: ID!): Boolean
 
     #share interactions

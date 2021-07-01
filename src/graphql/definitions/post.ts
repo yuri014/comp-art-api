@@ -51,6 +51,11 @@ export const postDefinitions = gql`
     imageHeight: String
     isSaved: Boolean
   }
+
+  type ShareResponse {
+    levelUp: Boolean!
+    isFreeToPost: Boolean
+  }
 `;
 
 export const postInputDefinitions = gql`
