@@ -29,27 +29,27 @@ const usersResolvers: IResolvers = {
     async sendForgotPasswordEmail(_, { email }: { email: string }) {
       const user = await User.findOne({ email }).lean();
 
-      if (user) {
-        const token = generateToken(user, '10m');
-        const recoverPassoword = recoverPasswordEmail(
-          user.username,
-          `${process.env.FRONT_END_HOST}/recover-password/${token}`,
-        );
-
-        const message = createEmail({
-          recipient: email,
-          subject: 'Recuperar senha',
-          text: 'Recuperar senha',
-          template: recoverPassoword,
-          username: user.username,
-        });
-
-        await sendEmail(message);
-
-        return true;
+      if (!user) {
+        throw new UserInputError('Não há usuário com esse e-mail.');
       }
 
-      return false;
+      const token = generateToken(user, '10m');
+      const recoverPassoword = recoverPasswordEmail(
+        user.username,
+        `${process.env.FRONT_END_HOST}/recover-password/${token}`,
+      );
+
+      const message = createEmail({
+        recipient: email,
+        subject: 'Recuperar senha',
+        text: 'Recuperar senha',
+        template: recoverPassoword,
+        username: user.username,
+      });
+
+      await sendEmail(message);
+
+      return true;
     },
 
     async recoverPassword(_, { token, newPassword }: { token: string; newPassword: string }) {
