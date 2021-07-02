@@ -32,7 +32,7 @@ export const confirmUser = async (code: string, email: string) => {
     throw new Error();
   }
 
-  const token = generateToken(user, '7d');
+  const token = generateToken(user, '15d');
 
   return {
     id: user._id,

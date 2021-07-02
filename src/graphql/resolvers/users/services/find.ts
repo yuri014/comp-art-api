@@ -47,7 +47,7 @@ const loginUser = async (email: string, password: string) => {
     throw new UserInputError('Credenciais erradas');
   }
 
-  const token = generateToken(user, '7d');
+  const token = generateToken(user, '15d');
 
   return {
     id: user._id,
