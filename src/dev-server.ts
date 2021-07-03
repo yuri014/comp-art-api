@@ -1,7 +1,10 @@
 import debug from 'debug';
 import mongoose from 'mongoose';
+import { createServer } from 'http';
 
-import { httpServer, server, PORT } from './app';
+import app, { server, PORT } from './app';
+
+const httpServer = createServer(app);
 
 const logs = [
   () => debug.log(`Server ready at: http://localhost:${PORT}${server.graphqlPath}`),

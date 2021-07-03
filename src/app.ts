@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import { ApolloServer, PubSub } from 'apollo-server-express';
 import { graphqlUploadExpress } from 'graphql-upload';
-import { createServer } from 'http';
 import cors from 'cors';
 
 import typeDefs from './graphql/definitions';
@@ -58,4 +57,4 @@ app.use(express.urlencoded({ extended: true }));
 
 export const PORT = process.env.PORT || 3333;
 
-export const httpServer = createServer(app);
+export default app;
