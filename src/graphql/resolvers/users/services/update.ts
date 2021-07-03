@@ -44,28 +44,32 @@ export const confirmUser = async (code: string, email: string) => {
 };
 
 export const updatePassword = async (token: string, password: string, confirmPassword: string) => {
-  const { id } = jwt.verify(token, process.env.SECRET as string) as ID;
-  const user = await User.findById(id);
+  try {
+    const { id } = jwt.verify(token, process.env.SECRET as string) as ID;
+    const user = await User.findById(id);
 
-  if (!user) {
-    throw new UserInputError('Não existe usuário');
+    if (!user) {
+      throw new UserInputError('Não existe usuário');
+    }
+
+    const userValidation = userValidator();
+
+    const errors = userValidation.validate({ password, confirmPassword });
+
+    if (errors.error) {
+      throw new UserInputError(errors.error.message);
+    }
+
+    const encryptedPassword = await bcrypt.hash(password, 12);
+    await User.updateOne({ password: encryptedPassword });
+
+    return {
+      id: user._id,
+      token,
+      username: user.username,
+      isArtist: user.isArtist,
+    };
+  } catch (error) {
+    throw new UserInputError('Token inválida');
   }
-
-  const userValidation = userValidator();
-
-  const errors = userValidation.validate({ password, confirmPassword });
-
-  if (errors.error) {
-    throw new UserInputError(errors.error.message);
-  }
-
-  const encryptedPassword = await bcrypt.hash(password, 12);
-  await User.updateOne({ password: encryptedPassword });
-
-  return {
-    id: user._id,
-    token,
-    username: user.username,
-    isArtist: user.isArtist,
-  };
 };
