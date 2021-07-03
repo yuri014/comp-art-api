@@ -47,7 +47,7 @@ export const updatePassword = async (token: string, password: string, confirmPas
   const { id } = jwt.verify(token, process.env.SECRET as string) as ID;
   const user = await User.findById(id);
 
-  if (user) {
+  if (!user) {
     throw new UserInputError('Não existe usuário');
   }
 
@@ -62,5 +62,10 @@ export const updatePassword = async (token: string, password: string, confirmPas
   const encryptedPassword = await bcrypt.hash(password, 12);
   await User.updateOne({ password: encryptedPassword });
 
-  return token;
+  return {
+    id: user._id,
+    token,
+    username: user.username,
+    isArtist: user.isArtist,
+  };
 };
