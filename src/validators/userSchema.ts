@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const userValidateSchema = Joi.object({
+const userValidation = {
   // eslint-disable-next-line newline-per-chained-call
   username: Joi.string().alphanum().min(6).max(24).required().messages({
     'string.base': 'Username deve ser um texto',
@@ -17,22 +17,28 @@ const userValidateSchema = Joi.object({
       'string.max': 'Email deve ter no máximo 255 caracteres',
       'string.email': 'Email deve ser um campo válido',
     }),
+};
 
-  password: Joi.string()
-    .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
-    .required()
-    .max(64)
-    .messages({
-      'string.base': 'Senha deve ser um texto',
-      'string.pattern.base':
-        'Senha deve conter no mínimo 8 caracteres uma letra, um número e um caracter especial',
-      'string.max': 'Senha deve ter no máximo de 64 caracteres',
-      'string.required': 'Senha é obrigatório',
-    }),
+export const userValidator = (otherValidations?: { [key: string]: Joi.StringSchema }) =>
+  Joi.object({
+    ...otherValidations,
+    password: Joi.string()
+      .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
+      .required()
+      .max(64)
+      .messages({
+        'string.base': 'Senha deve ser um texto',
+        'string.pattern.base':
+          'Senha deve conter no mínimo 8 caracteres uma letra, um número e um caracter especial',
+        'string.max': 'Senha deve ter no máximo de 64 caracteres',
+        'string.required': 'Senha é obrigatório',
+      }),
 
-  confirmPassword: Joi.any()
-    .equal(Joi.ref('password'))
-    .messages({ 'any.only': 'Senhas não conferem' }),
-}).with('password', 'confirmPassword');
+    confirmPassword: Joi.any()
+      .equal(Joi.ref('password'))
+      .messages({ 'any.only': 'Senhas não conferem' }),
+  }).with('password', 'confirmPassword');
+
+const userValidateSchema = userValidator(userValidation);
 
 export default userValidateSchema;
