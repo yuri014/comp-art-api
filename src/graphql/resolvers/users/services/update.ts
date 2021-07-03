@@ -6,6 +6,7 @@ import User from '../../../../entities/User';
 import { ID } from '../../../../interfaces/General';
 import ConfirmationCode from '../../../../entities/ConfirmationCode';
 import generateToken from '../../../../generators/generateToken';
+import { userValidator } from '../../../../validators/userSchema';
 
 export const confirmUser = async (code: string, email: string) => {
   const user = await User.findOne({ email });
@@ -42,7 +43,7 @@ export const confirmUser = async (code: string, email: string) => {
   };
 };
 
-export const updatePassword = async (token: string, newPassword: string) => {
+export const updatePassword = async (token: string, password: string, confirmPassword: string) => {
   const { id } = jwt.verify(token, process.env.SECRET as string) as ID;
   const user = await User.findById(id);
 
@@ -50,7 +51,15 @@ export const updatePassword = async (token: string, newPassword: string) => {
     throw new UserInputError('Não existe usuário');
   }
 
-  const encryptedPassword = await bcrypt.hash(newPassword, 12);
+  const userValidation = userValidator();
+
+  const errors = userValidation.validate({ password, confirmPassword });
+
+  if (errors.error) {
+    throw new UserInputError(errors.error.message);
+  }
+
+  const encryptedPassword = await bcrypt.hash(password, 12);
   await User.updateOne({ password: encryptedPassword });
 
   return token;
