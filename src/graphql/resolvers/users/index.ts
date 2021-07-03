@@ -52,8 +52,15 @@ const usersResolvers: IResolvers = {
       return true;
     },
 
-    async recoverPassword(_, { token, newPassword }: { token: string; newPassword: string }) {
-      return updatePassword(token, newPassword);
+    async recoverPassword(
+      _,
+      {
+        token,
+        newPassword,
+        confirmPassword,
+      }: { token: string; newPassword: string; confirmPassword: string },
+    ) {
+      return updatePassword(token, newPassword, confirmPassword);
     },
 
     async resendConfirmationCode(_, { email }: { email: string }) {
