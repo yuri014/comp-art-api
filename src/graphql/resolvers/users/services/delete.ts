@@ -30,8 +30,14 @@ const deleteUser = async (user: IToken) => {
       });
 
       await Promise.all(
-        comments.map(async comment =>
-          comment.updateOne(
+        comments.map(async comment => {
+          await Post.findByIdAndUpdate(
+            comment.post,
+            { $inc: { commentsCount: -1 } },
+            { useFindAndModify: false },
+          );
+
+          return comment.updateOne(
             {
               $pull: {
                 comments: {
@@ -40,8 +46,8 @@ const deleteUser = async (user: IToken) => {
               },
             },
             { useFindAndModify: false },
-          ),
-        ),
+          );
+        }),
       );
 
       const follower = await Follower.findOne({ username: userEntity.username });
@@ -49,13 +55,13 @@ const deleteUser = async (user: IToken) => {
       await decrementFollow({
         Entity: UserProfile,
         field: 'following',
-        follower: (follower?.userFollowers as unknown) as string[],
+        follower: (follower?._doc?.userFollowers as unknown) as string[],
       });
 
       await decrementFollow({
         Entity: ArtistProfile,
         field: 'following',
-        follower: (follower?.artistFollowers as unknown) as string[],
+        follower: (follower?._doc?.artistFollowers as unknown) as string[],
       });
 
       const following = await Following.findOne({ username: userEntity.username });
@@ -63,22 +69,16 @@ const deleteUser = async (user: IToken) => {
       await decrementFollow({
         Entity: UserProfile,
         field: 'follower',
-        follower: (following?.userFollowing as unknown) as string[],
+        follower: (following?._doc?.userFollowing as unknown) as string[],
       });
 
       await decrementFollow({
         Entity: ArtistProfile,
         field: 'follower',
-        follower: (following?.artistFollowing as unknown) as string[],
+        follower: (following?._doc?.artistFollowing as unknown) as string[],
       });
 
       await Notification.deleteOne({ user: userEntity._id });
-
-      if (userEntity.isArtist) {
-        await Post.deleteMany({ artist: profile._id });
-      }
-
-      await Share.deleteMany({ profile: profile._id });
 
       await SavedPost.deleteOne({ user: userEntity._id });
 
@@ -86,7 +86,7 @@ const deleteUser = async (user: IToken) => {
         {
           $pull: {
             likes: {
-              profile: profile._id as string,
+              profile: profile._doc?._id as string,
             },
           },
           $inc: {
@@ -100,7 +100,7 @@ const deleteUser = async (user: IToken) => {
         {
           $pull: {
             likes: {
-              profile: profile._id as string,
+              profile: profile._doc?._id as string,
             },
           },
           $inc: {
@@ -109,6 +109,16 @@ const deleteUser = async (user: IToken) => {
         },
         { useFindAndModify: false },
       );
+
+      if (userEntity.isArtist) {
+        await Post.deleteMany({ artist: profile._doc?._id });
+
+        await ArtistProfile.findByIdAndDelete(profile._doc?._id, { useFindAndModify: false });
+      } else {
+        await UserProfile.findByIdAndDelete(profile._doc?._id, { useFindAndModify: false });
+      }
+
+      await Share.deleteMany({ profile: profile._doc?._id });
 
       await userEntity.deleteOne();
 
