@@ -8,7 +8,7 @@ const deleteSavedPostService: ISavedPostService = async (user, isAlreadySave, sa
     throw new UserInputError('Post não está nas sua lista de salvos');
   }
 
-  await SavedPost.findOneAndUpdate(
+  SavedPost.findOneAndUpdate(
     {
       user: user.id,
     },

@@ -12,7 +12,7 @@ const levelUp = async (profile: IProfileEntity) => {
   const targetXp = magnitudeParam * profile.level * xpMultiplier;
 
   if (profile.xp >= targetXp) {
-    await profile.updateOne({
+    profile.updateOne({
       xp: profile.xp - targetXp,
       $inc: {
         level: 1,

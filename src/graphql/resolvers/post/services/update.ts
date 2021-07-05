@@ -14,7 +14,7 @@ import xpValues from '../../../../utils/xpValues';
 import createNotification from '../../notifications/services/create';
 
 const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
-  await likeHandler(id, user, Post, 'like');
+  likeHandler(id, user, Post, 'like');
 
   const artist = (await Post.findById(id).populate('artist', 'owner')) as IPost;
 
@@ -43,7 +43,7 @@ const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
 
   const updatedProfile = await uploadProfile(user.isArtist ? ArtistProfile : UserProfile);
 
-  await createNotification(
+  createNotification(
     {
       body: 'curtiu sua publicação',
       link: `/post/${id}`,

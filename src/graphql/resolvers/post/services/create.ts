@@ -51,7 +51,7 @@ const createNewPost = async (post: IPostInput, user: IToken, pubsub: PubSub) => 
     pubsub,
   });
 
-  await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
+  profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
 
   const { postXP } = xpValues;
 

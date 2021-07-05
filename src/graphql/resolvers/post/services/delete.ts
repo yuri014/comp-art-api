@@ -14,7 +14,7 @@ import removeFile from '../../../../utils/removeFile';
 import xpValues from '../../../../utils/xpValues';
 
 export const dislikePost = async (id: string, user: IToken) => {
-  await likeHandler(id, user, Post, 'dislike');
+  likeHandler(id, user, Post, 'dislike');
 
   const { likeXP } = xpValues;
 
@@ -52,14 +52,14 @@ export const deletePostService = async (id: string, user: IToken) => {
 
   try {
     if (post.body) {
-      await removeFile(post.body);
+      removeFile(post.body);
     }
 
     if (post.thumbnail) {
-      await removeFile(post.thumbnail);
+      removeFile(post.thumbnail);
     }
 
-    await post.deleteOne();
+    post.deleteOne();
   } catch (error) {
     throw new Error(error);
   }
@@ -78,8 +78,8 @@ export const deletePostService = async (id: string, user: IToken) => {
     throw Error();
   }
 
-  await Share.deleteMany({ post: id });
-  await Comments.deleteMany({ post: id });
+  Share.deleteMany({ post: id });
+  Comments.deleteMany({ post: id });
 
   const { postXP } = xpValues;
 

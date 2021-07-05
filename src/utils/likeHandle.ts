@@ -31,9 +31,9 @@ const likeHandler = async (
   }
 
   if (like === 'like') {
-    await likeContent(post, profileDoc, user);
+    likeContent(post, profileDoc, user);
   } else {
-    await dislikeContent(post, profileDoc);
+    dislikeContent(post, profileDoc);
   }
 };
 

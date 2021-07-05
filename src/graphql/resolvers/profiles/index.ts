@@ -174,9 +174,9 @@ const profileResolvers: IResolvers = {
         throw new Error();
       }
 
-      await unfollower(userWhoFollows.isArtist, authProfile._doc, followedUser.username);
+      unfollower(userWhoFollows.isArtist, authProfile._doc, followedUser.username);
 
-      await unfollowing(followedUser.isArtist, profileWhoIsFollowed._doc, userWhoFollows.username);
+      unfollowing(followedUser.isArtist, profileWhoIsFollowed._doc, userWhoFollows.username);
 
       return true;
     },

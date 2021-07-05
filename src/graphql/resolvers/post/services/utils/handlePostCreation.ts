@@ -23,7 +23,7 @@ export const createTextPost = async (profileID: string, description?: string) =>
     lightColor: '',
   });
 
-  await newPost.save();
+  newPost.save();
 
   return newPost;
 };
@@ -53,7 +53,7 @@ export const createMediaPost = async (post: IPostInput, profileID: string) => {
     lightColor,
   });
 
-  await newPost.save();
+  newPost.save();
 
   return newPost;
 };

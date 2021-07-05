@@ -36,7 +36,7 @@ export const createComment = async (id: string, comment: string, user: IToken) =
 
   const profileDoc = profile._doc;
 
-  await Comments.updateOne(
+  Comments.updateOne(
     {
       post: id,
       onModel: post?._doc?._id ? 'Post' : 'Share',
@@ -62,7 +62,7 @@ export const createComment = async (id: string, comment: string, user: IToken) =
     },
   );
 
-  await post?.updateOne({ $inc: { commentsCount: 1 } });
+  post?.updateOne({ $inc: { commentsCount: 1 } });
 
   if (post?._doc?._id) {
     const { commentXP } = xpValues;

@@ -37,7 +37,7 @@ const createProfile = async (
     owner: user.username,
   });
 
-  await newProfile.save();
+  newProfile.save();
 
   return true;
 };
