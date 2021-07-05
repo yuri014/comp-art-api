@@ -1,16 +1,20 @@
-import { UserInputError } from 'apollo-server-express';
+import { PubSub, UserInputError } from 'apollo-server-express';
 
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Comments from '../../../../entities/Comments';
 import Post from '../../../../entities/Post';
 import Share from '../../../../entities/Share';
 import UserProfile from '../../../../entities/UserProfile';
+import mentionUser from '../../../../functions/mentionUser';
+import { IPost } from '../../../../interfaces/Post';
+import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IToken } from '../../../../interfaces/Token';
 import xpValues from '../../../../utils/xpValues';
 import commentValidationSchema from '../../../../validators/commentSchema';
+import createNotification from '../../notifications/services/create';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 
-export const createComment = async (id: string, comment: string, user: IToken) => {
+export const createComment = async (id: string, comment: string, user: IToken, pubsub: PubSub) => {
   const post = await Post.findById(id);
   const share = await Share.findById(id);
 
@@ -36,7 +40,7 @@ export const createComment = async (id: string, comment: string, user: IToken) =
 
   const profileDoc = profile._doc;
 
-  Comments.updateOne(
+  const newComment = await Comments.findOneAndUpdate(
     {
       post: id,
       onModel: post?._doc?._id ? 'Post' : 'Share',
@@ -60,7 +64,38 @@ export const createComment = async (id: string, comment: string, user: IToken) =
       useFindAndModify: false,
       upsert: true,
     },
+  ).populate({
+    path: 'post',
+    populate: {
+      path: 'artist',
+    },
+  });
+
+  if (!newComment) {
+    throw new UserInputError('Não há post');
+  }
+
+  const commentedPost = newComment.post as IPost;
+  const artistPostOwner = commentedPost.artist as IArtistProfile;
+
+  createNotification(
+    {
+      body: 'comentou em sua publicação',
+      link: `/post/${id}`,
+      from: user.username,
+      username: artistPostOwner.owner,
+      avatar: profile._doc?.avatar as string,
+    },
+    pubsub,
   );
+
+  mentionUser({
+    avatar: profile._doc?.avatar as string,
+    description: comment,
+    from: user.username,
+    link: `/post/${id}`,
+    pubsub,
+  });
 
   post?.updateOne({ $inc: { commentsCount: 1 } });
 

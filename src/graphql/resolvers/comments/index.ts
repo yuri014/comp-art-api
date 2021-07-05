@@ -1,4 +1,4 @@
-import { IResolvers } from 'apollo-server-express';
+import { IResolvers, PubSub } from 'apollo-server-express';
 
 import checkAuth from '../../../middlewares/checkAuth';
 import levelUp from '../../../functions/levelUp';
@@ -17,7 +17,9 @@ const commentsResolvers: IResolvers = {
     async comment(_, { postID, comment }: { postID: string; comment: string }, context) {
       const user = checkAuth(context);
 
-      const updatedProfile = await createComment(postID, comment, user);
+      const pubsub = context.pubsub as PubSub;
+
+      const updatedProfile = await createComment(postID, comment, user, pubsub);
 
       if (typeof updatedProfile !== 'boolean') {
         return levelUp(updatedProfile);
