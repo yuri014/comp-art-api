@@ -5,6 +5,7 @@ import Post from '../../../../entities/Post';
 import Share from '../../../../entities/Share';
 import UserProfile from '../../../../entities/UserProfile';
 import levelUp from '../../../../functions/levelUp';
+import mentionUser from '../../../../functions/mentionUser';
 import { IArtistProfile } from '../../../../interfaces/Profile';
 import { IShareInput } from '../../../../interfaces/Share';
 import { IToken } from '../../../../interfaces/Token';
@@ -53,6 +54,14 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
   });
 
   await newShare.save();
+
+  mentionUser({
+    avatar: profile._doc?.avatar as string,
+    description: input.description,
+    from: user.username,
+    link: `/share/${newShare._id}`,
+    pubsub,
+  });
 
   await Post.findByIdAndUpdate(
     input.postID,
@@ -118,7 +127,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
       throw new Error('Não encontrou perfil ao compartilhar');
     }
 
-    await createNotification(
+    createNotification(
       {
         body: 'compartilhou sua publicação',
         link: `/share/${newShare._id}`,
@@ -150,7 +159,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
     throw new Error('Não encontrou perfil ao compartilhar');
   }
 
-  await createNotification(
+  createNotification(
     {
       body: 'compartilhou sua publicação',
       link: `/share/${newShare._id}`,

@@ -24,6 +24,8 @@ export const createTextPost = async (profileID: string, description?: string) =>
   });
 
   await newPost.save();
+
+  return newPost;
 };
 
 export const createMediaPost = async (post: IPostInput, profileID: string) => {
@@ -52,4 +54,6 @@ export const createMediaPost = async (post: IPostInput, profileID: string) => {
   });
 
   await newPost.save();
+
+  return newPost;
 };

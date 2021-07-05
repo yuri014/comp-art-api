@@ -1,7 +1,8 @@
-import { AuthenticationError, UserInputError } from 'apollo-server-express';
+import { AuthenticationError, PubSub, UserInputError } from 'apollo-server-express';
 
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import levelUp from '../../../../functions/levelUp';
+import mentionUser from '../../../../functions/mentionUser';
 import { IPostInput } from '../../../../interfaces/Post';
 import { IToken } from '../../../../interfaces/Token';
 import checkAbilityToPost from '../../../../middlewares/checkAbilityToPost';
@@ -9,7 +10,7 @@ import xpValues from '../../../../utils/xpValues';
 import postValidationSchema from '../../../../validators/postSchema';
 import { createMediaPost, createTextPost } from './utils/handlePostCreation';
 
-const createNewPost = async (post: IPostInput, user: IToken) => {
+const createNewPost = async (post: IPostInput, user: IToken, pubsub: PubSub) => {
   if (!user.isArtist) {
     throw new AuthenticationError('Somente artistas podem postar');
   }
@@ -32,11 +33,23 @@ const createNewPost = async (post: IPostInput, user: IToken) => {
     throw new UserInputError(errors.error.message);
   }
 
-  if (await post.body) {
-    await createMediaPost(post, profileDoc._id);
-  } else {
-    await createTextPost(profileDoc._id, post.description);
-  }
+  const handlePost = async () => {
+    if (await post.body) {
+      return createMediaPost(post, profileDoc._id);
+    }
+
+    return createTextPost(profileDoc._id, post.description);
+  };
+
+  const newPost = await handlePost();
+
+  mentionUser({
+    avatar: profile._doc?.avatar as string,
+    description: post.description,
+    from: user.username,
+    link: `/post/${newPost._id}`,
+    pubsub,
+  });
 
   await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
 

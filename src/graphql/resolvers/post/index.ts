@@ -46,7 +46,9 @@ const postResolvers: IResolvers = {
     async createPost(_, { postInput }: { postInput: IPostInput }, context) {
       const user = checkAuth(context);
 
-      return createNewPost(postInput, user);
+      const pubsub = context.pubsub as PubSub;
+
+      return createNewPost(postInput, user, pubsub);
     },
 
     async like(_, { id }: ID, context) {
