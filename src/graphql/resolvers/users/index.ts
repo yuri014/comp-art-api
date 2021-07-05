@@ -11,6 +11,8 @@ import sendEmail from '../../../emails/sendEmail';
 import handleSendConfirmationEmail from '../../../utils/handleSendConfirmationEmail';
 import generateToken from '../../../generators/generateToken';
 import ConfirmationCode from '../../../entities/ConfirmationCode';
+import checkAuth from '../../../middlewares/checkAuth';
+import deleteUser from './services/delete';
 
 const usersResolvers: IResolvers = {
   Mutation: {
@@ -98,6 +100,12 @@ const usersResolvers: IResolvers = {
       await handleSendConfirmationEmail(user);
 
       return true;
+    },
+
+    async deleteAccount(_, __, context) {
+      const user = checkAuth(context);
+
+      return deleteUser(user);
     },
   },
 };
