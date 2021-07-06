@@ -63,6 +63,7 @@ export const createComment = async (id: string, comment: string, user: IToken, p
     {
       useFindAndModify: false,
       upsert: true,
+      new: true,
     },
   ).populate({
     path: 'post',
