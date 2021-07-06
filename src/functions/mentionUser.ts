@@ -24,7 +24,7 @@ const mentionUser = (options: IMentionUser) => {
             body: 'mencionou você!',
             link,
             from,
-            username: mention,
+            username: mention.replace('@', ''),
             avatar,
           },
           pubsub,
