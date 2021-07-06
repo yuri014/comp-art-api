@@ -29,7 +29,7 @@ const createProfile = async (
   const newProfile = new Profile({
     name: name.trim(),
     avatar: avatarUrl,
-    bio: bio.trim(),
+    bio: bio ? bio.trim() : '',
     coverImage: coverImageUrl,
     createdAt: new Date().toISOString(),
     links,
