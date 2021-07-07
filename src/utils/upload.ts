@@ -2,8 +2,7 @@ import { UserInputError } from 'apollo-server-express';
 
 import writeFileDev from './writeFileDev';
 import { ICreateReadStream } from '../interfaces/General';
-
-const __DEV__ = process.env.NODE_ENV === 'development';
+import writeFile from './writeFile';
 
 export const uploadImage = async (createReadStream?: ICreateReadStream, filename?: string) => {
   if (filename && !filename.match(/\.(png|jpg|jpeg|webp)$/)) {
@@ -12,11 +11,11 @@ export const uploadImage = async (createReadStream?: ICreateReadStream, filename
     );
   }
 
-  if (__DEV__) {
+  if (globalThis.__DEV__) {
     return writeFileDev({ createReadStream, filename, folderPath: '/uploads/images/' });
   }
 
-  return '';
+  return writeFile({ createReadStream, filename });
 };
 
 export const uploadAudio = async (createReadStream?: ICreateReadStream, filename?: string) => {
@@ -26,8 +25,9 @@ export const uploadAudio = async (createReadStream?: ICreateReadStream, filename
     );
   }
 
-  if (__DEV__) {
+  if (globalThis.__DEV__) {
     return writeFileDev({ createReadStream, filename, folderPath: '/uploads/audio/' });
   }
-  return '';
+
+  return writeFile({ createReadStream, filename });
 };
