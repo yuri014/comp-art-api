@@ -20,7 +20,7 @@ const writeFileDev = ({ folderPath, createReadStream, filename }: IWriteFile) =>
       const pathName = path.join(__dirname, '..', '..', `/public${folderPath}${originalName}`);
 
       stream.pipe(fs.createWriteStream(pathName));
-      return `${folderPath}${originalName}`;
+      return `${process.env.HOST}${folderPath}${originalName}`;
     }
   } catch (error) {
     throw new UserInputError('Limite máximo de upload: 8MB.');
