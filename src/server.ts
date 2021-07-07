@@ -3,7 +3,7 @@ import https from 'https';
 import fs from 'fs-extra';
 import mongoose from 'mongoose';
 
-import app, { PORT } from './app';
+import app, { server, PORT } from './app';
 
 const options = {
   key: fs.readFileSync('key.pem'),
@@ -11,6 +11,8 @@ const options = {
 };
 
 const serverHttps = https.createServer(options, app);
+
+server.installSubscriptionHandlers(serverHttps);
 
 mongoose
   .connect(process.env.CLUSTER_URL as string, {
