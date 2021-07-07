@@ -55,6 +55,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.5",
     "mongoose": "^5.12.4",
+    "nanoid": "^3.1.23",
     "node-vibrant": "^3.2.1-alpha.1",
     "nodemailer": "^6.6.1",
     "rate-limiter-flexible": "^2.2.1",
