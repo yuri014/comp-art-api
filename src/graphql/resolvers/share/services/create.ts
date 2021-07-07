@@ -11,11 +11,11 @@ import { IShareInput } from '../../../../interfaces/Share';
 import { IToken } from '../../../../interfaces/Token';
 import genericUpdateOptions from '../../../../utils/genericUpdateOptions';
 import xpValues from '../../../../utils/xpValues';
-import postValidationSchema from '../../../../validators/postSchema';
+import { shareValidation } from '../../../../validators/postSchema';
 import createNotification from '../../notifications/services/create';
 
 const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => {
-  const errors = postValidationSchema.validate({
+  const errors = shareValidation.validate({
     description: input.description?.trim(),
   });
 

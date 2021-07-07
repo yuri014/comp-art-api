@@ -2,10 +2,17 @@ import Joi from 'joi';
 
 const isValidText = Joi.string();
 
-const postValidationSchema = Joi.object({
-  description: isValidText.allow('').max(1200).messages({
+export const shareValidation = Joi.object({
+  description: isValidText.allow('').max(256).messages({
     'string.base': 'Descrição deve ser um texto',
-    'string.max': 'Descrição tem limite de 1200 caracteres',
+    'string.max': 'Descrição tem limite de 255 caracteres',
+  }),
+});
+
+const postValidationSchema = Joi.object({
+  description: isValidText.allow('').max(5001).messages({
+    'string.base': 'Descrição deve ser um texto',
+    'string.max': 'Descrição tem limite de 5000 caracteres',
   }),
   alt: isValidText.allow('').max(60).messages({
     'string.base': 'Texto alternativo deve ser um texto',
