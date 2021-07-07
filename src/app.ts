@@ -12,6 +12,8 @@ require('dotenv').config({
   path: process.env.NODE_ENV === 'development' ? '.env.development' : '.env',
 });
 
+globalThis.__DEV__ = process.env.NODE_ENV === 'development';
+
 const pubsub = new PubSub();
 
 export const server = new ApolloServer({
