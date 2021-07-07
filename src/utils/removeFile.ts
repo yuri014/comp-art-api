@@ -11,11 +11,15 @@ const removeFile = async (pathname: string) => {
   } else {
     const params: PutObjectRequest = {
       Bucket: process.env.AWS_S3_BUCKET as string,
-      Key: url.pathname,
+      Key: url.pathname.substring(1),
     };
     const s3 = new S3({ apiVersion: '2006-03-01', region: process.env.AWS_REGION });
 
-    s3.deleteObject(params).promise();
+    try {
+      s3.deleteObject(params);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 };
 
