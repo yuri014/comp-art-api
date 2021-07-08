@@ -11,9 +11,6 @@
   },
   "keywords": [],
   "author": "yuri014",
-  "engines": {
-    "node": "14.16.1"
-  },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.10",
