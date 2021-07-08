@@ -24,7 +24,7 @@ const createNewPost = async (post: IPostInput, user: IToken, pubsub: PubSub) => 
   }
 
   const errors = postValidationSchema.validate({
-    description: post.description,
+    description: post.description.trim(),
     alt: post.alt,
     title: post.title,
   });
