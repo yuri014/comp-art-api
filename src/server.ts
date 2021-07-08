@@ -6,8 +6,8 @@ import mongoose from 'mongoose';
 import app, { server, PORT } from './app';
 
 const options = {
-  cert: fs.readFileSync('/etc/letsencrypt/live/vm.comp-art.art/fullchain.pem'),
-  key: fs.readFileSync('/etc/letsencrypt/live/vm.comp-art.art/privkey.pem'),
+  cert: fs.readFileSync('key.pem'),
+  key: fs.readFileSync('cert.pem'),
 };
 
 const serverHttps = https.createServer(options, app);
