@@ -25,11 +25,11 @@ const followService = async (userWhoFollows: IToken, username: string, pubsub: P
     throw new Error();
   }
 
-  follower(userWhoFollows.isArtist, authProfile._doc._id, followedUser.username);
+  await follower(userWhoFollows.isArtist, authProfile._doc._id, followedUser.username);
 
-  following(followedUser.isArtist, profileWhoIsFollowed._doc._id, userWhoFollows.username);
+  await following(followedUser.isArtist, profileWhoIsFollowed._doc._id, userWhoFollows.username);
 
-  createNotification(
+  await createNotification(
     {
       avatar: authProfile._doc.avatar,
       body: 'começou a te seguir!',

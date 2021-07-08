@@ -10,7 +10,7 @@ const createSavedPost: ISavedPostService = async (user, isAlreadySave, savedPost
 
   const isPost = !!savedPost.get('artist');
 
-  SavedPost.findOneAndUpdate(
+  await SavedPost.findOneAndUpdate(
     { user: user.id },
     {
       user: user.id,

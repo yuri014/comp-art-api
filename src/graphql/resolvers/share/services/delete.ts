@@ -59,7 +59,7 @@ const deleteShareService = async (id: string, user: IToken) => {
     throw new Error();
   }
 
-  Comments.deleteMany({ post: id });
+  await Comments.deleteMany({ post: id });
 
   const { shareXP } = xpValues;
 

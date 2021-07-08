@@ -28,7 +28,7 @@ export const follower = async (
       throw new UserInputError('Já é seguido');
     }
 
-    ArtistProfile.findByIdAndUpdate(
+    await ArtistProfile.findByIdAndUpdate(
       profileIdThatFollows,
       { $inc: { following: 1 } },
       { useFindAndModify: false },
@@ -51,7 +51,7 @@ export const follower = async (
     throw new UserInputError('Já é seguido');
   }
 
-  UserProfile.findByIdAndUpdate(
+  await UserProfile.findByIdAndUpdate(
     profileIdThatFollows,
     { $inc: { following: 1 } },
     { useFindAndModify: false },
@@ -85,7 +85,7 @@ export const following = async (
     if (artistFollowing && artistFollowing.artistFollowing.length > 0) {
       throw new UserInputError('Já é seguido');
     }
-    ArtistProfile.findByIdAndUpdate(
+    await ArtistProfile.findByIdAndUpdate(
       profileIdThatIsFollowing,
       { $inc: { followers: 1 } },
       { useFindAndModify: false },
@@ -108,7 +108,7 @@ export const following = async (
     throw new UserInputError('Já é seguido');
   }
 
-  UserProfile.findByIdAndUpdate(
+  await UserProfile.findByIdAndUpdate(
     profileIdThatIsFollowing,
     { $inc: { followers: 1 } },
     { useFindAndModify: false },

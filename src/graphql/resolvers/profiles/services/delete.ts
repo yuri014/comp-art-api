@@ -23,7 +23,7 @@ export const unfollower = async (
       throw new UserInputError('Não é seguido');
     }
 
-    ArtistProfile.findOneAndUpdate(
+    await ArtistProfile.findOneAndUpdate(
       { owner: profileThatFollows.owner },
       { $inc: { following: -1 } },
       { useFindAndModify: false },
@@ -46,7 +46,7 @@ export const unfollower = async (
     throw new UserInputError('Não é seguido');
   }
 
-  UserProfile.findOneAndUpdate(
+  await UserProfile.findOneAndUpdate(
     { owner: profileThatFollows.owner },
     { $inc: { following: -1 } },
     { useFindAndModify: false },
@@ -84,7 +84,7 @@ export const unfollowing = async (
       throw new UserInputError('Já é seguido');
     }
 
-    ArtistProfile.findOneAndUpdate(
+    await ArtistProfile.findOneAndUpdate(
       { owner: profileThatIsFollowing.owner },
       { $inc: { followers: -1 } },
       { useFindAndModify: false },
@@ -109,7 +109,7 @@ export const unfollowing = async (
     throw new UserInputError('Não é seguido 300');
   }
 
-  UserProfile.findOneAndUpdate(
+  await UserProfile.findOneAndUpdate(
     { owner: profileThatIsFollowing.owner },
     { $inc: { followers: -1 } },
     { useFindAndModify: false },

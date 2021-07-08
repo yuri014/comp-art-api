@@ -53,7 +53,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
     profile: profileDoc?._id,
   });
 
-  newShare.save();
+  await newShare.save();
 
   mentionUser({
     avatar: profile._doc?.avatar as string,
@@ -63,7 +63,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
     pubsub,
   });
 
-  Post.findByIdAndUpdate(
+  await Post.findByIdAndUpdate(
     input.postID,
     {
       $inc: {
@@ -74,7 +74,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
   );
 
   if (profileDoc?._id.equals(postOwner._id)) {
-    profile.updateOne(
+    await profile.updateOne(
       {
         $inc: {
           postCount: 1,

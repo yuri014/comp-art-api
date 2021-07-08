@@ -23,11 +23,11 @@ const updateProfileService = async (
   const coverImage = await coverImagePromise;
 
   if (avatar && oldProfile.avatar !== '') {
-    removeFile(oldProfile.avatar);
+    await removeFile(oldProfile.avatar);
   }
 
   if (coverImage && oldProfile.coverImage !== '') {
-    removeFile(oldProfile.coverImage);
+    await removeFile(oldProfile.coverImage);
   }
 
   const { getAvatarUrl, getCoverImageUrl } = await uploadProfileFiles(avatar, coverImage);
@@ -37,7 +37,7 @@ const updateProfileService = async (
 
   const newBio = bio ? bio.trim() : '';
 
-  oldProfile.updateOne({
+  await oldProfile.updateOne({
     name: name.trim(),
     bio: newBio,
     hashtags,

@@ -42,7 +42,7 @@ const createProductService = async (user: IToken, productInput: IProductInput) =
     createdAt: new Date().toISOString(),
   });
 
-  newProduct.save();
+  await newProduct.save();
 
   return true;
 };

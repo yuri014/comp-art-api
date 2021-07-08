@@ -62,7 +62,7 @@ export const deleteCommentService = async (commentId: string, user: IToken) => {
     throw new UserInputError('Não há comentário');
   }
 
-  comment.updateOne(
+  await comment.updateOne(
     {
       $pull: {
         comments: {
