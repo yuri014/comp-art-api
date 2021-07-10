@@ -7,7 +7,7 @@ interface ICreateEmail {
 }
 
 const createEmail = (options: ICreateEmail) => ({
-  from: process.env.EMAIL as string,
+  from: `Comp-Art <${process.env.EMAIL}>`,
   to: `${options.username} <${options.recipient}>`,
   subject: options.subject,
   text: options.text,
