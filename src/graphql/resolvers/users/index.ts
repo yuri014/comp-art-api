@@ -90,7 +90,7 @@ const usersResolvers: IResolvers = {
       if (user.strikes >= 3) {
         user.delete();
 
-        await ConfirmationCode.findOneAndRemove({ user: user._id });
+        await ConfirmationCode.findOneAndRemove({ user: user._id }, { useFindAndModify: false });
 
         throw new UserInputError(
           'Talvez seu e-mail esteja errado, excluímos seu usuário para que refaça seu cadastro.',
