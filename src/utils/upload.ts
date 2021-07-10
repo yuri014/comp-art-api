@@ -4,8 +4,11 @@ import writeFileDev from './writeFileDev';
 import { ICreateReadStream } from '../interfaces/General';
 import writeFile from './writeFile';
 
-const getMime = (filename: string | undefined) => {
-  const newFileName = filename && filename.match(/\.(png|jpg|jpeg|webp)$/);
+const getMime = (
+  filename: string | undefined,
+  match: (_filename: string) => RegExpMatchArray | null,
+) => {
+  const newFileName = filename && match(filename);
   const mime = newFileName && newFileName[0];
 
   if (!mime) {
@@ -18,7 +21,7 @@ const getMime = (filename: string | undefined) => {
 };
 
 export const uploadImage = async (createReadStream?: ICreateReadStream, filename?: string) => {
-  const mime = getMime(filename);
+  const mime = getMime(filename, _filename => _filename.match(/\.(png|jpg|jpeg|webp)$/));
 
   if (globalThis.__DEV__) {
     return writeFileDev({ createReadStream, folderPath: '/uploads/images/', mime });
@@ -28,7 +31,7 @@ export const uploadImage = async (createReadStream?: ICreateReadStream, filename
 };
 
 export const uploadAudio = async (createReadStream?: ICreateReadStream, filename?: string) => {
-  const mime = getMime(filename);
+  const mime = getMime(filename, _filename => _filename.match(/\.(mp3|wav)$/));
 
   if (globalThis.__DEV__) {
     return writeFileDev({ createReadStream, folderPath: '/uploads/audio/', mime });
