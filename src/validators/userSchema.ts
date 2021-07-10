@@ -23,13 +23,12 @@ export const userValidator = (otherValidations?: { [key: string]: Joi.StringSche
   Joi.object({
     ...otherValidations,
     password: Joi.string()
-      .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
+      .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)
       .required()
       .max(64)
       .messages({
         'string.base': 'Senha deve ser um texto',
-        'string.pattern.base':
-          'Senha deve conter no mínimo 8 caracteres uma letra, um número e um caracter especial',
+        'string.pattern.base': 'Senha deve conter no mínimo 8 caracteres com letras e números',
         'string.max': 'Senha deve ter no máximo de 64 caracteres',
         'string.required': 'Senha é obrigatório',
       }),
