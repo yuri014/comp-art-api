@@ -10,18 +10,26 @@ interface IMessage {
 }
 
 const sendEmail = async (message: IMessage) => {
-  const transporter = nodemailer.createTransport({
-    host: process.env.HOST_EMAIL,
-    port: 587,
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
+  const transporterOptions = () => {
+    if (globalThis.__DEV__) {
+      return {
+        host: process.env.HOST_EMAIL,
+        port: 587,
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      };
+    }
+    return process.env.SMTP;
+  };
+
+  const transporter = nodemailer.createTransport(transporterOptions());
 
   transporter.sendMail(message, (error, info) => {
     if (error) {
       log('Error:', error.message);
+      throw new Error();
     }
 
     log('Message sent: ', info.messageId);
