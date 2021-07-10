@@ -1,24 +1,43 @@
 import { UserInputError } from 'apollo-server-express';
 import getImageSize from 'image-size';
-import http from 'https';
+import http from 'http';
+import https from 'https';
 import { ISizeCalculationResult } from 'image-size/dist/types/interface';
+
+interface HttpResolver {
+  resolve: (size: ISizeCalculationResult) => void;
+  options: URL;
+  _http: typeof http | typeof https;
+}
+
+const httpResolver = ({ options, resolve, _http }: HttpResolver) => {
+  _http.get(options, response => {
+    const chunks: Uint8Array[] = [];
+    response
+      .on('data', chunk => {
+        chunks.push(chunk);
+      })
+      .on('end', () => {
+        const buffer = Buffer.concat(chunks);
+        resolve(getImageSize(buffer));
+      });
+  });
+};
 
 const handleImageDimension = async (uploadPath: string) => {
   const options = new URL(uploadPath);
 
   const getDimensions = () => {
-    const dimensions = new Promise((resolve: (size: ISizeCalculationResult) => void) => {
-      http.get(options, response => {
-        const chunks: Uint8Array[] = [];
-        response
-          .on('data', chunk => {
-            chunks.push(chunk);
-          })
-          .on('end', () => {
-            const buffer = Buffer.concat(chunks);
-            resolve(getImageSize(buffer));
-          });
+    if (globalThis.__DEV__) {
+      const dimensions = new Promise((resolve: (size: ISizeCalculationResult) => void) => {
+        httpResolver({ _http: http, options, resolve });
       });
+
+      return dimensions;
+    }
+
+    const dimensions = new Promise((resolve: (size: ISizeCalculationResult) => void) => {
+      httpResolver({ _http: https, options, resolve });
     });
 
     return dimensions;
