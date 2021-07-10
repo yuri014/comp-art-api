@@ -33,6 +33,8 @@ export const confirmUser = async (code: string, email: string) => {
     throw new Error();
   }
 
+  await confirmationCode.deleteOne();
+
   const token = generateToken(user, '15d');
 
   return {
