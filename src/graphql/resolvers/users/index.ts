@@ -38,7 +38,7 @@ const usersResolvers: IResolvers = {
       const token = generateToken(user, '10m');
       const recoverPassoword = recoverPasswordEmail(
         user.username,
-        `${process.env.FRONT_END_HOST}/recover-password/${token}`,
+        `${process.env.FRONT_END_HOST}/forgot-password/${token}`,
       );
 
       const message = createEmail({
