@@ -22,16 +22,13 @@ const userValidation = {
 export const userValidator = (otherValidations?: { [key: string]: Joi.StringSchema }) =>
   Joi.object({
     ...otherValidations,
-    password: Joi.string()
-      .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)
-      .required()
-      .max(64)
-      .messages({
-        'string.base': 'Senha deve ser um texto',
-        'string.pattern.base': 'Senha deve conter no mínimo 8 caracteres com letras e números',
-        'string.max': 'Senha deve ter no máximo de 64 caracteres',
-        'string.required': 'Senha é obrigatório',
-      }),
+    // eslint-disable-next-line newline-per-chained-call
+    password: Joi.string().required().min(8).max(64).messages({
+      'string.base': 'Senha deve ser um texto',
+      'string.min': 'Senha deve ter no mínimo de 8 caracteres',
+      'string.max': 'Senha deve ter no máximo de 64 caracteres',
+      'string.required': 'Senha é obrigatório',
+    }),
 
     confirmPassword: Joi.any()
       .equal(Joi.ref('password'))
