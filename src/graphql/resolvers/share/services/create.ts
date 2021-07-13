@@ -55,7 +55,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
 
   await newShare.save();
 
-  mentionUser({
+  await mentionUser({
     avatar: profile._doc?.avatar as string,
     description: input.description,
     from: user.username,

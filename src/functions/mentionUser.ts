@@ -11,24 +11,26 @@ type IMentionUser = {
   pubsub: PubSub;
 };
 
-const mentionUser = (options: IMentionUser) => {
+const mentionUser = async (options: IMentionUser) => {
   const { avatar, description, from, link, pubsub } = options;
 
   if (description) {
     const mentions = getMentions(description);
 
     if (mentions) {
-      mentions.forEach(mention =>
-        createNotification(
-          {
-            body: 'mencionou você!',
-            link,
-            from,
-            username: mention.replace('@', ''),
-            avatar,
-          },
-          pubsub,
-        ),
+      await Promise.all(
+        mentions.map(async mention => {
+          await createNotification(
+            {
+              body: 'mencionou você!',
+              link,
+              from,
+              username: mention.replace('@', ''),
+              avatar,
+            },
+            pubsub,
+          );
+        }),
       );
     }
   }

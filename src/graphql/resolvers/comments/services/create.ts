@@ -90,7 +90,7 @@ export const createComment = async (id: string, comment: string, user: IToken, p
     pubsub,
   );
 
-  mentionUser({
+  await mentionUser({
     avatar: profile._doc?.avatar as string,
     description: comment,
     from: user.username,

@@ -43,7 +43,7 @@ const createNewPost = async (post: IPostInput, user: IToken, pubsub: PubSub) => 
 
   const newPost = await handlePost();
 
-  mentionUser({
+  await mentionUser({
     avatar: profile._doc?.avatar as string,
     description: post.description,
     from: user.username,
