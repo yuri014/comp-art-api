@@ -18,7 +18,7 @@ export const postDefinitions = gql`
   }
 
   type Post {
-    _id: String!
+    _id: ID!
     description: String
     body: String!
     likes: [PostLikes]
@@ -39,7 +39,7 @@ export const postDefinitions = gql`
   }
 
   type Share {
-    _id: String!
+    _id: ID!
     description: String
     post: Post!
     likes: [PostLikes]
