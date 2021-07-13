@@ -1,5 +1,3 @@
-import { UserInputError } from 'apollo-server-express';
-
 import Following from '../../../../../entities/Following';
 import { IToken } from '../../../../../interfaces/Token';
 import findProfile from '../../../profiles/services/utils/findProfileUtil';
@@ -16,7 +14,7 @@ const getTimelinePosts = async (offset: number, user: IToken) => {
   const following = await Following.findOne({ username: user.username }).lean();
 
   if (!following) {
-    throw new UserInputError('Não está seguindo nenhum usuário');
+    return [];
   }
 
   const artists = following.artistFollowing;
