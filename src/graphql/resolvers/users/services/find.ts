@@ -30,7 +30,7 @@ const loginUser = async (email: string, password: string) => {
     const daysBetweenDates = differenceInDays(now, userCreatedAt);
 
     if (daysBetweenDates >= limitDaysForConfirm) {
-      user.deleteOne();
+      await user.deleteOne();
       await ConfirmationCode.findOneAndRemove({ user: user._id }, { useFindAndModify: false });
 
       throw new UserInputError('Usuário excluído, refaça seu cadastro');
@@ -40,7 +40,9 @@ const loginUser = async (email: string, password: string) => {
 
     const message = 'Um email de confirmação foi enviado a você, por favor confirme seu email!';
 
-    throw new UserInputError(message);
+    throw new UserInputError(message, {
+      validateCode: true,
+    });
   }
 
   if (!match) {
