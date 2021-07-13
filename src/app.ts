@@ -26,9 +26,12 @@ export const server = new ApolloServer({
     onConnect(_, ws: any) {
       const { headers } = ws.upgradeReq as Request;
 
-      const token = cookieToJson(headers.cookie as string);
+      if (headers.cookie) {
+        const token = cookieToJson(headers.cookie as string);
 
-      return { req: { headers: { authorization: `Bearer ${token.jwtToken}` } } };
+        return { req: { headers: { authorization: `Bearer ${token.jwtToken}` } } };
+      }
+      return '';
     },
   },
 });
