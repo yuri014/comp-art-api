@@ -19,10 +19,10 @@ const queries = gql`
 
     #posts
     getPost(id: ID!): Post
-    getPosts(offset: Int!): [Timeline]
-    getProfilePosts(offset: Int!, username: String!): [Timeline]
+    getPosts(offset: [Int]!): [Timeline]
+    getProfilePosts(offset: [Int]!, username: String!): [Timeline]
     getExplorePosts(offset: Int!): [Post]
-    searchPost(query: String!, offset: Int!): [Timeline]
+    searchPost(query: String!, offset: [Int]!): [Timeline]
 
     #post interactions
     getComments(postID: ID!, offset: Int!): [Comments]
@@ -30,7 +30,7 @@ const queries = gql`
     getWhoSharesPost(postID: ID!, offset: Int!): [Profile]
 
     #saved posts
-    getSavedPosts(offset: Int!): [Timeline]
+    getSavedPosts(offset: [Int]!): [Timeline]
 
     #notifications
     getNotifications(offset: Int!): [Notification]

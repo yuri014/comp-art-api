@@ -1,10 +1,11 @@
 import getUser from '../../../../../auth/getUser';
 import ArtistProfile from '../../../../../entities/ArtistProfile';
 import UserProfile from '../../../../../entities/UserProfile';
+import { IOffsetTimeline } from '../../../../../interfaces/General';
 import { IToken } from '../../../../../interfaces/Token';
 import getTimeline from '../utils/getTimeline';
 
-const getProfilePostsService = async (token: string, username: string, offset: number) => {
+const getProfilePostsService = async (token: string, username: string, offset: IOffsetTimeline) => {
   const user = getUser(token);
   const artist = await ArtistProfile.findOne({ owner: username }).lean();
   const userProfile = await UserProfile.findOne({ owner: username }).lean();

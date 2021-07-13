@@ -1,14 +1,11 @@
 import Following from '../../../../../entities/Following';
+import { IOffsetTimeline } from '../../../../../interfaces/General';
 import { IToken } from '../../../../../interfaces/Token';
 import findProfile from '../../../profiles/services/utils/findProfileUtil';
 import shuffleProfileArray from '../../../profiles/services/utils/shuffleProfilesArray';
 import getTimeline from '../utils/getTimeline';
 
-const getTimelinePosts = async (offset: number, user: IToken) => {
-  if (offset % 2 === 1) {
-    return [];
-  }
-
+const getTimelinePosts = async (offset: IOffsetTimeline, user: IToken) => {
   const loggedProfile = await findProfile(user);
 
   const following = await Following.findOne({ username: user.username }).lean();

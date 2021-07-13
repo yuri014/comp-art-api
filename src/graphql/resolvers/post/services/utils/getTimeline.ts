@@ -2,6 +2,7 @@ import { FilterQuery } from 'mongoose';
 
 import Post from '../../../../../entities/Post';
 import Share from '../../../../../entities/Share';
+import { IOffsetTimeline } from '../../../../../interfaces/General';
 import { IPost } from '../../../../../interfaces/Post';
 import { IShare } from '../../../../../interfaces/Share';
 import { IToken } from '../../../../../interfaces/Token';
@@ -10,7 +11,7 @@ import { handlePostView } from './postUtils';
 import sortTimelineArray from './sortTimelineArray';
 
 type GetTimeline = (
-  offset: number,
+  offset: IOffsetTimeline,
   queries: {
     postQuery: FilterQuery<IPost>;
     shareQuery: FilterQuery<IShare>;
@@ -20,12 +21,11 @@ type GetTimeline = (
 ) => Promise<unknown[]>;
 
 const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
-  const newOffset = offset > 0 ? offset / 2 : 0;
   const { postQuery, shareQuery } = queries;
 
   const posts = await Post.find(postQuery)
-    .skip(newOffset)
-    .limit(3)
+    .skip(offset[0])
+    .limit(5)
     .sort({ createdAt: -1 })
     .populate('artist')
     .where('likes')
@@ -33,8 +33,8 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
     .populate('likes.profile');
 
   const shares = await Share.find(shareQuery)
-    .skip(newOffset)
-    .limit(3)
+    .skip(offset[1])
+    .limit(5)
     .sort({ createdAt: -1 })
     .populate('post')
     .populate('profile')

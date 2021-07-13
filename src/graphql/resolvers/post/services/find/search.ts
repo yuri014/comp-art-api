@@ -1,9 +1,10 @@
 import getUser from '../../../../../auth/getUser';
+import { IOffsetTimeline } from '../../../../../interfaces/General';
 import { IToken } from '../../../../../interfaces/Token';
 import findProfile from '../../../profiles/services/utils/findProfileUtil';
 import getTimeline from '../utils/getTimeline';
 
-const searchPostService = async (offset: number, query: string, token: string) => {
+const searchPostService = async (offset: IOffsetTimeline, query: string, token: string) => {
   const user = getUser(token);
 
   if (user) {

@@ -2,7 +2,7 @@ import { IResolvers, PubSub } from 'apollo-server-express';
 import { IPostInput } from '../../../interfaces/Post';
 import checkAuth from '../../../middlewares/checkAuth';
 import getToken from '../../../auth/getToken';
-import { ID } from '../../../interfaces/General';
+import { ID, IOffsetTimeline } from '../../../interfaces/General';
 import likePost from './services/update';
 import createNewPost from './services/create';
 import FindPost from './services/find';
@@ -15,12 +15,16 @@ const postResolvers: IResolvers = {
 
       return FindPost.getPostService(id, token);
     },
-    async getPosts(_, { offset }: { offset: number }, context) {
+    async getPosts(_, { offset }: { offset: IOffsetTimeline }, context) {
       const user = checkAuth(context);
 
       return FindPost.getTimelinePosts(offset, user);
     },
-    async getProfilePosts(_, { offset, username }: { offset: number; username: string }, context) {
+    async getProfilePosts(
+      _,
+      { offset, username }: { offset: IOffsetTimeline; username: string },
+      context,
+    ) {
       const token = getToken(context);
 
       return FindPost.getProfilePostsService(token, username, offset);
@@ -36,7 +40,7 @@ const postResolvers: IResolvers = {
       return FindPost.getPostLikes({ postID, offset, token });
     },
 
-    async searchPost(_, { query, offset }: { query: string; offset: number }, context) {
+    async searchPost(_, { query, offset }: { query: string; offset: IOffsetTimeline }, context) {
       const token = getToken(context);
 
       return FindPost.searchPostService(offset, query, token);
