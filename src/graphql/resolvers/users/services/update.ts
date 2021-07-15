@@ -63,14 +63,9 @@ export const updatePassword = async (token: string, password: string, confirmPas
     }
 
     const encryptedPassword = await bcrypt.hash(password, 12);
-    await User.updateOne({ password: encryptedPassword });
+    await user.updateOne({ password: encryptedPassword }, { useFindAndModify: false });
 
-    return {
-      id: user._id,
-      token,
-      username: user.username,
-      isArtist: user.isArtist,
-    };
+    return true;
   } catch (error) {
     throw new UserInputError('Token inválida');
   }
