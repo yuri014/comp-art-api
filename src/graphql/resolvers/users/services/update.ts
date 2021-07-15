@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs';
 import { UserInputError } from 'apollo-server-express';
 
 import User from '../../../../entities/User';
-import { ID } from '../../../../interfaces/General';
 import ConfirmationCode from '../../../../entities/ConfirmationCode';
 import generateToken from '../../../../generators/generateToken';
 import { userValidator } from '../../../../validators/userSchema';
@@ -47,8 +46,8 @@ export const confirmUser = async (code: string, email: string) => {
 
 export const updatePassword = async (token: string, password: string, confirmPassword: string) => {
   try {
-    const { id } = jwt.verify(token, process.env.SECRET as string) as ID;
-    const user = await User.findById(id);
+    const { _id } = jwt.verify(token, process.env.SECRET as string) as { _id: string };
+    const user = await User.findById(_id);
 
     if (!user) {
       throw new UserInputError('Não existe usuário');
