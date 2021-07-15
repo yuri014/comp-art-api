@@ -6,6 +6,7 @@ import User from '../../../../entities/User';
 import ConfirmationCode from '../../../../entities/ConfirmationCode';
 import generateToken from '../../../../generators/generateToken';
 import { userValidator } from '../../../../validators/userSchema';
+import { ID } from '../../../../interfaces/General';
 
 export const confirmUser = async (code: string, email: string) => {
   const user = await User.findOne({ email });
@@ -46,8 +47,8 @@ export const confirmUser = async (code: string, email: string) => {
 
 export const updatePassword = async (token: string, password: string, confirmPassword: string) => {
   try {
-    const { _id } = jwt.verify(token, process.env.SECRET as string) as { _id: string };
-    const user = await User.findById(_id);
+    const { id } = jwt.verify(token, process.env.SECRET as string) as ID;
+    const user = await User.findById(id);
 
     if (!user) {
       throw new UserInputError('Não existe usuário');
