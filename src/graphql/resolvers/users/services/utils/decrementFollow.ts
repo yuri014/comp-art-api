@@ -9,9 +9,9 @@ interface DecrementFollow {
 const decrementFollow = async ({ follower, Entity, field }: DecrementFollow) => {
   if (follower) {
     await Promise.all(
-      follower.map(async (id: string) =>
+      follower.map(async (id: string) => {
         // @ts-ignore
-        Entity.findByIdAndUpdate(
+        await Entity.findByIdAndUpdate(
           id,
           {
             $inc: {
@@ -19,8 +19,8 @@ const decrementFollow = async ({ follower, Entity, field }: DecrementFollow) => 
             },
           },
           { useFindAndModify: false },
-        ),
-      ),
+        );
+      }),
     );
   }
 };

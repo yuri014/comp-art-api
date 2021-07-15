@@ -52,31 +52,38 @@ const deleteUser = async (user: IToken) => {
 
       const follower = await Follower.findOne({ username: userEntity.username });
 
-      await decrementFollow({
-        Entity: UserProfile,
-        field: 'following',
-        follower: (follower?._doc?.userFollowers as unknown) as string[],
-      });
+      if (follower) {
+        await decrementFollow({
+          Entity: UserProfile,
+          field: 'following',
+          follower: (follower?._doc?.userFollowers as unknown) as string[],
+        });
 
-      await decrementFollow({
-        Entity: ArtistProfile,
-        field: 'following',
-        follower: (follower?._doc?.artistFollowers as unknown) as string[],
-      });
+        await decrementFollow({
+          Entity: ArtistProfile,
+          field: 'following',
+          follower: (follower?._doc?.artistFollowers as unknown) as string[],
+        });
+
+        await follower.deleteOne();
+      }
 
       const following = await Following.findOne({ username: userEntity.username });
 
-      await decrementFollow({
-        Entity: UserProfile,
-        field: 'follower',
-        follower: (following?._doc?.userFollowing as unknown) as string[],
-      });
+      if (following) {
+        await decrementFollow({
+          Entity: UserProfile,
+          field: 'follower',
+          follower: (following?._doc?.userFollowing as unknown) as string[],
+        });
 
-      await decrementFollow({
-        Entity: ArtistProfile,
-        field: 'follower',
-        follower: (following?._doc?.artistFollowing as unknown) as string[],
-      });
+        await decrementFollow({
+          Entity: ArtistProfile,
+          field: 'follower',
+          follower: (following?._doc?.artistFollowing as unknown) as string[],
+        });
+        await following.deleteOne();
+      }
 
       await Notification.deleteOne({ user: userEntity._id });
 
@@ -95,7 +102,6 @@ const deleteUser = async (user: IToken) => {
         },
         { useFindAndModify: false },
       );
-
       await Share.updateMany(
         {
           $pull: {
