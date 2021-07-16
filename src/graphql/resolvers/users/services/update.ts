@@ -47,8 +47,8 @@ export const confirmUser = async (code: string, email: string) => {
 
 export const updatePassword = async (token: string, password: string, confirmPassword: string) => {
   try {
-    const { id } = jwt.verify(token, process.env.SECRET as string) as ID;
-    const user = await User.findById(id);
+    const decodedToken = jwt.verify(token, process.env.SECRET as string) as ID;
+    const user = await User.findById(decodedToken.id);
 
     if (!user) {
       throw new UserInputError('Não existe usuário');
