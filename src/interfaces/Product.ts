@@ -22,7 +22,7 @@ export interface IProduct extends Document, Product {
     review: string;
     createdAt: string;
   }>;
-  totalSales: { type: Number; required: true; default: 0 };
+  totalSales: { type: number; required: true; default: 0 };
   artist: string | IArtistProfile;
   available: boolean;
 }
