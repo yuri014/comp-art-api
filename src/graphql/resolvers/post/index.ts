@@ -20,14 +20,19 @@ const postResolvers: IResolvers = {
 
       return FindPost.getTimelinePosts(offset, user);
     },
-    async getProfilePosts(
+    async getProfilePosts(_, { offset, username }: { offset: number; username: string }, context) {
+      const token = getToken(context);
+
+      return FindPost.getArtistPosts(token, username, offset);
+    },
+    async getProfilePostsAndShares(
       _,
       { offset, username }: { offset: IOffsetTimeline; username: string },
       context,
     ) {
       const token = getToken(context);
 
-      return FindPost.getProfilePostsService(token, username, offset);
+      return FindPost.getProfilePostsAndSharesService(token, username, offset);
     },
     async getExplorePosts(_, { offset }: { offset: number }, context) {
       const token = getToken(context);
