@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import User from '../../../../../entities/User';
 
 import { IArtistProfile, ICreateProfile, IUserProfile } from '../../../../../interfaces/Profile';
 import { IToken } from '../../../../../interfaces/Token';
@@ -38,6 +39,12 @@ const createProfile = async (
   });
 
   await newProfile.save();
+
+  await User.findOneAndUpdate(
+    { username: user.username },
+    { strikes: 0 },
+    { useFindAndModify: false },
+  );
 
   return true;
 };
