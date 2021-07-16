@@ -90,6 +90,7 @@ const deleteUser = async (user: IToken) => {
       await SavedPost.deleteOne({ user: userEntity._id });
 
       await Post.updateMany(
+        { likes: { $elemMatch: { profile: profile._doc?._id } } },
         {
           $pull: {
             likes: {
@@ -103,6 +104,7 @@ const deleteUser = async (user: IToken) => {
         { useFindAndModify: false },
       );
       await Share.updateMany(
+        { likes: { $elemMatch: { profile: profile._doc?._id } } },
         {
           $pull: {
             likes: {
