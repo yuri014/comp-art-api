@@ -79,7 +79,7 @@ export const createComment = async (id: string, comment: string, user: IToken, p
   const commentedPost = newComment.post as IPost;
   const artistPostOwner = commentedPost.artist as IArtistProfile;
 
-  createNotification(
+  await createNotification(
     {
       body: 'comentou em sua publicação',
       link: `/post/${id}`,

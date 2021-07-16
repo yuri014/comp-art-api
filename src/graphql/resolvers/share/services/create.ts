@@ -127,7 +127,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
       throw new Error('Não encontrou perfil ao compartilhar');
     }
 
-    createNotification(
+    await createNotification(
       {
         body: 'compartilhou sua publicação',
         link: `/share/${newShare._id}`,
@@ -159,7 +159,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
     throw new Error('Não encontrou perfil ao compartilhar');
   }
 
-  createNotification(
+  await createNotification(
     {
       body: 'compartilhou sua publicação',
       link: `/share/${newShare._id}`,
