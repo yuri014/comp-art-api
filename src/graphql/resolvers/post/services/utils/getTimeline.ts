@@ -6,6 +6,7 @@ import { IOffsetTimeline } from '../../../../../interfaces/General';
 import { IPost } from '../../../../../interfaces/Post';
 import { IShare } from '../../../../../interfaces/Share';
 import { IToken } from '../../../../../interfaces/Token';
+import getPostView from './postView';
 import getImageHeight from './getImageHeight';
 import { handlePostView } from './postUtils';
 import sortTimelineArray from './sortTimelineArray';
@@ -64,18 +65,7 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
       }),
     );
 
-    const postsView = await Promise.all(
-      posts.map(async post => {
-        const { imageHeight, isSaved, getIsLiked } = await handlePostView(post, user.id);
-        const isLiked = await getIsLiked({ isShare: false, postID: post._id, profileID });
-
-        if (!post._doc) {
-          throw new Error();
-        }
-
-        return { ...post._doc, isLiked, imageHeight, isSaved };
-      }),
-    );
+    const postsView = await getPostView({ posts, profileID, userID: user.id });
 
     const timeline = sortTimelineArray(postsView, sharesView);
     return timeline;
