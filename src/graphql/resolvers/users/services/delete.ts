@@ -145,7 +145,7 @@ const deleteUser = async (user: IToken) => {
     }
   };
 
-  deleteUserData();
+  await deleteUserData();
 
   return true;
 };
