@@ -5,7 +5,11 @@ import { IOffsetTimeline } from '../../../../../interfaces/General';
 import { IToken } from '../../../../../interfaces/Token';
 import getTimeline from '../utils/getTimeline';
 
-const getProfilePostsService = async (token: string, username: string, offset: IOffsetTimeline) => {
+const getProfilePostsAndSharesService = async (
+  token: string,
+  username: string,
+  offset: IOffsetTimeline,
+) => {
   const user = getUser(token);
   const artist = await ArtistProfile.findOne({ owner: username }).lean();
   const userProfile = await UserProfile.findOne({ owner: username }).lean();
@@ -48,4 +52,4 @@ const getProfilePostsService = async (token: string, username: string, offset: I
   return timeline;
 };
 
-export default getProfilePostsService;
+export default getProfilePostsAndSharesService;
