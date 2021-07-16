@@ -2,13 +2,14 @@ import express, { Request, Response } from 'express';
 import { ApolloServer, PubSub } from 'apollo-server-express';
 import { graphqlUploadExpress } from 'graphql-upload';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 import typeDefs from './graphql/definitions';
 import resolvers from './graphql/resolvers';
 import rateLimiterMiddleware from './middlewares/limiter';
 import cookieToJson from './utils/cookieToJson';
 
-require('dotenv').config({
+dotenv.config({
   path: process.env.NODE_ENV === 'development' ? '.env.development' : '.env',
 });
 
@@ -23,6 +24,7 @@ export const server = new ApolloServer({
   uploads: false,
   subscriptions: {
     path: '/subscriptions',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onConnect(_, ws: any) {
       const { headers } = ws.upgradeReq as Request;
 
