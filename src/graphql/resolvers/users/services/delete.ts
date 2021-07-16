@@ -119,6 +119,15 @@ const deleteUser = async (user: IToken) => {
       );
 
       if (userEntity.isArtist) {
+        const posts = await Post.find({ artist: profile._doc?._id });
+
+        await Promise.all(
+          posts.map(async postItem => {
+            await Share.deleteMany({ post: postItem?._doc?.id });
+            return Comments.deleteMany({ post: postItem?._doc?._id });
+          }),
+        );
+
         await Post.deleteMany({ artist: profile._doc?._id });
 
         await ArtistProfile.findByIdAndDelete(profile._doc?._id, { useFindAndModify: false });
