@@ -48,7 +48,7 @@ const createNotification = async (options: NotificationOptions, pubsub: PubSub) 
 
   const { _id, body, createdAt, link, read, from, avatar } = notification.notifications[0];
 
-  pubsub.publish('NOTIFICATION', {
+  await pubsub.publish('NOTIFICATION', {
     notification: {
       _id,
       body,

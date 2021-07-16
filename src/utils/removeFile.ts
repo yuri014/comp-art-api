@@ -7,7 +7,7 @@ const removeFile = async (pathname: string) => {
 
   if (globalThis.__DEV__) {
     const pathName = path.join(__dirname, '..', '..', `/public${url.pathname}`);
-    fs.remove(pathName);
+    await fs.remove(pathName);
   } else {
     const params: PutObjectRequest = {
       Bucket: process.env.AWS_S3_BUCKET as string,

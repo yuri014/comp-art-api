@@ -86,7 +86,7 @@ const usersResolvers: IResolvers = {
       }
 
       if (user.strikes >= 3) {
-        user.delete();
+        await user.delete();
 
         await ConfirmationCode.findOneAndRemove({ user: user._id }, { useFindAndModify: false });
 
