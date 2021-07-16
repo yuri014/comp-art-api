@@ -9,7 +9,6 @@ const mutations = gql`
     sendForgotPasswordEmail(email: String!): Boolean
     recoverPassword(token: String!, newPassword: String!, confirmPassword: String!): Boolean
     resendConfirmationCode(email: String!): Boolean
-    deleteAccount: Boolean
 
     #profiles
     createProfile(createProfileInput: CreateProfileInput!): Boolean
