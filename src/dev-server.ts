@@ -19,4 +19,7 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true,
   })
-  .then(() => httpServer.listen(PORT, () => logs.map(log => log())));
+  .then(() => httpServer.listen(PORT, () => logs.map(log => log())))
+  .catch(error => {
+    throw new Error(error);
+  });
