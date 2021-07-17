@@ -1,4 +1,5 @@
 import { IResolvers, UserInputError } from 'apollo-server-express';
+import { addDays } from 'date-fns';
 
 import User from '../../../entities/User';
 import { IRegisterFields } from '../../../interfaces/User';
@@ -46,6 +47,10 @@ const usersResolvers: IResolvers = {
       }
 
       await validateUserBlock(user);
+
+      if (user.strikes >= 7) {
+        await user.updateOne({ blockUntil: addDays(new Date(), 7) }, { useFindAndModify: false });
+      }
 
       const token = generateToken(user, '10m');
       const recoverPassoword = recoverPasswordEmail(
