@@ -17,6 +17,17 @@ const postsMutations = {
 };
 
 const resolvers = {
+  SharedPost: {
+    __resolveType(obj: { _id: string; error: boolean }) {
+      if (obj._id) {
+        return 'Post';
+      }
+      if (obj.error) {
+        return 'NullPost';
+      }
+      return null; // GraphQLError is thrown
+    },
+  },
   Timeline: {
     __resolveType(obj: { artist: IArtistProfile; profile: IProfileEntity }) {
       if (obj.artist) {

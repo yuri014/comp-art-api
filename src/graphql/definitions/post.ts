@@ -18,16 +18,16 @@ export const postDefinitions = gql`
   }
 
   type Post {
-    _id: ID!
+    _id: ID
     description: String
-    body: String!
+    body: String
     likes: [PostLikes]
-    likesCount: Int!
-    sharedCount: Int!
-    commentsCount: Int!
-    createdAt: String!
-    artist: PostArtist!
-    mediaId: Int!
+    likesCount: Int
+    sharedCount: Int
+    commentsCount: Int
+    createdAt: String
+    artist: PostArtist
+    mediaId: Int
     isLiked: Boolean
     alt: String
     darkColor: String
@@ -38,15 +38,21 @@ export const postDefinitions = gql`
     isSaved: Boolean
   }
 
+  type NullPost {
+    error: Boolean
+  }
+
+  union SharedPost = Post | NullPost
+
   type Share {
-    _id: ID!
+    _id: ID
     description: String
-    post: Post!
+    post: SharedPost
     likes: [PostLikes]
-    likesCount: Int!
-    commentsCount: Int!
-    profile: Profile!
-    createdAt: String!
+    likesCount: Int
+    commentsCount: Int
+    profile: Profile
+    createdAt: String
     isLiked: Boolean
     imageHeight: String
     isSaved: Boolean

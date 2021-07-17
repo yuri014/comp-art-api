@@ -52,35 +52,44 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
   if (user && profileID) {
     const sharesView = await Promise.all(
       shares.map(async share => {
-        const sharePost = share.post as IPost;
-        const { imageHeight, isSaved, getIsLiked } = await handlePostView(sharePost, user.id);
+        if (share.post) {
+          const sharePost = share.post as IPost;
+          const { imageHeight, isSaved, getIsLiked } = await handlePostView(sharePost, user.id);
 
-        const isLiked = await getIsLiked({ isShare: true, postID: share._id, profileID });
+          const isLiked = await getIsLiked({ isShare: true, postID: share._id, profileID });
 
-        if (!share._doc) {
-          throw new Error();
+          if (!share._doc) {
+            throw new Error();
+          }
+
+          return { ...share._doc, isLiked, imageHeight, isSaved };
         }
 
-        return { ...share._doc, isLiked, imageHeight, isSaved };
+        return { ...share._doc, post: { error: true } };
       }),
     );
 
     const postsView = await getPostView({ posts, profileID, userID: user.id });
 
-    const timeline = sortTimelineArray(postsView, sharesView);
+    const timeline = sortTimelineArray(postsView, sharesView as Array<{ createdAt: string }>);
+
     return timeline;
   }
 
   const sharesView = await Promise.all(
     shares.map(async share => {
-      const sharePost = share.post as IPost;
-      const imageHeight = getImageHeight(sharePost);
+      if (share.post) {
+        const sharePost = share.post as IPost;
+        const imageHeight = getImageHeight(sharePost);
 
-      if (!share._doc) {
-        throw new Error();
+        if (!share._doc) {
+          throw new Error();
+        }
+
+        return { ...share._doc, imageHeight };
       }
 
-      return { ...share._doc, imageHeight };
+      return { ...share._doc, post: { error: true } };
     }),
   );
 
@@ -96,7 +105,7 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
     }),
   );
 
-  const timeline = sortTimelineArray(postsView, sharesView);
+  const timeline = sortTimelineArray(postsView, sharesView as Array<{ createdAt: string }>);
   return timeline;
 };
 
