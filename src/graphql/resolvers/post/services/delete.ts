@@ -3,7 +3,6 @@ import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Comments from '../../../../entities/Comments';
 import Post from '../../../../entities/Post';
-import Share from '../../../../entities/Share';
 import UserProfile from '../../../../entities/UserProfile';
 import levelDown from '../../../../functions/levelDown';
 import { IArtistProfile } from '../../../../interfaces/Profile';
@@ -78,7 +77,6 @@ export const deletePostService = async (id: string, user: IToken) => {
     throw Error();
   }
 
-  await Share.deleteMany({ post: id });
   await Comments.deleteMany({ post: id });
 
   const { postXP } = xpValues;
