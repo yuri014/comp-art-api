@@ -9,9 +9,9 @@ const validateUserBlock = async (user: IUser) => {
     const blockUntil = new Date(user.createdAt);
     const daysBetweenDates = differenceInDays(now, blockUntil);
 
-    if (daysBetweenDates <= 5) {
+    if (daysBetweenDates <= 7) {
       throw new UserInputError(
-        'Você excedeu o limite de tentativas, sua conta está bloqueada agora',
+        'Você excedeu o limite de tentativas, sua conta está bloqueada por uma semana',
       );
     } else {
       await user.updateOne({ blockUntil: '' }, { useFindAndModify: false });
