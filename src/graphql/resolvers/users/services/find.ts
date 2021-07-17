@@ -7,6 +7,7 @@ import generateToken from '../../../../generators/generateToken';
 import handleSendConfirmationEmail from '../../../../utils/handleSendConfirmationEmail';
 import { validateLoginInput } from '../../../../validators/utils/validateRegisterInput';
 import ConfirmationCode from '../../../../entities/ConfirmationCode';
+import validateUserBlock from '../../../../middlewares/validateUserBlock';
 
 const loginUser = async (email: string, password: string) => {
   const { error, valid } = validateLoginInput(email, password);
@@ -20,6 +21,8 @@ const loginUser = async (email: string, password: string) => {
   if (!user) {
     throw new UserInputError('Usuário não encontrado');
   }
+
+  await validateUserBlock(user);
 
   const match = await bcrypt.compare(password, user.password);
 

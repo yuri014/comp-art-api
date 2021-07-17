@@ -11,6 +11,7 @@ import sendEmail from '../../../emails/sendEmail';
 import handleSendConfirmationEmail from '../../../utils/handleSendConfirmationEmail';
 import generateToken from '../../../generators/generateToken';
 import ConfirmationCode from '../../../entities/ConfirmationCode';
+import validateUserBlock from '../../../middlewares/validateUserBlock';
 
 const usersResolvers: IResolvers = {
   Mutation: {
@@ -27,11 +28,24 @@ const usersResolvers: IResolvers = {
     },
 
     async sendForgotPasswordEmail(_, { email }: { email: string }) {
-      const user = await User.findOne({ email }).lean();
+      const user = await User.findOneAndUpdate(
+        { email },
+        {
+          $inc: {
+            strikes: 1,
+          },
+        },
+        {
+          useFindAndModify: false,
+          new: true,
+        },
+      );
 
       if (!user) {
         throw new UserInputError('Não há usuário com esse e-mail.');
       }
+
+      await validateUserBlock(user);
 
       const token = generateToken(user, '10m');
       const recoverPassoword = recoverPasswordEmail(
