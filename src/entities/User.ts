@@ -11,6 +11,7 @@ const UserSchema = new Schema({
   strikes: { type: Number, default: 0 },
   createdAt: String,
   updatedAt: String,
+  blockUntil: String,
 });
 
 export default model<IUser>('User', UserSchema);

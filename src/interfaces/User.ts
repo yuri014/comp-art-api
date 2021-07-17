@@ -13,6 +13,7 @@ export interface IUser extends Document, User {
   confirmed: boolean;
   createdAt: Date;
   updatedAt: Date;
+  blockUntil: Date | '';
   strikes: number;
 }
 
