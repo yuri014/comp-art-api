@@ -13,11 +13,15 @@ const checkAbilityToPost = async (username: string) => {
   }
 
   if (profile.isBlockedToPost) {
-    throw new UserInputError('Compartilhe outros artistas para voltar a publicar');
+    throw new UserInputError('Compartilhe outros artistas para voltar a publicar', {
+      isBlocked: true,
+    });
   }
 
   if (profile.postsRemainingToUnblock > 0) {
-    throw new UserInputError('Compartilhe outros artistas para voltar a publicar');
+    throw new UserInputError('Compartilhe outros artistas para voltar a publicar', {
+      isBlocked: true,
+    });
   }
 
   return profile;
