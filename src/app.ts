@@ -22,6 +22,7 @@ export const server = new ApolloServer({
   resolvers,
   context: ({ req, res, connection }) => ({ req, res, connection, pubsub }),
   uploads: false,
+  playground: globalThis.__DEV__,
   subscriptions: {
     path: '/subscriptions',
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
