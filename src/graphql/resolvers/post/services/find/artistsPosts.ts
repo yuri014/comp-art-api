@@ -21,7 +21,8 @@ const getArtistPosts = async (token: string, username: string, offset: number) =
     .populate('artist')
     .where('likes')
     .slice([0, 3])
-    .populate('likes.profile');
+    .populate('likes.profile')
+    .lean();
 
   if (!posts) {
     return [];

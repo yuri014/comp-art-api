@@ -11,7 +11,8 @@ const getPostService = async (id: string, token: string) => {
     .populate('artist')
     .where('likes')
     .slice([0, 3])
-    .populate('likes.profile');
+    .populate('likes.profile')
+    .lean();
 
   if (!post) {
     return {};
@@ -25,12 +26,12 @@ const getPostService = async (id: string, token: string) => {
     const { isSaved, imageHeight, getIsLiked } = await handlePostView(post, authUser.id);
     const isLiked = await getIsLiked({ isShare: false, postID: id, profileID: profile._doc?._id });
 
-    return { ...post._doc, isLiked: !!isLiked, isSaved, imageHeight };
+    return { ...post, isLiked: !!isLiked, isSaved, imageHeight };
   }
 
   const imageHeight = getImageHeight(post);
 
-  return { ...post._doc, imageHeight };
+  return { ...post, imageHeight };
 };
 
 export default getPostService;

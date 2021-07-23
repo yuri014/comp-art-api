@@ -7,6 +7,7 @@ import { IToken } from '../../../../interfaces/Token';
 import xpValues from '../../../../utils/xpValues';
 import levelDown from '../../../../functions/levelDown';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
+import Post from '../../../../entities/Post';
 
 export const dislikeCommentService = async (idComment: string, user: IToken) => {
   const profile = await findProfile(user);
@@ -46,8 +47,8 @@ export const dislikeCommentService = async (idComment: string, user: IToken) => 
 
 export const deleteCommentService = async (commentId: string, user: IToken) => {
   const profile = user.isArtist
-    ? await ArtistProfile.findOne({ owner: user.username })
-    : await UserProfile.findOne({ owner: user.username });
+    ? await ArtistProfile.findOne({ owner: user.username }).select('-hashtags -links')
+    : await UserProfile.findOne({ owner: user.username }).select('-hashtags -links');
 
   if (!profile) {
     throw new UserInputError('Não há perfil');
@@ -73,6 +74,8 @@ export const deleteCommentService = async (commentId: string, user: IToken) => {
     },
     { useFindAndModify: false },
   );
+
+  await Post.updateOne({ _id: comment._doc?.post }, { $inc: { commentsCount: -1 } });
 
   if (comment.onModel === 'Post') {
     const { commentXP } = xpValues;

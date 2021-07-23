@@ -1,3 +1,4 @@
+import { LeanDocument } from 'mongoose';
 import Post from '../../../../../entities/Post';
 import SavedPost from '../../../../../entities/SavedPost';
 import Share from '../../../../../entities/Share';
@@ -32,7 +33,7 @@ export const getIsLiked = async ({ isShare, postID, profileID }: IGetIsLiked) =>
   return !!isLiked;
 };
 
-export const handlePostView = async (post: IPost, userID?: string) => {
+export const handlePostView = async (post: LeanDocument<IPost>, userID?: string) => {
   const imageHeight = getImageHeight(post);
 
   const savedPost = await SavedPost.findOne({

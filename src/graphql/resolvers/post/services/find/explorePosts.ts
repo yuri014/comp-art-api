@@ -25,13 +25,14 @@ const getExplorePostsService = async (offset: number, token: string) => {
       .populate('artist')
       .where('likes')
       .slice([0, 3])
-      .populate('likes.profile');
+      .populate('likes.profile')
+      .lean();
 
     const postView = await Promise.all(
       posts.map(async post => {
         const { imageHeight, isSaved } = await handlePostView(post, user.id);
 
-        return { ...post._doc, imageHeight, isSaved };
+        return { ...post, imageHeight, isSaved };
       }),
     );
 
@@ -45,12 +46,13 @@ const getExplorePostsService = async (offset: number, token: string) => {
     .populate('artist')
     .where('likes')
     .slice([0, 3])
-    .populate('likes.profile');
+    .populate('likes.profile')
+    .lean();
 
   const postView = posts.map(post => {
     const imageHeight = getImageHeight(post);
 
-    return { ...post._doc, imageHeight };
+    return { ...post, imageHeight };
   });
 
   return postView;

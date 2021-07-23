@@ -16,7 +16,10 @@ import createNotification from '../../notifications/services/create';
 const likePost = async (id: string, user: IToken, pubsub: PubSub) => {
   await likeHandler(id, user, Post, 'like');
 
-  const artist = (await Post.findById(id).populate('artist', 'owner')) as IPost;
+  const artist = (await Post.findById(id)
+    .populate('artist', 'owner')
+    .select('-likes')
+    .lean()) as IPost;
 
   const { owner } = artist?.artist as IArtistProfile;
 
