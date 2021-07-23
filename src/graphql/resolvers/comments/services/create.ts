@@ -3,8 +3,8 @@ import { PubSub, UserInputError } from 'apollo-server-express';
 import ArtistProfile from '../../../../entities/ArtistProfile';
 import Comments from '../../../../entities/Comments';
 import Post from '../../../../entities/Post';
-import Share from '../../../../entities/Share';
 import UserProfile from '../../../../entities/UserProfile';
+import levelUp from '../../../../functions/levelUp';
 import mentionUser from '../../../../functions/mentionUser';
 import { IPost } from '../../../../interfaces/Post';
 import { IArtistProfile } from '../../../../interfaces/Profile';
@@ -15,10 +15,9 @@ import createNotification from '../../notifications/services/create';
 import findProfile from '../../profiles/services/utils/findProfileUtil';
 
 export const createComment = async (id: string, comment: string, user: IToken, pubsub: PubSub) => {
-  const post = await Post.findById(id);
-  const share = await Share.findById(id);
+  const post = await Post.findById(id).select('_id');
 
-  if (!post && !share) {
+  if (!post) {
     throw new UserInputError('Não há post');
   }
 
@@ -133,7 +132,7 @@ export const createComment = async (id: string, comment: string, user: IToken, p
       throw new Error();
     }
 
-    return updatedProfile;
+    return levelUp(updatedProfile);
   }
 
   return false;
