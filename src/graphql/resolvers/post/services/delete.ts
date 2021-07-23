@@ -37,7 +37,7 @@ export const dislikePost = async (id: string, user: IToken) => {
 };
 
 export const deletePostService = async (id: string, user: IToken) => {
-  const post = await Post.findById(id).populate('artist', 'owner');
+  const post = await Post.findById(id).populate('artist', 'owner').select('-likes');
 
   if (!post) {
     throw new UserInputError('Não há post');
