@@ -31,7 +31,8 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
     .populate('artist')
     .where('likes')
     .slice([0, 3])
-    .populate('likes.profile');
+    .populate('likes.profile')
+    .lean();
 
   const shares = await Share.find(shareQuery)
     .skip(offset[1])
@@ -47,7 +48,8 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
     })
     .where('likes')
     .slice([0, 3])
-    .populate('likes.profile');
+    .populate('likes.profile')
+    .lean();
 
   if (user && profileID) {
     const sharesView = await Promise.all(
@@ -58,14 +60,14 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
 
           const isLiked = await getIsLiked({ isShare: true, postID: share._id, profileID });
 
-          if (!share._doc) {
+          if (!share) {
             throw new Error();
           }
 
-          return { ...share._doc, isLiked, imageHeight, isSaved };
+          return { ...share, isLiked, imageHeight, isSaved };
         }
 
-        return { ...share._doc, post: { error: true } };
+        return { ...share, post: { error: true } };
       }),
     );
 
@@ -82,14 +84,14 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
         const sharePost = share.post as IPost;
         const imageHeight = getImageHeight(sharePost);
 
-        if (!share._doc) {
+        if (!share) {
           throw new Error();
         }
 
-        return { ...share._doc, imageHeight };
+        return { ...share, imageHeight };
       }
 
-      return { ...share._doc, post: { error: true } };
+      return { ...share, post: { error: true } };
     }),
   );
 
@@ -97,11 +99,11 @@ const getTimeline: GetTimeline = async (offset, queries, profileID, user) => {
     posts.map(async post => {
       const imageHeight = getImageHeight(post);
 
-      if (!post._doc) {
+      if (!post) {
         throw new Error();
       }
 
-      return { ...post._doc, imageHeight };
+      return { ...post, imageHeight };
     }),
   );
 
