@@ -16,10 +16,6 @@ const getTimelinePosts = async (offset: IOffsetTimeline, user: IToken) => {
 
   const artists = following.artistFollowing;
 
-  if (user.isArtist) {
-    artists.push(loggedProfile._doc?._id);
-  }
-
   const followingProfiles = shuffleProfileArray(following.artistFollowing, following.userFollowing);
 
   const timeline = await getTimeline(
