@@ -37,7 +37,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
 
   const profileDoc = profile._doc;
 
-  const post = await Post.findById(input.postID).populate('artist');
+  const post = await Post.findById(input.postID).populate('artist').select('-likes');
 
   if (!post) {
     throw new UserInputError('Precisa de um post');
@@ -63,8 +63,7 @@ const createShare = async (user: IToken, input: IShareInput, pubsub: PubSub) => 
     pubsub,
   });
 
-  await Post.findByIdAndUpdate(
-    input.postID,
+  await post.updateOne(
     {
       $inc: {
         sharedCount: 1,
