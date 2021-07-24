@@ -2,9 +2,8 @@ import Joi from 'joi';
 
 const userValidation = {
   // eslint-disable-next-line newline-per-chained-call
-  username: Joi.string().alphanum().min(6).max(24).required().messages({
+  username: Joi.string().min(6).max(24).required().messages({
     'string.base': 'Username deve ser um texto',
-    'string.alphanum': 'Username apenas pode ser alfanumérico',
     'string.min': 'Username deve contér mais de seis caractéres',
     'string.required': 'Username é obrigatório',
   }),
