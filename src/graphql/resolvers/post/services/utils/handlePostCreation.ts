@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { UserInputError } from 'apollo-server-express';
 
 import Post from '../../../../../entities/Post';
@@ -5,7 +6,7 @@ import { IPostInput } from '../../../../../interfaces/Post';
 import { uploadBody, uploadThumbnail } from '../../../../../utils/uploadPost';
 import managePostColors from './managePostColors';
 
-export const createTextPost = async (profileID: string, description?: string) => {
+export const createTextPost = async (profileID: string | ObjectId, description?: string) => {
   if (!description || description?.length === 0) {
     throw new UserInputError('Texto não pode ser vazio.');
   }
