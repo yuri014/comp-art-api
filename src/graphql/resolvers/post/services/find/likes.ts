@@ -11,12 +11,12 @@ import { isFollowingLoggedUser } from '../../../profiles/services/utils/findFoll
 const getPostLikes = async ({ offset, postID, token }: IFindPostInteractions) => {
   const artistPost = await Post.findById(postID)
     .where('likes')
-    .slice([offset, offset + 5])
+    .slice([offset, offset + 6])
     .populate('likes.profile');
 
   const share = await Share.findById(postID)
     .where('likes')
-    .slice([offset, offset + 5])
+    .slice([offset, offset + 6])
     .populate('likes.profile');
 
   const post = artistPost || share;
