@@ -3,7 +3,7 @@ import Comments from '../../../../entities/Comments';
 const findComments = async (postID: string, offset: number) => {
   const comments = await Comments.findOne({ post: postID })
     .where('comments')
-    .slice([offset, offset + 3])
+    .slice([offset, offset + 6])
     .populate('comments.author')
     .lean();
 
