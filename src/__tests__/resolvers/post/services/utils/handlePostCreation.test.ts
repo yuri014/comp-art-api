@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import { UserInputError } from 'apollo-server-express';
 
-import database from '../../../../__mocks__/database';
-import { createTextPost } from '../../../../graphql/resolvers/post/services/utils/handlePostCreation';
-import Post from '../../../../entities/Post';
+import database from '../../../../../__mocks__/database';
+import { createTextPost } from '../../../../../graphql/resolvers/post/services/utils/handlePostCreation';
+import Post from '../../../../../entities/Post';
 
 const db = database();
 
