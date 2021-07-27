@@ -14,8 +14,8 @@ const queries = gql`
 
     #follows
     getIsFollowing(id: String!): Boolean
-    getFollowers(offset: Int!, username: String!): [Profile]
-    getFollowing(offset: Int!, username: String!): [Profile]
+    getFollowers(offset: [Int]!, username: String!): [Profile]
+    getFollowing(offset: [Int]!, username: String!): [Profile]
 
     #posts
     getPost(id: ID!): Post

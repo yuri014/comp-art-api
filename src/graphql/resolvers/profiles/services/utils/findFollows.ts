@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { IFollower, IFollowing } from '../../../../../interfaces/Follow';
 
 export type IOffset = {
-  offset: number;
+  offset: number[];
   username: string;
 };
 
@@ -14,10 +14,10 @@ const findFollows = async (
 ) => {
   const follows = await FollowModel.findOne({ username })
     .where(queryParams[0])
-    .slice([offset > 0 ? Math.round(offset / 2) : offset, offset + 4])
+    .slice([offset[0], offset[0] + 6])
     .populate(queryParams[0])
     .where(queryParams[1])
-    .slice([offset > 0 ? Math.round(offset / 2) : offset, offset + 4])
+    .slice([offset[1], offset[1] + 6])
     .populate(queryParams[1]);
 
   if (!follows) {
