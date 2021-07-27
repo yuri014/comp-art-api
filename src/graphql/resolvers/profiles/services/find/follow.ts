@@ -15,14 +15,26 @@ export const getFollowingService = async (params: IOffset, token: string) => {
 
   const user = getUser(token);
 
-  const artists = follows.artistFollowing || [];
-  const users = follows.userFollowing || [];
-
   if (user) {
     const authUser = user as IToken;
 
+    const artists = follows.artistFollowing || [];
+    const users = follows.userFollowing || [];
+
     return followersWithAuth(authUser, artists, users);
   }
+
+  const artistWithIsArtistField = follows.artistFollowing.map(artist => ({
+    ...artist,
+    isArtist: true,
+  }));
+  const usersWithIsArtistField = follows.userFollowing.map(artist => ({
+    ...artist,
+    isArtist: true,
+  }));
+
+  const artists = artistWithIsArtistField || [];
+  const users = usersWithIsArtistField || [];
 
   return shuffleProfileArray(artists, users);
 };
@@ -33,14 +45,25 @@ export const getFollowersService = async (params: IOffset, token: string) => {
 
   const user = getUser(token);
 
-  const artists = followers.artistFollowers || [];
-  const users = followers.userFollowers || [];
-
   if (user) {
     const authUser = user as IToken;
+    const artists = followers.artistFollowers || [];
+    const users = followers.userFollowers || [];
 
     return followersWithAuth(authUser, artists, users);
   }
+
+  const artistWithIsArtistField = followers.artistFollowers.map(artist => ({
+    ...artist,
+    isArtist: true,
+  }));
+  const usersWithIsArtistField = followers.userFollowers.map(artist => ({
+    ...artist,
+    isArtist: true,
+  }));
+
+  const artists = artistWithIsArtistField || [];
+  const users = usersWithIsArtistField || [];
 
   return shuffleProfileArray(artists, users);
 };
