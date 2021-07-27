@@ -1,4 +1,4 @@
-import mongoose, { LeanDocument } from 'mongoose';
+import { LeanDocument } from 'mongoose';
 import Post from '../../../../../entities/Post';
 import SavedPost from '../../../../../entities/SavedPost';
 import Share from '../../../../../entities/Share';
@@ -18,32 +18,22 @@ type IGetIsLiked = {
 
 export const getIsLiked = async ({ isShare, postID, profileID }: IGetIsLiked) => {
   if (isShare) {
-    const isLiked = await Share.aggregate()
-      .match({
-        _id: postID,
+    const isLiked = await Share.findById(postID)
+      .select({
+        likes: { $elemMatch: { profile: profileID } },
       })
-      .unwind('likes')
-      .project({
-        isLiked: {
-          $eq: ['$likes.profile', mongoose.Types.ObjectId(profileID)],
-        },
-      });
+      .lean();
 
-    return isLiked.length !== 0;
+    return isLiked?.likes && isLiked?.likes.length > 0;
   }
 
-  const isLiked = await Post.aggregate()
-    .match({
-      _id: postID,
+  const isLiked = await Post.findById(postID)
+    .select({
+      likes: { $elemMatch: { profile: profileID } },
     })
-    .unwind('likes')
-    .project({
-      isLiked: {
-        $eq: ['$likes.profile', mongoose.Types.ObjectId(profileID)],
-      },
-    });
+    .lean();
 
-  return isLiked.length !== 0;
+  return isLiked?.likes && isLiked?.likes.length > 0;
 };
 
 export const handlePostView = async (post: LeanDocument<IPost>, userID?: string) => {
