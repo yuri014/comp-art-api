@@ -22,9 +22,9 @@ const likeHandler = async (
     throw new UserInputError('Não há perfil');
   }
 
-  const post = await Entity.findById(id)
-    .populate('likes.profile')
-    .select({ likes: { $elemMatch: { profile: profileDoc._id } } });
+  const post = await Entity.findById(id).select({
+    likes: { $elemMatch: { profile: profileDoc._id } },
+  });
 
   if (!post) {
     throw new UserInputError('Não há post');

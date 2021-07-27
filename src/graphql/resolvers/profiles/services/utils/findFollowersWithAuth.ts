@@ -5,7 +5,11 @@ import { IArtistProfile, IUserProfile } from '../../../../../interfaces/Profile'
 import { IToken } from '../../../../../interfaces/Token';
 import shuffleProfileArray from './shuffleProfilesArray';
 
-export const isFollowingLoggedUser = async (profile: IProfileEntity, username: string) => {
+export const isFollowingLoggedUser = async (
+  profile: IProfileEntity,
+  username: string,
+  isArtist?: boolean,
+) => {
   const followsYou = await Follower.findOne({
     username,
     $or: [{ artistFollowers: profile._id }, { userFollowers: profile._id }],
@@ -16,7 +20,7 @@ export const isFollowingLoggedUser = async (profile: IProfileEntity, username: s
     $or: [{ artistFollowing: profile._id }, { userFollowing: profile._id }],
   }).lean();
 
-  return { ...profile?._doc, followsYou: !!followsYou, isFollowing: !!isFollowing };
+  return { ...profile?._doc, isArtist, followsYou: !!followsYou, isFollowing: !!isFollowing };
 };
 
 const followersWithAuth = async (
@@ -27,10 +31,10 @@ const followersWithAuth = async (
   const authUser = user as IToken;
 
   const artistsWithAuth = await Promise.all(
-    artists.map(artist => isFollowingLoggedUser(artist, authUser.username)),
+    artists.map(artist => isFollowingLoggedUser(artist, authUser.username, true)),
   );
   const usersWithAuth = await Promise.all(
-    users.map(_user => isFollowingLoggedUser(_user, authUser.username)),
+    users.map(_user => isFollowingLoggedUser(_user, authUser.username, false)),
   );
 
   return shuffleProfileArray(artistsWithAuth, usersWithAuth);

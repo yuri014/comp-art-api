@@ -18,19 +18,22 @@ type IGetIsLiked = {
 
 export const getIsLiked = async ({ isShare, postID, profileID }: IGetIsLiked) => {
   if (isShare) {
-    const isLiked = await Share.findOne({
-      _id: postID,
-      likes: { $elemMatch: { profile: profileID } },
-    }).lean();
+    const isLiked = await Share.findById(postID)
+      .select({
+        likes: { $elemMatch: { profile: profileID } },
+      })
+      .lean();
 
-    return !!isLiked;
+    return isLiked?.likes && isLiked?.likes.length > 0;
   }
 
-  const isLiked = await Post.findOne({
-    _id: postID,
-    likes: { $elemMatch: { profile: profileID } },
-  }).lean();
-  return !!isLiked;
+  const isLiked = await Post.findById(postID)
+    .select({
+      likes: { $elemMatch: { profile: profileID } },
+    })
+    .lean();
+
+  return isLiked?.likes && isLiked?.likes.length > 0;
 };
 
 export const handlePostView = async (post: LeanDocument<IPost>, userID?: string) => {

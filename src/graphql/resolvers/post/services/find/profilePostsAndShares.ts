@@ -3,6 +3,7 @@ import ArtistProfile from '../../../../../entities/ArtistProfile';
 import UserProfile from '../../../../../entities/UserProfile';
 import { IOffsetTimeline } from '../../../../../interfaces/General';
 import { IToken } from '../../../../../interfaces/Token';
+import findProfile from '../../../profiles/services/utils/findProfileUtil';
 import getTimeline from '../utils/getTimeline';
 
 const getProfilePostsAndSharesService = async (
@@ -23,6 +24,8 @@ const getProfilePostsAndSharesService = async (
   if (user) {
     const authUser = user as IToken;
 
+    const loggedProfile = await findProfile(authUser, true);
+
     const timeline = await getTimeline(
       offset,
       {
@@ -33,7 +36,7 @@ const getProfilePostsAndSharesService = async (
           profile: profile._id,
         },
       },
-      profile._id,
+      loggedProfile._id,
       authUser,
     );
 
