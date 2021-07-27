@@ -8,7 +8,7 @@ import shuffleProfileArray from './shuffleProfilesArray';
 export const isFollowingLoggedUser = async (
   profile: IProfileEntity,
   username: string,
-  isArtist: boolean,
+  isArtist?: boolean,
 ) => {
   const followsYou = await Follower.findOne({
     username,
