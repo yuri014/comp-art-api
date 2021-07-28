@@ -11,6 +11,7 @@ const queries = gql`
     getSuggestedProfiles: [Profile]
     getProfile(username: String!): Profile
     searchProfiles(query: String!, offset: Int!, limit: Int!): [Profile]
+    getAllProfiles: [Profile]
 
     #follows
     getIsFollowing(id: String!): Boolean
@@ -24,6 +25,7 @@ const queries = gql`
     getProfilePostsAndShares(offset: [Int]!, username: String!): [Timeline]
     getExplorePosts(offset: Int!): [Post]
     searchPost(query: String!, offset: [Int]!): [Timeline]
+    getAllPosts: [Post]
 
     #post interactions
     getComments(postID: ID!, offset: Int!): [Comments]

@@ -113,6 +113,13 @@ const profileResolvers: IResolvers = {
 
       return shuffleProfileArray(suggestedArtists, suggestedUsers);
     },
+
+    async getAllProfiles() {
+      const artists = await ArtistProfile.find().select('owner').lean();
+      const users = await UserProfile.find().select('owner').lean();
+
+      return artists.concat(users as []);
+    },
   },
   Mutation: {
     async createProfile(

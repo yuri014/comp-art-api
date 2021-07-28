@@ -7,6 +7,7 @@ import likePost from './services/update';
 import createNewPost from './services/create';
 import FindPost from './services/find';
 import { deletePostService, dislikePost } from './services/delete';
+import Post from '../../../entities/Post';
 
 const postResolvers: IResolvers = {
   Query: {
@@ -49,6 +50,12 @@ const postResolvers: IResolvers = {
       const token = getToken(context);
 
       return FindPost.searchPostService(offset, query, token);
+    },
+
+    async getAllPosts() {
+      const posts = await Post.find().select('_id').lean();
+
+      return posts;
     },
   },
   Mutation: {
