@@ -24,7 +24,7 @@ const getPostService = async (id: string, token: string) => {
     const profile = await findProfile(authUser);
 
     const { isSaved, imageHeight, getIsLiked } = await handlePostView(post, authUser.id);
-    const isLiked = await getIsLiked({ isShare: false, postID: id, profileID: profile._doc?._id });
+    const isLiked = await getIsLiked({ isShare: false, postID: id, profileID: profile._id });
 
     return { ...post, isLiked: !!isLiked, isSaved, imageHeight };
   }
