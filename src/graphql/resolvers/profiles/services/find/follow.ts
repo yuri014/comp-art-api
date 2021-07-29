@@ -1,4 +1,3 @@
-import { LeanDocument } from 'mongoose';
 import getUser from '../../../../../auth/getUser';
 import Follower from '../../../../../entities/Follower';
 import Following from '../../../../../entities/Following';
@@ -12,7 +11,7 @@ import shuffleProfileArray from '../utils/shuffleProfilesArray';
 export const getFollowingService = async (params: IOffset, token: string) => {
   const followsResult = await findFollows(Following, params, ['artistFollowing', 'userFollowing']);
 
-  const follows = (followsResult as unknown) as LeanDocument<IFollowing>;
+  const follows = (followsResult as unknown) as IFollowing;
 
   const user = getUser(token);
 
@@ -42,7 +41,7 @@ export const getFollowingService = async (params: IOffset, token: string) => {
 
 export const getFollowersService = async (params: IOffset, token: string) => {
   const followsResult = await findFollows(Follower, params, ['artistFollowers', 'userFollowers']);
-  const followers = (followsResult as unknown) as LeanDocument<IFollower>;
+  const followers = followsResult as IFollower;
 
   const user = getUser(token);
 
