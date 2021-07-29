@@ -1,3 +1,4 @@
+import { LeanDocument } from 'mongoose';
 import Follower from '../../../../../entities/Follower';
 import Following from '../../../../../entities/Following';
 import { IProfileEntity } from '../../../../../interfaces/Models';
@@ -6,7 +7,7 @@ import { IToken } from '../../../../../interfaces/Token';
 import shuffleProfileArray from './shuffleProfilesArray';
 
 export const isFollowingLoggedUser = async (
-  profile: IProfileEntity,
+  profile: LeanDocument<IProfileEntity>,
   username: string,
   isArtist?: boolean,
 ) => {
@@ -25,8 +26,8 @@ export const isFollowingLoggedUser = async (
 
 const followersWithAuth = async (
   user: IToken | string,
-  artists: IArtistProfile[],
-  users: IUserProfile[],
+  artists: LeanDocument<IArtistProfile>[],
+  users: LeanDocument<IUserProfile>[],
 ) => {
   const authUser = user as IToken;
 
