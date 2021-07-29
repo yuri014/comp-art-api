@@ -20,7 +20,7 @@ export const isFollowingLoggedUser = async (
     $or: [{ artistFollowing: profile._id }, { userFollowing: profile._id }],
   }).lean();
 
-  return { ...profile?._doc, isArtist, followsYou: !!followsYou, isFollowing: !!isFollowing };
+  return { ...profile, isArtist, followsYou: !!followsYou, isFollowing: !!isFollowing };
 };
 
 const followersWithAuth = async (

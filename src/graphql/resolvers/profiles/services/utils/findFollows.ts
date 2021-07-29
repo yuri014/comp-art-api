@@ -18,7 +18,8 @@ const findFollows = async (
     .populate(queryParams[0])
     .where(queryParams[1])
     .slice([offset[1], offset[1] + 6])
-    .populate(queryParams[1]);
+    .populate(queryParams[1])
+    .lean();
 
   if (!follows) {
     return [];

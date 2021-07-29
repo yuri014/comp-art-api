@@ -11,7 +11,7 @@ import shuffleProfileArray from '../utils/shuffleProfilesArray';
 export const getFollowingService = async (params: IOffset, token: string) => {
   const followsResult = await findFollows(Following, params, ['artistFollowing', 'userFollowing']);
 
-  const follows = followsResult as IFollowing;
+  const follows = (followsResult as unknown) as IFollowing;
 
   const user = getUser(token);
 
@@ -57,9 +57,10 @@ export const getFollowersService = async (params: IOffset, token: string) => {
     ...artist,
     isArtist: true,
   }));
-  const usersWithIsArtistField = followers.userFollowers.map(artist => ({
-    ...artist,
-    isArtist: true,
+
+  const usersWithIsArtistField = followers.userFollowers.map(_user => ({
+    ..._user,
+    isArtist: false,
   }));
 
   const artists = artistWithIsArtistField || [];
