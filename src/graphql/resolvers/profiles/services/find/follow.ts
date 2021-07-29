@@ -25,12 +25,12 @@ export const getFollowingService = async (params: IOffset, token: string) => {
   }
 
   const artistWithIsArtistField = follows.artistFollowing.map(artist => ({
-    ...artist,
+    ...artist._doc,
     isArtist: true,
   }));
   const usersWithIsArtistField = follows.userFollowing.map(artist => ({
-    ...artist,
-    isArtist: true,
+    ...artist._doc,
+    isArtist: false,
   }));
 
   const artists = artistWithIsArtistField || [];
@@ -54,12 +54,12 @@ export const getFollowersService = async (params: IOffset, token: string) => {
   }
 
   const artistWithIsArtistField = followers.artistFollowers.map(artist => ({
-    ...artist,
+    ...artist._doc,
     isArtist: true,
   }));
 
   const usersWithIsArtistField = followers.userFollowers.map(_user => ({
-    ..._user,
+    ..._user._doc,
     isArtist: false,
   }));
 
