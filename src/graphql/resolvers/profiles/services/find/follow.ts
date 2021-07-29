@@ -29,9 +29,9 @@ export const getFollowingService = async (params: IOffset, token: string) => {
     ...artist,
     isArtist: true,
   }));
-  const usersWithIsArtistField = follows.userFollowing.map(artist => ({
-    ...artist,
-    isArtist: true,
+  const usersWithIsArtistField = follows.userFollowing.map(_user => ({
+    ..._user,
+    isArtist: false,
   }));
 
   const artists = artistWithIsArtistField || [];
