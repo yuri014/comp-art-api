@@ -43,6 +43,10 @@ const createNewPost = async (post: IPostInput, user: IToken, pubsub: PubSub) => 
 
   const newPost = await handlePost();
 
+  if (!globalThis.__DEV__) {
+    await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
+  }
+
   await mentionUser({
     avatar: profile._doc?.avatar as string,
     description: post.description,
@@ -50,10 +54,6 @@ const createNewPost = async (post: IPostInput, user: IToken, pubsub: PubSub) => 
     link: `/post/${newPost._id}`,
     pubsub,
   });
-
-  if (!globalThis.__DEV__) {
-    await profile.updateOne({ isBlockedToPost: true, postsRemainingToUnblock: 3 });
-  }
 
   const { postXP } = xpValues;
 
