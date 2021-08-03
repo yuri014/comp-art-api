@@ -3,7 +3,7 @@ import Joi from 'joi';
 const isValidText = Joi.string().allow('');
 
 const pixValidationSchema = Joi.object({
-  key: isValidText.allow('').max(72).messages({
+  key: isValidText.max(72).messages({
     'string.base': 'Chave deve ser um texto',
     'string.min': 'Chave tem limite de 72 caracteres',
   }),
