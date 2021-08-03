@@ -9,8 +9,8 @@ const productValidationSchema = Joi.object({
   }),
   name: isValidText.required().min(4).max(24).messages({
     'string.base': 'Nome deve ser um texto',
-    'string.min': 'Nome deve contér mais de quatro caractéres',
-    'string.max': 'Nome deve contér menos de vinte e quatro caractéres',
+    'string.min': 'Nome deve contér mais de quatro caracteres',
+    'string.max': 'Nome deve contér menos de vinte e quatro caracteres',
     'string.required': 'Nome é obrigatório',
   }),
   price: Joi.number().required().messages({
@@ -19,8 +19,8 @@ const productValidationSchema = Joi.object({
   }),
   category: isValidText.required().min(4).max(32).messages({
     'string.base': 'Categoria deve ser um texto',
-    'string.min': 'Categoria deve contér mais de quatro caractéres',
-    'string.max': 'Categoria deve contér menos de trinta e dois caractéres',
+    'string.min': 'Categoria deve contér mais de quatro caracteres',
+    'string.max': 'Categoria deve contér menos de trinta e dois caracteres',
     'string.required': 'Categoria é obrigatório',
   }),
 });

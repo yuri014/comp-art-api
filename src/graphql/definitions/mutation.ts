@@ -13,6 +13,7 @@ const mutations = gql`
     #profiles
     createProfile(createProfileInput: CreateProfileInput!): Boolean
     updateProfile(newProfileInput: CreateProfileInput): Boolean
+    createPix(pix: InputPix!): Boolean
 
     #follows
     follow(username: String!): Boolean

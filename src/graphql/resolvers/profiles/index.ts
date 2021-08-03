@@ -1,7 +1,7 @@
-import { IResolvers, PubSub, UserInputError } from 'apollo-server-express';
+import { AuthenticationError, IResolvers, PubSub, UserInputError } from 'apollo-server-express';
 
 import ArtistProfile from '../../../entities/ArtistProfile';
-import { ICreateProfile } from '../../../interfaces/Profile';
+import { ICreateProfile, IPixInput } from '../../../interfaces/Profile';
 import checkAuth from '../../../middlewares/checkAuth';
 import UserProfile from '../../../entities/UserProfile';
 import User from '../../../entities/User';
@@ -22,6 +22,7 @@ import followService from './services/create/follow';
 import updateProfileService from './services/update/profile';
 import profileValidation from './services/utils/profileValidation';
 import shuffleProfileArray from './services/utils/shuffleProfilesArray';
+import pixValidationSchema from '../../../validators/pixSchema';
 
 type IUsername = {
   username: string;
@@ -184,6 +185,28 @@ const profileResolvers: IResolvers = {
       await unfollower(userWhoFollows.isArtist, authProfile._doc, followedUser.username);
 
       await unfollowing(followedUser.isArtist, profileWhoIsFollowed._doc, userWhoFollows.username);
+
+      return true;
+    },
+
+    async createPix(_, { pix }: { pix: IPixInput }, context) {
+      const user = checkAuth(context);
+
+      if (!user.isArtist) {
+        throw new AuthenticationError('Só artistas podem criar pix.');
+      }
+
+      const errors = pixValidationSchema.validate(pix);
+
+      if (errors.error) {
+        throw new UserInputError(errors.error.message);
+      }
+
+      await ArtistProfile.updateOne(
+        { owner: user.username },
+        { pix },
+        { upsert: true, useFindAndModify: true },
+      );
 
       return true;
     },

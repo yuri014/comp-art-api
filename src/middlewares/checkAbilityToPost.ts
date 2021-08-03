@@ -12,12 +12,6 @@ const checkAbilityToPost = async (username: string) => {
     throw new UserInputError('Perfil não encontrado!');
   }
 
-  if (profile.isBlockedToPost) {
-    throw new UserInputError('Compartilhe outros artistas para voltar a publicar', {
-      isBlocked: true,
-    });
-  }
-
   if (profile.postsRemainingToUnblock > 0) {
     throw new UserInputError('Compartilhe outros artistas para voltar a publicar', {
       isBlocked: true,

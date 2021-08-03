@@ -12,6 +12,12 @@ export const profileDefinitions = gql`
     customLink: String
   }
 
+  type Pix {
+    city: String
+    key: String
+    message: String
+  }
+
   type Profile {
     _id: String
     name: String!
@@ -32,6 +38,7 @@ export const profileDefinitions = gql`
     createdAt: String
     isFollowing: Boolean
     followsYou: Boolean
+    pix: Pix
   }
 `;
 
@@ -73,5 +80,11 @@ export const userAndProfileInputsDefinitions = gql`
     deviantart: String
     bandcamp: String
     customLink: String
+  }
+
+  input InputPix {
+    city: String
+    key: String
+    message: String
   }
 `;
