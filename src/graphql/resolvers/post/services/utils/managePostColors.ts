@@ -21,7 +21,7 @@ const managePostColors = async (thumbnailUrl: string, bodyUrl: string, mediaId: 
     return { darkColor: '#1CC5B7', lightColor: '#01746E' };
   }
 
-  return getDarkAndLightColor(bodyUrl);
+  return { darkColor: '', lightColor: '' };
 };
 
 export default managePostColors;
