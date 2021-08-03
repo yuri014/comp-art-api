@@ -32,6 +32,7 @@ const ArtistProfileSchema = new Schema({
     customLink: String,
   },
   phone: { type: String },
+  pix: { city: String, message: String, key: String },
 });
 
 ArtistProfileSchema.index({ name: 'text', owner: 'text' });

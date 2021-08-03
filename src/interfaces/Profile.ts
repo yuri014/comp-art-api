@@ -34,12 +34,19 @@ export interface IUserProfile extends Document, IProfile, HashtagsAndLinks {
   sharedPostCount: number;
 }
 
+export interface IPixInput {
+  city: string;
+  message: string;
+  key: string;
+}
+
 export interface IArtistProfile extends Document, IProfile, HashtagsAndLinks {
   _doc?: IArtistProfile;
   postCount: number;
   isBlockedToPost: boolean;
   postsRemainingToUnblock: number;
   phone: string;
+  pix: IPixInput;
 }
 
 export interface ICreateProfile extends HashtagsAndLinks {
