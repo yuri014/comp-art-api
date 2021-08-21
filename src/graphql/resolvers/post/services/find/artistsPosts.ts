@@ -30,7 +30,7 @@ const getArtistPosts = async (token: string, username: string, offset: number) =
   if (user) {
     const authUser = user as IToken;
 
-    const postsView = await getPostView({ posts, profileID, userID: authUser.id });
+    const postsView = await getPostView({ posts, profileID, userID: authUser.id as string });
 
     return postsView;
   }
