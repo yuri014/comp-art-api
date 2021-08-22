@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "apollo-server-express": "^2.23.0",
-    "aws-sdk": "^2.940.0",
+    "aws-sdk": "^2.958.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "date-fns": "^2.21.1",
