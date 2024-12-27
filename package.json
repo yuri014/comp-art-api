@@ -58,7 +58,7 @@
     "mongodb": "^3.6.12",
     "mongoose": "^6.0.4",
     "nanoid": "^3.1.31",
-    "node-vibrant": "^3.2.1-alpha.1",
+    "node-vibrant": "^4.0.0",
     "nodemailer": "^6.6.5",
     "rate-limiter-flexible": "^2.2.4",
     "tinycolor2": "^1.4.2",
